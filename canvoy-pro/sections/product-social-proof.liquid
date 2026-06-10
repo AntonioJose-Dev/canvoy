@@ -1,0 +1,170 @@
+<style>
+  .product-social-proof {
+    background: {{ section.settings.bg_color }};
+    padding: 40px 0;
+    text-align: center;
+  }
+  .product-social-proof__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 32px 48px;
+  }
+  .product-social-proof__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .product-social-proof__stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #111;
+  }
+  .product-social-proof__stat-label {
+    font-size: 0.82rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .product-social-proof__divider {
+    width: 1px;
+    height: 40px;
+    background: #e5e7eb;
+  }
+  .product-social-proof__stars {
+    color: #f59e0b;
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    margin-bottom: 2px;
+  }
+  .product-social-proof__rating-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111;
+    line-height: 1;
+  }
+  .product-social-proof__media {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .product-social-proof__media-label {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .product-social-proof__logos {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .product-social-proof__logo-item {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #9ca3af;
+    letter-spacing: 0.04em;
+    border: 1px solid #e5e7eb;
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+  @media (max-width: 600px) {
+    .product-social-proof__divider { display: none; }
+    .product-social-proof__inner { gap: 20px 24px; }
+    .product-social-proof__stat-value,
+    .product-social-proof__rating-num { font-size: 1.6rem; }
+  }
+</style>
+
+{%- if section.settings.show -%}
+<section class="product-social-proof" aria-label="Prueba social">
+  <div class="wrap product-social-proof__inner">
+
+    <!-- Rating agregado -->
+    {%- if section.settings.show_rating -%}
+      <div class="product-social-proof__stat">
+        <div class="product-social-proof__stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          {%- endfor -%}
+        </div>
+        <span class="product-social-proof__rating-num">{{ section.settings.rating_value }}</span>
+        <span class="product-social-proof__stat-label">{{ section.settings.rating_label }}</span>
+      </div>
+      <div class="product-social-proof__divider" aria-hidden="true"></div>
+    {%- endif -%}
+
+    <!-- Contador de clientes -->
+    {%- if section.settings.show_customers -%}
+      <div class="product-social-proof__stat">
+        <span class="product-social-proof__stat-value">{{ section.settings.customers_value }}</span>
+        <span class="product-social-proof__stat-label">{{ section.settings.customers_label }}</span>
+      </div>
+      <div class="product-social-proof__divider" aria-hidden="true"></div>
+    {%- endif -%}
+
+    <!-- Stat extra (ej: rutas completadas, paises, etc.) -->
+    {%- if section.settings.show_stat3 and section.settings.stat3_value != blank -%}
+      <div class="product-social-proof__stat">
+        <span class="product-social-proof__stat-value">{{ section.settings.stat3_value }}</span>
+        <span class="product-social-proof__stat-label">{{ section.settings.stat3_label }}</span>
+      </div>
+      <div class="product-social-proof__divider" aria-hidden="true"></div>
+    {%- endif -%}
+
+    <!-- Logos de medios / prensa -->
+    {%- if section.settings.show_media -%}
+      <div class="product-social-proof__media">
+        <span class="product-social-proof__media-label">{{ section.settings.media_label }}</span>
+        <div class="product-social-proof__logos">
+          {%- for i in (1..4) -%}
+            {%- assign logo_key = 'media_logo_' | append: i -%}
+            {%- if section.settings[logo_key] != blank -%}
+              <span class="product-social-proof__logo-item">{{ section.settings[logo_key] }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Prueba social",
+  "tag": "section",
+  "settings": [
+    {"type":"checkbox","id":"show","label":"Mostrar sección","default":true},
+    {"type":"color","id":"bg_color","label":"Color de fondo","default":"#f9fafb"},
+    {"type":"header","content":"Rating"},
+    {"type":"checkbox","id":"show_rating","label":"Mostrar rating","default":true},
+    {"type":"text","id":"rating_value","label":"Valor (ej: 4.9★)","default":"4.9★"},
+    {"type":"text","id":"rating_label","label":"Label bajo el rating","default":"Valoración media"},
+    {"type":"header","content":"Clientes"},
+    {"type":"checkbox","id":"show_customers","label":"Mostrar contador clientes","default":true},
+    {"type":"text","id":"customers_value","label":"Número","default":"+500"},
+    {"type":"text","id":"customers_label","label":"Label","default":"Familias CANVOY"},
+    {"type":"header","content":"Stat extra"},
+    {"type":"checkbox","id":"show_stat3","label":"Mostrar stat extra","default":true},
+    {"type":"text","id":"stat3_value","label":"Valor","default":"+1.200"},
+    {"type":"text","id":"stat3_label","label":"Label","default":"Rutas completadas"},
+    {"type":"header","content":"Aparición en medios"},
+    {"type":"checkbox","id":"show_media","label":"Mostrar logos de medios","default":false,"info":"Actívalo cuando tengas menciones en prensa o blogs."},
+    {"type":"text","id":"media_label","label":"Texto encima","default":"Como se ha visto en"},
+    {"type":"text","id":"media_logo_1","label":"Medio 1","default":""},
+    {"type":"text","id":"media_logo_2","label":"Medio 2","default":""},
+    {"type":"text","id":"media_logo_3","label":"Medio 3","default":""},
+    {"type":"text","id":"media_logo_4","label":"Medio 4","default":""}
+  ],
+  "presets": [{"name": "Prueba social"}]
+}
+{% endschema %}

@@ -23,15 +23,27 @@
     "benefits_bar": {
       "type": "product-benefits-bar",
       "settings": {
-        "icon1": "💧",
-        "title1": "Hidratación sin complicaciones",
-        "text1": "Listo en segundos",
-        "icon2": "🎒",
-        "title2": "Siempre contigo",
-        "text2": "Cabe en mochila o bolsillo",
-        "icon3": "🛡️",
-        "title3": "Acero 304 resistente",
-        "text3": "Sin olores, dura años"
+        "icon1": "💧", "title1": "Hidratación sin complicaciones", "text1": "Listo en segundos",
+        "icon2": "🎒", "title2": "Siempre contigo", "text2": "Cabe en mochila o bolsillo",
+        "icon3": "🛡️", "title3": "Acero 304 resistente", "text3": "Sin olores, dura años",
+        "icon4": "↩️", "title4": "Devolución 30 días", "text4": "Sin preguntas, sin complicaciones"
+      }
+    },
+    "social_proof": {
+      "type": "product-social-proof",
+      "settings": {
+        "show": true,
+        "bg_color": "#f9fafb",
+        "show_rating": true,
+        "rating_value": "4.9★",
+        "rating_label": "Valoración media",
+        "show_customers": true,
+        "customers_value": "+500",
+        "customers_label": "Familias CANVOY",
+        "show_stat3": true,
+        "stat3_value": "+1.200",
+        "stat3_label": "Rutas completadas",
+        "show_media": false
       }
     },
     "testimonials": {
@@ -47,6 +59,21 @@
         "t4": { "type": "testimonial", "settings": { "text": "No gotea en la mochila. Eso para mí lo cambia todo.", "name": "Sofia L.", "dog_breed": "Husky", "city": "Bilbao", "verified": true } }
       },
       "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "guarantee": {
+      "type": "product-guarantee",
+      "settings": {
+        "show": true,
+        "bg_color": "#fff7ed",
+        "badge_bg": "#FF5A1F",
+        "icon": "🛡️",
+        "heading": "30 días o te devolvemos el dinero",
+        "subheading": "Sin formularios. Sin llamadas. Sin excusas. Si no estás satisfecho, te reembolsamos en menos de 48 horas.",
+        "step1_title": "Escríbenos", "step1_text": "Por email o WhatsApp. Sin formularios complicados.",
+        "step2_title": "Devuelve el producto", "step2_text": "Te enviamos la etiqueta prepagada. Sin coste para ti.",
+        "step3_title": "Reembolso en 48h", "step3_text": "Directo a tu tarjeta o PayPal. Sin esperas.",
+        "cta_text": "🔒 Pago seguro  ·  🚚 Envío 3–5 días  ·  📦 Seguimiento real"
+      }
     },
     "bundle": {
       "type": "product-bundle",
@@ -64,10 +91,7 @@
     },
     "faq": {
       "type": "product-faq",
-      "settings": {
-        "tag": "Dudas frecuentes",
-        "heading": "Preguntas frecuentes"
-      },
+      "settings": { "tag": "Dudas frecuentes", "heading": "Preguntas frecuentes" },
       "blocks": {
         "f1": { "type": "faq", "settings": { "question": "¿Cuánta agua cabe?", "answer": "285ml — suficiente para razas pequeñas y medianas en un paseo o ruta de varias horas." } },
         "f2": { "type": "faq", "settings": { "question": "¿Realmente no gotea?", "answer": "El sello de silicona garantiza cierre hermético. Si hay cualquier problema en los primeros 30 días, te lo resolvemos sin coste." } },
@@ -83,9 +107,7 @@
         "tag": "También te puede gustar",
         "heading": "Más accesorios de aventura",
         "subheading": "Accesorios que combinan con tu ruta.",
-        "limit": 4,
-        "show_view_all": true,
-        "view_all_text": "Ver toda la tienda"
+        "limit": 4, "show_view_all": true, "view_all_text": "Ver toda la tienda"
       }
     },
     "cta_banner": {
@@ -95,7 +117,8 @@
         "icon": "🐾",
         "heading": "¿Listo para la próxima ruta?",
         "text": "Únete a más de 500 dueños activos que ya salen con CANVOY.",
-        "btn_text": "Añadir al carrito"
+        "btn_text": "Añadir al carrito",
+        "trust_line": "✓ Garantía 30 días  ·  ✓ Envío 3–5 días  ·  ✓ Devolución gratis"
       }
     },
     "reviews": {
@@ -108,7 +131,9 @@
     "main",
     "trust_bar",
     "benefits_bar",
+    "social_proof",
     "testimonials",
+    "guarantee",
     "bundle",
     "faq",
     "related",
