@@ -6,7 +6,8 @@
 {%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
 
 <style>
-.mp { font-family: inherit; color: #111827; }
+/* ── FASE 1: fondo explícito para que el texto siempre sea legible ── */
+.mp { font-family: inherit; color: #111827; background: #fff; }
 .mp .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 /* TRUST BAR */
@@ -47,6 +48,7 @@
   gap: 48px;
   padding: 40px 0;
   align-items: start;
+  background: #fff;
 }
 @media (max-width: 768px) {
   .mp-grid { grid-template-columns: 1fr; gap: 24px; padding: 24px 0; }
@@ -77,7 +79,7 @@
 .mp-thumb-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* BUYBOX */
-.mp-buybox { display: flex; flex-direction: column; gap: 16px; }
+.mp-buybox { display: flex; flex-direction: column; gap: 16px; background: #fff; }
 .mp-vendor { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af !important; margin: 0; }
 .mp-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0; color: #111827 !important; }
 .mp-subtitle { font-size: 0.95rem; color: #6b7280 !important; margin: 0; }
@@ -116,7 +118,7 @@
 .mp-qty { display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 10px; overflow: hidden; }
 .mp-qty-btn { width: 40px; height: 48px; background: #f9fafb; border: none; font-size: 1.2rem; cursor: pointer; color: #111827 !important; }
 .mp-qty-btn:hover { background: #f3f4f6; }
-.mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; color: #111827 !important; -moz-appearance: textfield; }
+.mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; color: #111827 !important; background: #fff; -moz-appearance: textfield; }
 .mp-qty-input::-webkit-inner-spin-button, .mp-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
 .mp-atc-btn {
   flex: 1; height: 48px; background: #FF5A1F; color: #fff !important;
@@ -587,25 +589,17 @@
     addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, stickyBtn, 'Agregar al carrito');
   });
 
-  /* STICKY ATC — lógica definitiva
-     - No aparece al cargar (window.scrollY === 0 al inicio)
-     - Aparece cuando el botón ATC sale por arriba del viewport
-     - Desaparece cuando el botón ATC vuelve a ser visible
-     - Funciona siempre, en cada scroll
-  */
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
 
   if (anchor && sticky) {
     function updateSticky() {
       var rect = anchor.getBoundingClientRect();
-      /* El botón ATC está fuera del viewport por arriba cuando su borde inferior < 0 */
       var anchorGone = rect.bottom < 0;
       sticky.classList.toggle('visible', anchorGone);
     }
 
     window.addEventListener('scroll', updateSticky, { passive: true });
-    /* No llamamos a updateSticky() en el init — así la sticky nunca aparece al cargar */
   }
 
   document.querySelectorAll('.mp-accordion-btn').forEach(function(btn) {
