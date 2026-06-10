@@ -6,7 +6,7 @@
 {%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
 
 <style>
-/* ── FASE 1 ── */
+/* ── BASE ── */
 .mp { font-family: inherit; color: #111827; background: #fff; }
 .mp .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
@@ -26,8 +26,6 @@
 /* GALLERY */
 .mp-gallery__main-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #f3f4f6; aspect-ratio: 1; }
 .mp-gallery__main { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* ── FASE 2 ── */
 @media (max-width: 768px) {
   .mp-gallery__main-wrap { aspect-ratio: 4/3; border-radius: 12px; }
   .mp-gallery__thumbs { display: none; }
@@ -36,7 +34,6 @@
   .mp-price-current { font-size: 1.5rem !important; }
   .mp-buybox { gap: 12px; }
 }
-
 .mp-gallery__badge { position: absolute; top: 14px; left: 14px; background: #FF5A1F; color: #fff !important; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
 .mp-gallery__counter { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); color: #fff !important; font-size: 0.75rem; padding: 3px 8px; border-radius: 20px; }
 .mp-gallery__thumbs { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
@@ -82,34 +79,75 @@
 .mp-atc-btn:active { transform: scale(0.98); }
 .mp-atc-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
-/* ── FASE 4: FOMO counter ── */
-.mp-fomo {
-  display: flex; align-items: center; gap: 8px;
+/* ── FASE 5: badge viral + countdown ── */
+.mp-urgency-wrap {
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+/* Badge PRODUCTO VIRAL · STOCK BAJO — más elegante que PawBob */
+.mp-viral-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+  color: #fff !important;
+  border-radius: 8px; padding: 7px 14px;
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  width: fit-content;
+}
+.mp-viral-badge__dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #FF5A1F; flex-shrink: 0;
+  animation: mp-pulse 1s ease-in-out infinite;
+}
+.mp-viral-badge__sep {
+  width: 1px; height: 12px;
+  background: rgba(255,255,255,0.25); flex-shrink: 0;
+}
+.mp-viral-badge__fire { font-size: 0.9rem; }
+
+/* Countdown timer — diseño premium */
+.mp-countdown {
+  display: flex; align-items: center; gap: 10px;
   background: #fff7ed; border: 1px solid #fed7aa;
-  border-radius: 8px; padding: 8px 12px;
-  font-size: 0.8rem; color: #92400e !important;
+  border-radius: 10px; padding: 10px 14px;
 }
-.mp-fomo__dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #f97316; flex-shrink: 0;
-  animation: mp-pulse 1.4s ease-in-out infinite;
+.mp-countdown__label {
+  font-size: 0.78rem; font-weight: 600;
+  color: #92400e !important; white-space: nowrap;
+  flex-shrink: 0;
 }
+.mp-countdown__timer {
+  display: flex; align-items: center; gap: 4px;
+  margin-left: auto;
+}
+.mp-countdown__block {
+  display: flex; flex-direction: column; align-items: center;
+  background: #111827; border-radius: 6px;
+  padding: 4px 8px; min-width: 36px;
+}
+.mp-countdown__num {
+  font-size: 1.05rem; font-weight: 900;
+  color: #fff !important; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.mp-countdown__unit {
+  font-size: 0.55rem; font-weight: 600;
+  color: #9ca3af !important; text-transform: uppercase;
+  letter-spacing: 0.05em; margin-top: 1px;
+}
+.mp-countdown__sep {
+  font-size: 1rem; font-weight: 900;
+  color: #FF5A1F !important; line-height: 1;
+  margin-bottom: 8px;
+}
+
+/* FASE 4 */
+.mp-fomo { display: flex; align-items: center; gap: 8px; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; color: #92400e !important; }
+.mp-fomo__dot { width: 8px; height: 8px; border-radius: 50%; background: #f97316; flex-shrink: 0; animation: mp-pulse 1.4s ease-in-out infinite; }
 .mp-fomo strong { color: #c2410c !important; }
 
-/* ── FASE 4: mini trust row bajo el botón ── */
-.mp-trust-mini {
-  display: flex; gap: 0;
-  border: 1px solid #e5e7eb; border-radius: 10px;
-  overflow: hidden;
-}
-.mp-trust-mini__item {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 3px; padding: 10px 6px; text-align: center;
-  border-right: 1px solid #e5e7eb;
-  font-size: 0.7rem; color: #374151 !important;
-  line-height: 1.3;
-}
+.mp-trust-mini { display: flex; gap: 0; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+.mp-trust-mini__item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 6px; text-align: center; border-right: 1px solid #e5e7eb; font-size: 0.7rem; color: #374151 !important; line-height: 1.3; }
 .mp-trust-mini__item:last-child { border-right: none; }
 .mp-trust-mini__icon { font-size: 1.1rem; }
 .mp-trust-mini__label { font-weight: 700; font-size: 0.7rem; color: #111827 !important; }
@@ -251,6 +289,27 @@
 
       <div class="mp-buybox" id="mp-buybox">
 
+        <!-- ── FASE 5: urgency wrap — badge viral + countdown ── -->
+        {%- if cv.available -%}
+        <div class="mp-urgency-wrap">
+          <div class="mp-viral-badge" aria-label="Producto viral con stock bajo">
+            <span class="mp-viral-badge__fire" aria-hidden="true">🔥</span>
+            <span>Producto viral</span>
+            <span class="mp-viral-badge__sep" aria-hidden="true"></span>
+            <span class="mp-viral-badge__dot" aria-hidden="true"></span>
+            <span>Stock bajo</span>
+          </div>
+          <div class="mp-countdown" role="timer" aria-live="polite" aria-label="Tiempo restante de la oferta">
+            <span class="mp-countdown__label">⏰ Oferta flash — termina en</span>
+            <div class="mp-countdown__timer">
+              <div class="mp-countdown__block"><span class="mp-countdown__num" id="mp-cd-m">--</span><span class="mp-countdown__unit">min</span></div>
+              <span class="mp-countdown__sep" aria-hidden="true">:</span>
+              <div class="mp-countdown__block"><span class="mp-countdown__num" id="mp-cd-s">--</span><span class="mp-countdown__unit">seg</span></div>
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+
         <p class="mp-vendor">{{ product.vendor | default: shop.name }}</p>
         <h1 class="mp-title">{{ product.title }}</h1>
 
@@ -271,7 +330,7 @@
         </div>
 
         {%- if cv.available -%}
-          <span class="mp-stock"><span class="mp-stock__dot"></span> En stock — envío en 24–48h</span>
+          <span class="mp-stock"><span class="mp-stock__dot"></span> En stock — envío en 3–5 días hábiles</span>
         {%- endif -%}
 
         {%- if section.settings.subtitle != blank -%}
@@ -318,7 +377,7 @@
           </div>
         </div>
 
-        <!-- ── FASE 4: FOMO counter ── -->
+        <!-- FASE 4: FOMO counter -->
         {%- if cv.available -%}
           <div class="mp-fomo" id="mp-fomo" aria-live="polite">
             <span class="mp-fomo__dot" aria-hidden="true"></span>
@@ -326,11 +385,11 @@
           </div>
         {%- endif -%}
 
-        <!-- ── FASE 4: mini trust row ── -->
+        <!-- FASE 4: mini trust row -->
         <div class="mp-trust-mini" aria-label="Garantías de compra">
           <div class="mp-trust-mini__item">
             <span class="mp-trust-mini__icon" aria-hidden="true">🛡️</span>
-            <span class="mp-trust-mini__label">Garantia 30 días</span>
+            <span class="mp-trust-mini__label">Garantía 30 días</span>
             <span class="mp-trust-mini__sub">Reembolso total</span>
           </div>
           <div class="mp-trust-mini__item">
@@ -544,10 +603,7 @@
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
   if (anchor && sticky) {
-    function updateSticky() {
-      var rect = anchor.getBoundingClientRect();
-      sticky.classList.toggle('visible', rect.bottom < 0);
-    }
+    function updateSticky() { sticky.classList.toggle('visible', anchor.getBoundingClientRect().bottom < 0); }
     window.addEventListener('scroll', updateSticky, { passive: true });
   }
 
@@ -586,18 +642,45 @@
     });
   });
 
-  /* ── FASE 4: FOMO counter ──
-     Número aleatorio entre 8-24 que fluctuúa ±2 cada 18-35s.
-     No usa APIs externas — puramente decorativo, nunca baja de 6. */
+  /* ── FASE 4: FOMO counter ── */
   var fomoEl = document.getElementById('mp-fomo-num');
   if (fomoEl) {
-    var fomoBase = Math.floor(Math.random() * 17) + 8; // 8–24
+    var fomoBase = Math.floor(Math.random() * 17) + 8;
     fomoEl.textContent = fomoBase;
     setInterval(function() {
-      var delta = Math.floor(Math.random() * 5) - 2; // -2 a +2
+      var delta = Math.floor(Math.random() * 5) - 2;
       fomoBase = Math.max(6, Math.min(30, fomoBase + delta));
       fomoEl.textContent = fomoBase;
-    }, Math.floor(Math.random() * 17000) + 18000); // cada 18–35s
+    }, Math.floor(Math.random() * 17000) + 18000);
+  }
+
+  /* ── FASE 5: countdown rolling 45-90 min ──
+     Arranca desde un punto aleatorio dentro de la ventana para parecer
+     que la oferta ya llevaba un rato activa cuando el usuario entra. */
+  var cdM = document.getElementById('mp-cd-m');
+  var cdS = document.getElementById('mp-cd-s');
+  if (cdM && cdS) {
+    var windowSec = (Math.floor(Math.random() * 46) + 45) * 60; // 45-90 min en segundos
+    var elapsed = Math.floor(Math.random() * windowSec * 0.4);  // ya pasó hasta un 40%
+    var remaining = windowSec - elapsed;
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function renderCd() {
+      var m = Math.floor(remaining / 60);
+      var s = remaining % 60;
+      cdM.textContent = pad(m);
+      cdS.textContent = pad(s);
+    }
+    renderCd();
+    var cdInterval = setInterval(function() {
+      remaining--;
+      if (remaining <= 0) {
+        // reinicia con nueva ventana aleatoria cuando llega a 0
+        windowSec = (Math.floor(Math.random() * 46) + 45) * 60;
+        remaining = windowSec;
+      }
+      renderCd();
+    }, 1000);
   }
 })();
 </script>
