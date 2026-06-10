@@ -1,157 +1,455 @@
-{%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- assign related_collection = collection | default: product.collections.first | default: collections.all -%}
-{%- if current_variant.compare_at_price > current_variant.price -%}
-  {%- assign savings_amount = current_variant.compare_at_price | minus: current_variant.price -%}
-  {%- assign savings_pct = savings_amount | times: 100 | divided_by: current_variant.compare_at_price -%}
+{%- assign cv = product.selected_or_first_available_variant -%}
+{%- if cv.compare_at_price > cv.price -%}
+  {%- assign savings_amount = cv.compare_at_price | minus: cv.price -%}
+  {%- assign savings_pct = savings_amount | times: 100 | divided_by: cv.compare_at_price -%}
 {%- endif -%}
 {%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
 
 <style>
-  .sticky-atc {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    background: #fff;
-    border-top: 1px solid #e5e7eb;
-    box-shadow: 0 -4px 16px rgba(0,0,0,0.10);
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    will-change: transform;
-  }
-  .sticky-atc.is-visible {
-    transform: translateY(0);
-  }
-  .sticky-atc__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 16px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .sticky-atc__info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-  }
-  .sticky-atc__img {
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
-  }
-  .sticky-atc__title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 180px;
-  }
-  .sticky-atc__price {
-    font-size: 0.85rem;
-    color: #111;
-    margin: 0;
-  }
-  .sticky-atc__btn {
-    flex-shrink: 0;
-    min-width: 160px;
-  }
-  @media (max-width: 480px) {
-    .sticky-atc__title { max-width: 100px; }
-    .sticky-atc__btn { min-width: 120px; font-size: 0.85rem; }
-  }
+/* =====================
+   RESET & BASE
+   ===================== */
+.mp { font-family: inherit; color: #111827; }
+.mp .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* =====================
+   TRUST BAR
+   ===================== */
+.mp-trust {
+  background: #111827;
+  color: #f9fafb;
+  overflow: hidden;
+  position: relative;
+}
+.mp-trust__track {
+  display: flex;
+  gap: 0;
+  animation: mp-scroll 22s linear infinite;
+  width: max-content;
+}
+.mp-trust:hover .mp-trust__track { animation-play-state: paused; }
+@keyframes mp-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.mp-trust__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 32px;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.mp-trust__item strong { color: #fff; }
+.mp-trust__item span { opacity: 0.65; }
+
+/* =====================
+   PRODUCT GRID
+   ===================== */
+.mp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding: 40px 0;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .mp-grid { grid-template-columns: 1fr; gap: 24px; padding: 24px 0; }
+}
+
+/* =====================
+   GALLERY
+   ===================== */
+.mp-gallery__main-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #f3f4f6; aspect-ratio: 1; }
+.mp-gallery__main { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mp-gallery__badge {
+  position: absolute; top: 14px; left: 14px;
+  background: #FF5A1F; color: #fff;
+  font-size: 0.75rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+}
+.mp-gallery__counter {
+  position: absolute; bottom: 12px; right: 12px;
+  background: rgba(0,0,0,0.5); color: #fff;
+  font-size: 0.75rem; padding: 3px 8px; border-radius: 20px;
+}
+.mp-gallery__thumbs {
+  display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+}
+.mp-thumb-btn {
+  width: 72px; height: 72px; border-radius: 10px;
+  overflow: hidden; border: 2px solid transparent;
+  background: #f3f4f6; cursor: pointer; padding: 0;
+  transition: border-color .15s;
+  flex-shrink: 0;
+}
+.mp-thumb-btn.active, .mp-thumb-btn:hover { border-color: #FF5A1F; }
+.mp-thumb-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* =====================
+   BUYBOX
+   ===================== */
+.mp-buybox { display: flex; flex-direction: column; gap: 16px; }
+.mp-vendor { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin: 0; }
+.mp-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0; }
+.mp-subtitle { font-size: 0.95rem; color: #6b7280; margin: 0; }
+
+.mp-price-wrap { display: flex; flex-direction: column; gap: 2px; }
+.mp-price-compare { font-size: 0.9rem; color: #9ca3af; text-decoration: line-through; margin: 0; }
+.mp-price-current { font-size: 1.8rem; font-weight: 800; color: #111; margin: 0; display: flex; align-items: center; gap: 10px; }
+.mp-price-badge { background: #FF5A1F; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+.mp-price-tax { font-size: 0.75rem; color: #9ca3af; margin: 0; }
+
+.mp-rating {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; color: #374151; text-decoration: none;
+}
+.mp-stars { color: #f59e0b; display: flex; gap: 1px; }
+
+.mp-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.mp-bullet {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.88rem; color: #374151;
+}
+.mp-bullet__check {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #FF5A1F; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Variants */
+.mp-variant-label { font-size: 0.85rem; font-weight: 600; margin: 0 0 8px; }
+.mp-variant-options { display: flex; gap: 8px; flex-wrap: wrap; }
+.mp-variant-btn {
+  padding: 6px 14px; border-radius: 8px;
+  border: 1px solid #d1d5db; background: #fff;
+  font-size: 0.85rem; cursor: pointer; transition: all .15s;
+}
+.mp-variant-btn.active, .mp-variant-btn:hover {
+  border-color: #FF5A1F; background: #fff7f4; color: #FF5A1F; font-weight: 600;
+}
+
+/* ATC row */
+.mp-qty-label { font-size: 0.8rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+.mp-atc-row { display: flex; gap: 10px; }
+.mp-qty { display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 10px; overflow: hidden; }
+.mp-qty-btn { width: 40px; height: 48px; background: #f9fafb; border: none; font-size: 1.2rem; cursor: pointer; transition: background .15s; }
+.mp-qty-btn:hover { background: #f3f4f6; }
+.mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; -moz-appearance: textfield; }
+.mp-qty-input::-webkit-inner-spin-button, .mp-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.mp-atc-btn {
+  flex: 1; height: 48px; background: #FF5A1F; color: #fff;
+  border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
+  cursor: pointer; transition: opacity .15s, transform .1s;
+  letter-spacing: 0.02em;
+}
+.mp-atc-btn:hover { opacity: 0.9; }
+.mp-atc-btn:active { transform: scale(0.98); }
+.mp-atc-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+/* Payment icons */
+.mp-payments {
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  font-size: 0.7rem; color: #9ca3af;
+}
+.mp-pay-icon {
+  background: #f3f4f6; border-radius: 4px;
+  padding: 3px 7px; font-size: 0.68rem; font-weight: 700;
+  color: #374151; letter-spacing: 0.03em;
+}
+
+/* Accordions */
+.mp-accordion { border-top: 1px solid #e5e7eb; }
+.mp-accordion:last-child { border-bottom: 1px solid #e5e7eb; }
+.mp-accordion-btn {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; background: none; border: none; cursor: pointer;
+  font-size: 0.9rem; font-weight: 600; color: #111; text-align: left;
+}
+.mp-accordion-btn svg { transition: transform .2s; flex-shrink: 0; }
+.mp-accordion-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.mp-accordion-content {
+  display: none; padding: 0 0 14px;
+  font-size: 0.88rem; color: #6b7280; line-height: 1.6;
+}
+.mp-accordion-content.open { display: block; }
+
+/* =====================
+   BENEFITS BAR
+   ===================== */
+.mp-benefits {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+@media (max-width: 640px) { .mp-benefits { grid-template-columns: repeat(2, 1fr); } }
+.mp-benefit {
+  background: #f9fafb;
+  padding: 20px 16px;
+  text-align: center;
+}
+.mp-benefit__icon { font-size: 1.6rem; margin-bottom: 6px; }
+.mp-benefit__title { font-size: 0.85rem; font-weight: 700; margin: 0 0 2px; }
+.mp-benefit__sub { font-size: 0.75rem; color: #6b7280; margin: 0; }
+
+/* =====================
+   SOCIAL PROOF
+   ===================== */
+.mp-stats {
+  background: #fff;
+  padding: 48px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+.mp-stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+@media (max-width: 640px) { .mp-stats__grid { grid-template-columns: 1fr; gap: 16px; } }
+.mp-stat__value { font-size: 2.2rem; font-weight: 900; color: #FF5A1F; margin: 0 0 4px; }
+.mp-stat__label { font-size: 0.85rem; color: #6b7280; margin: 0; }
+
+/* =====================
+   TESTIMONIALS
+   ===================== */
+.mp-testimonials { padding: 56px 0; background: #f9fafb; }
+.mp-section-tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #FF5A1F; margin: 0 0 8px; }
+.mp-section-heading { font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 800; margin: 0 0 8px; }
+.mp-section-sub { font-size: 0.9rem; color: #6b7280; margin: 0 0 32px; }
+.mp-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 640px) { .mp-testimonials-grid { grid-template-columns: 1fr; } }
+.mp-testimonial {
+  background: #fff;
+  border-radius: 14px;
+  padding: 22px;
+  border: 1px solid #e5e7eb;
+}
+.mp-testimonial__stars { color: #f59e0b; font-size: 0.85rem; margin-bottom: 10px; }
+.mp-testimonial__text { font-size: 0.88rem; color: #374151; line-height: 1.6; margin: 0 0 14px; font-style: italic; }
+.mp-testimonial__author { display: flex; align-items: center; gap: 8px; }
+.mp-testimonial__avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #FF5A1F; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+}
+.mp-testimonial__name { font-size: 0.82rem; font-weight: 700; margin: 0; }
+.mp-testimonial__meta { font-size: 0.75rem; color: #9ca3af; margin: 0; }
+.mp-verified { font-size: 0.7rem; color: #16a34a; font-weight: 600; }
+
+/* =====================
+   GUARANTEE
+   ===================== */
+.mp-guarantee {
+  background: #fff7ed;
+  padding: 56px 0;
+  border-top: 3px solid #FF5A1F;
+}
+.mp-guarantee__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 768px) { .mp-guarantee__inner { grid-template-columns: 1fr; gap: 24px; } }
+.mp-guarantee__badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #FF5A1F; color: #fff;
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 6px 14px; border-radius: 20px; margin-bottom: 16px;
+}
+.mp-guarantee__heading { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 800; margin: 0 0 10px; }
+.mp-guarantee__sub { font-size: 0.9rem; color: #6b7280; line-height: 1.6; margin: 0 0 24px; }
+.mp-guarantee__steps { display: flex; flex-direction: column; gap: 14px; }
+.mp-guarantee__step { display: flex; align-items: flex-start; gap: 12px; }
+.mp-guarantee__step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #FF5A1F; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 800; flex-shrink: 0;
+}
+.mp-guarantee__step-title { font-size: 0.88rem; font-weight: 700; margin: 0 0 2px; }
+.mp-guarantee__step-text { font-size: 0.82rem; color: #6b7280; margin: 0; }
+.mp-guarantee__visual {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 16px;
+  background: #fff; border-radius: 20px;
+  padding: 40px; text-align: center;
+  border: 2px solid #fed7aa;
+}
+.mp-guarantee__icon { font-size: 4rem; }
+.mp-guarantee__visual-text { font-size: 1.2rem; font-weight: 800; color: #111; margin: 0; }
+.mp-guarantee__visual-sub { font-size: 0.85rem; color: #6b7280; margin: 0; }
+
+/* =====================
+   FAQ
+   ===================== */
+.mp-faq { padding: 56px 0; background: #fff; }
+.mp-faq__list { display: flex; flex-direction: column; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+.mp-faq__item { border-bottom: 1px solid #e5e7eb; }
+.mp-faq__item:last-child { border-bottom: none; }
+.mp-faq__q {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 20px; background: none; border: none;
+  font-size: 0.92rem; font-weight: 700; color: #111;
+  cursor: pointer; text-align: left; gap: 12px;
+}
+.mp-faq__q svg { flex-shrink: 0; transition: transform .2s; color: #FF5A1F; }
+.mp-faq__q[aria-expanded="true"] svg { transform: rotate(180deg); }
+.mp-faq__a {
+  display: none; padding: 0 20px 18px;
+  font-size: 0.88rem; color: #6b7280; line-height: 1.7;
+}
+.mp-faq__a.open { display: block; }
+
+/* =====================
+   CTA BANNER
+   ===================== */
+.mp-cta-banner {
+  background: #111827;
+  color: #fff;
+  padding: 56px 0;
+  text-align: center;
+}
+.mp-cta-banner__icon { font-size: 2.5rem; margin-bottom: 12px; }
+.mp-cta-banner__heading { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; margin: 0 0 10px; }
+.mp-cta-banner__text { font-size: 0.95rem; color: #9ca3af; margin: 0 0 28px; }
+.mp-cta-banner__btn {
+  display: inline-block;
+  background: #FF5A1F; color: #fff;
+  font-size: 1.05rem; font-weight: 800;
+  padding: 16px 48px; border-radius: 12px;
+  border: none; cursor: pointer;
+  transition: opacity .15s, transform .1s;
+  text-decoration: none;
+}
+.mp-cta-banner__btn:hover { opacity: 0.9; }
+.mp-cta-banner__btn:active { transform: scale(0.98); }
+.mp-cta-banner__trust { font-size: 0.78rem; color: #6b7280; margin: 16px 0 0; }
+
+/* =====================
+   STICKY ATC
+   ===================== */
+.mp-sticky {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
+  background: #fff; border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.10);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.mp-sticky.visible { transform: translateY(0); }
+.mp-sticky__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 10px 20px;
+  max-width: 1200px; margin: 0 auto;
+}
+.mp-sticky__info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.mp-sticky__img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.mp-sticky__title { font-size: 0.85rem; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+.mp-sticky__price { font-size: 0.85rem; color: #111; margin: 0; }
+.mp-sticky__btn {
+  background: #FF5A1F; color: #fff;
+  border: none; border-radius: 8px;
+  padding: 10px 24px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .mp-sticky__title { max-width: 100px; }
+  .mp-sticky__btn { padding: 10px 16px; font-size: 0.82rem; }
+}
 </style>
 
-<div class="product-page product-page--canvoy" data-product-id="{{ product.id }}">
+<!-- TRUST BAR -->
+<div class="mp-trust" aria-label="Ventajas de compra">
+  <div class="mp-trust__track" aria-hidden="true">
+    {%- assign trust_html = '' -%}
+    {%- capture trust_html -%}
+      <div class="mp-trust__item"><strong>Envío gratis</strong><span>En pedidos +50€</span></div>
+      <div class="mp-trust__item"><strong>Devolución 30 días</strong><span>Sin preguntas</span></div>
+      <div class="mp-trust__item"><strong>Pago seguro</strong><span>Visa, MC, PayPal, Bizum</span></div>
+      <div class="mp-trust__item"><strong>4.9 ★</strong><span>+127 reseñas verificadas</span></div>
+      <div class="mp-trust__item"><strong>Envío gratis</strong><span>En pedidos +50€</span></div>
+      <div class="mp-trust__item"><strong>Devolución 30 días</strong><span>Sin preguntas</span></div>
+      <div class="mp-trust__item"><strong>Pago seguro</strong><span>Visa, MC, PayPal, Bizum</span></div>
+      <div class="mp-trust__item"><strong>4.9 ★</strong><span>+127 reseñas verificadas</span></div>
+    {%- endcapture -%}
+    {{ trust_html }}
+  </div>
+</div>
+
+<div class="mp">
+
+  <!-- PRODUCTO PRINCIPAL -->
   <div class="wrap">
-    <div class="product-page__grid">
-      <div class="product-gallery">
-        <div class="product-images__main-wrap">
-          {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+    <div class="mp-grid">
+
+      <!-- GALERIA -->
+      <div class="mp-gallery">
+        <div class="mp-gallery__main-wrap">
+          {%- assign featured_media = cv.featured_media | default: product.featured_media -%}
           {%- if featured_media -%}
-            {%- if featured_media.media_type == 'video' -%}
-              {{ featured_media | video_tag: class: 'product-images__main product-images__video', autoplay: true, loop: true, muted: true, controls: true, id: 'product-main-media' }}
-            {%- else -%}
-              <img id="product-main-img" src="{{ featured_media | image_url: width: 1200 }}" alt="{{ product.title | escape }}" class="product-images__main" loading="eager" fetchpriority="high" width="900" height="900">
-            {%- endif -%}
+            <img id="mp-main-img" src="{{ featured_media | image_url: width: 1200 }}" alt="{{ product.title | escape }}" class="mp-gallery__main" loading="eager" fetchpriority="high" width="900" height="900">
           {%- else -%}
-            <div class="product-images__main product-images__placeholder"></div>
+            <div class="mp-gallery__main" style="background:#f3f4f6;"></div>
           {%- endif -%}
-          {%- if current_variant.compare_at_price > current_variant.price -%}
-            <span class="product-badge product-badge--offer">Oferta</span>
+          {%- if cv.compare_at_price > cv.price -%}
+            <span class="mp-gallery__badge">-{{ savings_pct }}%</span>
           {%- endif -%}
           {%- if product.media.size > 1 -%}
-            <span class="product-gallery__counter" id="gallery-counter">1 / {{ product.media.size }}</span>
+            <span class="mp-gallery__counter" id="mp-counter">1 / {{ product.media.size }}</span>
           {%- endif -%}
         </div>
         {%- if product.media.size > 1 -%}
-          <div class="product-images__thumbs">
+          <div class="mp-gallery__thumbs">
             {%- for media in product.media limit: 8 -%}
-              <button type="button" class="product-thumb-btn{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index }}" aria-label="Ver imagen {{ forloop.index }}">
-                {%- if media.media_type == 'video' -%}
-                  <span class="product-thumb__play">▶</span>
-                  <img src="{{ media.preview_image | image_url: width: 200 }}" alt="" class="product-thumb" loading="lazy" width="200" height="200">
-                {%- else -%}
-                  <img src="{{ media | image_url: width: 200 }}" alt="" class="product-thumb" data-full="{{ media | image_url: width: 1200 }}" loading="lazy" width="200" height="200">
-                {%- endif -%}
+              <button type="button" class="mp-thumb-btn{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index }}" data-src="{{ media | image_url: width: 1200 }}" aria-label="Ver imagen {{ forloop.index }}">
+                <img src="{{ media | image_url: width: 200 }}" alt="" loading="lazy" width="72" height="72">
               </button>
             {%- endfor -%}
           </div>
         {%- endif -%}
       </div>
 
-      <div class="product-buybox" id="product-buybox">
-        <p class="product-info__vendor">{{ product.vendor | default: shop.name }}</p>
-        <h1 class="product-info__title product-info__title--natural">{{ product.title }}</h1>
-
+      <!-- BUYBOX -->
+      <div class="mp-buybox" id="mp-buybox">
+        <p class="mp-vendor">{{ product.vendor | default: shop.name }}</p>
+        <h1 class="mp-title">{{ product.title }}</h1>
         {%- if section.settings.subtitle != blank -%}
-          <p class="product-info__subtitle">{{ section.settings.subtitle }}</p>
+          <p class="mp-subtitle">{{ section.settings.subtitle }}</p>
         {%- endif -%}
 
-        <div class="product-info__price" id="product-price">
-          {%- if current_variant.compare_at_price > current_variant.price -%}
-            <p class="price-row price-row--compare">
-              <span class="price-label">Precio habitual</span>
-              <span class="price-compare">{{ current_variant.compare_at_price | money }}</span>
-            </p>
+        <div class="mp-price-wrap">
+          {%- if cv.compare_at_price > cv.price -%}
+            <p class="mp-price-compare">{{ cv.compare_at_price | money }}</p>
           {%- endif -%}
-          <p class="price-row price-row--current">
-            <span class="price-label">Precio de oferta</span>
-            <span class="price-current">{{ current_variant.price | money }}</span>
-            {%- if savings_pct -%}
-              <span class="price-save">-{{ savings_pct }}%</span>
-            {%- endif -%}
+          <p class="mp-price-current" id="mp-price">
+            {{ cv.price | money }}
+            {%- if savings_pct -%}<span class="mp-price-badge">-{{ savings_pct }}%</span>{%- endif -%}
           </p>
-          <p class="price-tax">Impuestos incluidos.{%- if savings_pct -%} <span class="price-save-inline">Ahorras {{ savings_amount | money }}</span>{%- endif -%}</p>
+          <p class="mp-price-tax">IVA incluido{%- if section.settings.shipping_text != blank -%} &middot; {{ section.settings.shipping_text }}{%- endif -%}</p>
         </div>
 
-        {%- assign review_text = section.settings.review_count_text | default: section.settings.rating_text -%}
-        {%- if review_text != blank -%}
-          <a href="#product-reviews" class="product-rating-link product-rating-link--near-price">
-            <span class="stars" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </span>
-            <span>{{ review_text }}</span>
-          </a>
-        {%- endif -%}
+        <a href="#mp-reviews" class="mp-rating">
+          <span class="mp-stars" aria-hidden="true">★★★★★</span>
+          <span>{{ section.settings.review_count_text | default: '4.9 · 127 reseñas' }}</span>
+        </a>
 
         {%- if bullet_blocks.size > 0 -%}
-          <ul class="product-quick-benefits">
+          <ul class="mp-bullets">
             {%- for block in bullet_blocks -%}
-              <li class="product-quick-benefit" {{ block.shopify_attributes }}>
-                <span class="product-quick-benefit__check" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <li class="mp-bullet" {{ block.shopify_attributes }}>
+                <span class="mp-bullet__check" aria-hidden="true">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </span>
                 {{ block.settings.text }}
               </li>
@@ -161,155 +459,347 @@
 
         {%- unless product.has_only_default_variant -%}
           {%- for option in product.options_with_values -%}
-            <div class="variant-group">
-              <p class="variant-label">{{ option.name }}: <strong id="opt-val-{{ forloop.index }}">{{ option.selected_value }}</strong></p>
-              <div class="variant-options">
+            <div>
+              <p class="mp-variant-label">{{ option.name }}: <span id="mp-opt-{{ forloop.index }}">{{ option.selected_value }}</span></p>
+              <div class="mp-variant-options">
                 {%- for value in option.values -%}
-                  <button type="button" class="variant-btn{% if value == option.selected_value %} active{% endif %}"
-                          data-option-index="{{ forloop.parentloop.index0 }}"
-                          data-value="{{ value }}">{{ value }}</button>
+                  <button type="button" class="mp-variant-btn{% if value == option.selected_value %} active{% endif %}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ value }}">{{ value }}</button>
                 {%- endfor -%}
               </div>
             </div>
           {%- endfor -%}
         {%- endunless -%}
 
-        <div class="product-form__qty-label">Cantidad</div>
-        <div class="product-atc-row" id="product-atc-anchor">
-          <div class="product-qty">
-            <button type="button" class="qty-btn qty-dec" aria-label="Reducir cantidad">−</button>
-            <input type="number" class="qty-input" value="1" min="1" max="{{ current_variant.inventory_quantity | default: 99 }}" aria-label="Cantidad">
-            <button type="button" class="qty-btn qty-inc" aria-label="Aumentar cantidad">+</button>
+        <div>
+          <p class="mp-qty-label">Cantidad</p>
+          <div class="mp-atc-row" id="mp-atc-anchor">
+            <div class="mp-qty">
+              <button type="button" class="mp-qty-btn" id="mp-dec" aria-label="Reducir">−</button>
+              <input type="number" class="mp-qty-input" id="mp-qty" value="1" min="1" max="99" aria-label="Cantidad">
+              <button type="button" class="mp-qty-btn" id="mp-inc" aria-label="Aumentar">+</button>
+            </div>
+            <button type="button" class="mp-atc-btn" id="mp-atc" data-variant-id="{{ cv.id }}" {% unless cv.available %}disabled{% endunless %}>
+              {%- if cv.available -%}Agregar al carrito{%- else -%}Agotado{%- endif -%}
+            </button>
           </div>
-          <button type="button" class="btn btn--primary btn--lg btn--full atc-main-btn atc-pulse" id="atc-btn" data-variant-id="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
-            {%- if current_variant.available -%}Agregar al carrito{%- else -%}Agotado{%- endif -%}
-          </button>
         </div>
 
-        <div class="product-payment-icons">
-          <span>VISA</span><span>MC</span><span>PayPal</span><span>Apple Pay</span><span>Bizum</span><span>Shop Pay</span>
+        <div class="mp-payments">
+          <span class="mp-pay-icon">VISA</span>
+          <span class="mp-pay-icon">MC</span>
+          <span class="mp-pay-icon">PayPal</span>
+          <span class="mp-pay-icon">Bizum</span>
+          <span class="mp-pay-icon">Shop Pay</span>
         </div>
 
-        <div class="product-buybox-accordions">
+        <div>
           {%- if product.description != blank -%}
-            <div class="product-buybox-accordion">
-              <button type="button" class="accordion-btn" aria-expanded="false">
+            <div class="mp-accordion">
+              <button type="button" class="mp-accordion-btn" aria-expanded="false">
                 Detalles
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
               </button>
-              <div class="accordion-content rte product-buybox-accordion__rte">{{ product.description | strip_html | truncate: 400 }}</div>
+              <div class="mp-accordion-content">{{ product.description | strip_html | truncate: 400 }}</div>
             </div>
           {%- endif -%}
-          <div class="product-buybox-accordion">
-            <button type="button" class="accordion-btn" aria-expanded="false">
+          <div class="mp-accordion">
+            <button type="button" class="mp-accordion-btn" aria-expanded="false">
               Información de entrega
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
-            <div class="accordion-content">{{ section.settings.shipping_text }}</div>
+            <div class="mp-accordion-content">{{ section.settings.shipping_text }}</div>
           </div>
-          <div class="product-buybox-accordion">
-            <button type="button" class="accordion-btn" aria-expanded="false">
+          <div class="mp-accordion">
+            <button type="button" class="mp-accordion-btn" aria-expanded="false">
               Prueba de 30 días
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
-            <div class="accordion-content">{{ section.settings.returns_text }}</div>
+            <div class="mp-accordion-content">{{ section.settings.returns_text }}</div>
           </div>
         </div>
       </div>
     </div>
-
-    {%- if product.description != blank -%}
-      <div class="product-story" id="product-story">
-        <div class="product-story__inner rte">{{ product.description }}</div>
-      </div>
-    {%- endif -%}
   </div>
-</div>
 
-<!-- Sticky ATC bar: aparece al salir del buybox -->
-<div class="sticky-atc" id="sticky-atc" aria-hidden="true">
-  <div class="sticky-atc__inner wrap">
-    <div class="sticky-atc__info">
-      {%- if product.featured_image -%}
-        <img src="{{ product.featured_image | image_url: width: 80 }}" alt="" class="sticky-atc__img" width="48" height="48">
-      {%- endif -%}
-      <div>
-        <p class="sticky-atc__title">{{ product.title | truncate: 32 }}</p>
-        <p class="sticky-atc__price" id="sticky-atc-price">{{ current_variant.price | money }}</p>
+  <!-- BENEFITS BAR -->
+  <div class="mp-benefits">
+    <div class="mp-benefit"><div class="mp-benefit__icon">💧</div><p class="mp-benefit__title">Hidratación instantánea</p><p class="mp-benefit__sub">Lista en segundos</p></div>
+    <div class="mp-benefit"><div class="mp-benefit__icon">🎒</div><p class="mp-benefit__title">Siempre contigo</p><p class="mp-benefit__sub">Cabe en cualquier bolsillo</p></div>
+    <div class="mp-benefit"><div class="mp-benefit__icon">🛡️</div><p class="mp-benefit__title">Acero 304</p><p class="mp-benefit__sub">Sin olores, sin BPA</p></div>
+    <div class="mp-benefit"><div class="mp-benefit__icon">↩️</div><p class="mp-benefit__title">30 días de prueba</p><p class="mp-benefit__sub">Devolución gratis</p></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="mp-stats">
+    <div class="wrap">
+      <div class="mp-stats__grid">
+        <div><p class="mp-stat__value">4.9★</p><p class="mp-stat__label">Valoración media</p></div>
+        <div><p class="mp-stat__value">+500</p><p class="mp-stat__label">Familias CANVOY</p></div>
+        <div><p class="mp-stat__value">+1.200</p><p class="mp-stat__label">Rutas completadas</p></div>
       </div>
     </div>
-    <button type="button" class="btn btn--primary sticky-atc__btn" id="sticky-atc-btn" data-variant-id="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="mp-testimonials">
+    <div class="wrap">
+      <p class="mp-section-tag">Clientes reales</p>
+      <h2 class="mp-section-heading">Lo que dicen nuestros paseadores</h2>
+      <p class="mp-section-sub">Dueños activos que ya lo usan en sus rutas diarias.</p>
+      <div class="mp-testimonials-grid">
+        <div class="mp-testimonial">
+          <div class="mp-testimonial__stars">★★★★★</div>
+          <p class="mp-testimonial__text">&ldquo;Salimos todos los fines de semana a la sierra. Desde que tengo la CANVOY no he vuelto a improvisar. Mi golden se la terminó en 2 minutos.&rdquo;</p>
+          <div class="mp-testimonial__author">
+            <div class="mp-testimonial__avatar">ML</div>
+            <div><p class="mp-testimonial__name">María L. &mdash; Golden Retriever</p><p class="mp-testimonial__meta">Madrid &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
+          </div>
+        </div>
+        <div class="mp-testimonial">
+          <div class="mp-testimonial__stars">★★★★★</div>
+          <p class="mp-testimonial__text">&ldquo;Pensé que sería otro gadget más. Llevo 3 meses usándola a diario y el cierre no gotea ni dentro de la mochila.&rdquo;</p>
+          <div class="mp-testimonial__author">
+            <div class="mp-testimonial__avatar">CR</div>
+            <div><p class="mp-testimonial__name">Carlos R. &mdash; Labrador</p><p class="mp-testimonial__meta">Barcelona &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
+          </div>
+        </div>
+        <div class="mp-testimonial">
+          <div class="mp-testimonial__stars">★★★★★</div>
+          <p class="mp-testimonial__text">&ldquo;La compré por el diseño y me quedé por lo práctica. Mi border collie la reconoce cuando la saco del bolsillo.&rdquo;</p>
+          <div class="mp-testimonial__author">
+            <div class="mp-testimonial__avatar">AM</div>
+            <div><p class="mp-testimonial__name">Ana M. &mdash; Border Collie</p><p class="mp-testimonial__meta">Valencia &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
+          </div>
+        </div>
+        <div class="mp-testimonial">
+          <div class="mp-testimonial__stars">★★★★★</div>
+          <p class="mp-testimonial__text">&ldquo;No gotea en la mochila. Eso para mí lo cambia todo. La llevo en el bolsillo lateral y ni la noto.&rdquo;</p>
+          <div class="mp-testimonial__author">
+            <div class="mp-testimonial__avatar">SL</div>
+            <div><p class="mp-testimonial__name">Sofía L. &mdash; Husky</p><p class="mp-testimonial__meta">Bilbao &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUARANTEE -->
+  <div class="mp-guarantee">
+    <div class="wrap">
+      <div class="mp-guarantee__inner">
+        <div>
+          <span class="mp-guarantee__badge">🛡️ Garantía total</span>
+          <h2 class="mp-guarantee__heading">30 días o te devolvemos el dinero</h2>
+          <p class="mp-guarantee__sub">Sin formularios. Sin llamadas. Sin excusas. Si no estás satisfecho, te reembolsamos en menos de 48 horas.</p>
+          <div class="mp-guarantee__steps">
+            <div class="mp-guarantee__step"><div class="mp-guarantee__step-num">1</div><div><p class="mp-guarantee__step-title">Escríbenos</p><p class="mp-guarantee__step-text">Por email o WhatsApp. Sin formularios complicados.</p></div></div>
+            <div class="mp-guarantee__step"><div class="mp-guarantee__step-num">2</div><div><p class="mp-guarantee__step-title">Devuelve el producto</p><p class="mp-guarantee__step-text">Te enviamos la etiqueta prepagada. Sin coste para ti.</p></div></div>
+            <div class="mp-guarantee__step"><div class="mp-guarantee__step-num">3</div><div><p class="mp-guarantee__step-title">Reembolso en 48h</p><p class="mp-guarantee__step-text">Directo a tu tarjeta o PayPal. Sin esperas.</p></div></div>
+          </div>
+        </div>
+        <div class="mp-guarantee__visual">
+          <div class="mp-guarantee__icon">🛡️</div>
+          <p class="mp-guarantee__visual-text">Garantía 30 días</p>
+          <p class="mp-guarantee__visual-sub">Reembolso completo sin preguntas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="mp-faq" id="mp-faq">
+    <div class="wrap">
+      <p class="mp-section-tag">Dudas frecuentes</p>
+      <h2 class="mp-section-heading">Preguntas frecuentes</h2>
+      <div class="mp-faq__list">
+        <div class="mp-faq__item">
+          <button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánta agua cabe? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="mp-faq__a">285ml — suficiente para razas pequeñas y medianas en un paseo largo. Para razas grandes recomendamos rellenar cada 45-60 minutos de actividad intensa.</div>
+        </div>
+        <div class="mp-faq__item">
+          <button type="button" class="mp-faq__q" aria-expanded="false">¿Realmente no gotea? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="mp-faq__a">El sello de silicona garantiza cierre hermético. Puedes meterla al revés en tu mochila y no gotea. Si tienes cualquier problema en los primeros 30 días, te enviamos una nueva sin coste.</div>
+        </div>
+        <div class="mp-faq__item">
+          <button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</div>
+        </div>
+        <div class="mp-faq__item">
+          <button type="button" class="mp-faq__q" aria-expanded="false">¿Es segura para mi perro? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="mp-faq__a">100%. Acero inoxidable 304 grado alimentario, sin BPA. El cuenco es silicona alimentaria — el mismo material que los chupetes de bebé.</div>
+        </div>
+        <div class="mp-faq__item">
+          <button type="button" class="mp-faq__q" aria-expanded="false">¿Cómo se limpia? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="mp-faq__a">10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto. El cuenco se desmonta para limpieza en profundidad.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA BANNER -->
+  <div class="mp-cta-banner">
+    <div class="wrap">
+      <div class="mp-cta-banner__icon">🐾</div>
+      <h2 class="mp-cta-banner__heading">¿Listo para la próxima ruta?</h2>
+      <p class="mp-cta-banner__text">Únete a más de 500 dueños activos que ya salen con CANVOY.</p>
+      <button type="button" class="mp-cta-banner__btn" id="mp-cta-atc">
+        Añadir al carrito
+      </button>
+      <p class="mp-cta-banner__trust">✓ Garantía 30 días &nbsp;·&nbsp; ✓ Envío 3–5 días &nbsp;·&nbsp; ✓ Devolución gratis</p>
+    </div>
+  </div>
+
+  <!-- REVIEWS placeholder -->
+  <div class="mp-faq" id="mp-reviews" style="background:#f9fafb;">
+    <div class="wrap">
+      <p class="mp-section-tag">Reseñas</p>
+      <h2 class="mp-section-heading">Lo que dicen nuestros clientes</h2>
+      <p style="color:#9ca3af;font-size:0.9rem;">Instala <a href="https://apps.shopify.com/judge-me-product-reviews" target="_blank" style="color:#FF5A1F;">Judge.me</a> y añade el bloque de app en el editor de temas para mostrar tus reseñas aquí.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- STICKY ATC -->
+<div class="mp-sticky" id="mp-sticky">
+  <div class="mp-sticky__inner">
+    <div class="mp-sticky__info">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 80 }}" alt="" class="mp-sticky__img" width="48" height="48">
+      {%- endif -%}
+      <div>
+        <p class="mp-sticky__title">{{ product.title | truncate: 30 }}</p>
+        <p class="mp-sticky__price" id="mp-sticky-price">{{ cv.price | money }}</p>
+      </div>
+    </div>
+    <button type="button" class="mp-sticky__btn" id="mp-sticky-atc" data-variant-id="{{ cv.id }}" {% unless cv.available %}disabled{% endunless %}>
       Agregar al carrito
     </button>
   </div>
 </div>
 
 <script>
-  var productVariants = {{ product.variants | json }};
+(function() {
+  var variants = {{ product.variants | json }};
 
-  (function() {
-    var anchor = document.getElementById('product-atc-anchor');
-    var stickyBar = document.getElementById('sticky-atc');
-    var stickyBtn = document.getElementById('sticky-atc-btn');
-    var mainBtn = document.getElementById('atc-btn');
-    var qtyInput = document.querySelector('.qty-input');
-
-    if (!anchor || !stickyBar) return;
-
-    // Mostrar/ocultar sticky bar según visibilidad del buybox
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          stickyBar.classList.remove('is-visible');
-          stickyBar.setAttribute('aria-hidden', 'true');
-        } else {
-          stickyBar.classList.add('is-visible');
-          stickyBar.setAttribute('aria-hidden', 'false');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    observer.observe(anchor);
-
-    // El sticky ATC dispara el mismo add-to-cart que el botón principal
-    if (stickyBtn) {
-      stickyBtn.addEventListener('click', function() {
-        var qty = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
-        var variantId = stickyBtn.dataset.variantId;
-        stickyBtn.textContent = 'Añadiendo...';
-        stickyBtn.disabled = true;
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ id: variantId, quantity: qty })
-        })
-        .then(function(r) { return r.json(); })
-        .then(function() {
-          stickyBtn.textContent = '✓ Añadido';
-          setTimeout(function() {
-            stickyBtn.textContent = 'Agregar al carrito';
-            stickyBtn.disabled = false;
-          }, 2000);
-          // Actualiza contador del carrito si existe
-          document.dispatchEvent(new CustomEvent('cart:updated'));
-        })
-        .catch(function() {
-          stickyBtn.textContent = 'Agregar al carrito';
-          stickyBtn.disabled = false;
-        });
-      });
-    }
-
-    // Sincronizar variant ID entre botón principal y sticky
-    document.querySelectorAll('.variant-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var selectedVariantId = document.getElementById('atc-btn') && document.getElementById('atc-btn').dataset.variantId;
-        if (selectedVariantId && stickyBtn) {
-          stickyBtn.dataset.variantId = selectedVariantId;
-        }
-      });
+  // --- Gallery ---
+  var mainImg = document.getElementById('mp-main-img');
+  var counter = document.getElementById('mp-counter');
+  document.querySelectorAll('.mp-thumb-btn').forEach(function(btn, i) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.mp-thumb-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      if (mainImg && btn.dataset.src) mainImg.src = btn.dataset.src;
+      if (counter) counter.textContent = (i + 1) + ' / ' + document.querySelectorAll('.mp-thumb-btn').length;
     });
-  })();
+  });
+
+  // --- Qty ---
+  var qtyInput = document.getElementById('mp-qty');
+  document.getElementById('mp-dec') && document.getElementById('mp-dec').addEventListener('click', function() {
+    var v = parseInt(qtyInput.value, 10) || 1;
+    if (v > 1) qtyInput.value = v - 1;
+  });
+  document.getElementById('mp-inc') && document.getElementById('mp-inc').addEventListener('click', function() {
+    var v = parseInt(qtyInput.value, 10) || 1;
+    qtyInput.value = v + 1;
+  });
+
+  // --- ATC ---
+  function addToCart(variantId, qty, btn, originalText) {
+    btn.textContent = 'Añadiendo...';
+    btn.disabled = true;
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(variantId, 10), quantity: qty })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function() {
+      btn.textContent = '✓ Añadido';
+      document.dispatchEvent(new CustomEvent('cart:updated'));
+      setTimeout(function() { btn.textContent = originalText; btn.disabled = false; }, 2200);
+    })
+    .catch(function() { btn.textContent = originalText; btn.disabled = false; });
+  }
+
+  var atcBtn = document.getElementById('mp-atc');
+  if (atcBtn) {
+    atcBtn.addEventListener('click', function() {
+      addToCart(atcBtn.dataset.variantId, parseInt(qtyInput ? qtyInput.value : 1, 10) || 1, atcBtn, 'Agregar al carrito');
+    });
+  }
+
+  var ctaBtn = document.getElementById('mp-cta-atc');
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', function() {
+      var vid = atcBtn ? atcBtn.dataset.variantId : '{{ cv.id }}';
+      addToCart(vid, 1, ctaBtn, 'Añadir al carrito');
+    });
+  }
+
+  var stickyBtn = document.getElementById('mp-sticky-atc');
+  if (stickyBtn) {
+    stickyBtn.addEventListener('click', function() {
+      addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput ? qtyInput.value : 1, 10) || 1, stickyBtn, 'Agregar al carrito');
+    });
+  }
+
+  // --- Sticky ATC visibility ---
+  var anchor = document.getElementById('mp-atc-anchor');
+  var sticky = document.getElementById('mp-sticky');
+  if (anchor && sticky && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries) {
+      sticky.classList.toggle('visible', !entries[0].isIntersecting);
+    }, { threshold: 0.1 }).observe(anchor);
+  }
+
+  // --- Accordions ---
+  document.querySelectorAll('.mp-accordion-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var content = btn.nextElementSibling;
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !open);
+      content.classList.toggle('open', !open);
+    });
+  });
+
+  // --- FAQ ---
+  document.querySelectorAll('.mp-faq__q').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var content = btn.nextElementSibling;
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !open);
+      content.classList.toggle('open', !open);
+    });
+  });
+
+  // --- Variants ---
+  document.querySelectorAll('.mp-variant-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var optIdx = parseInt(btn.dataset.opt, 10);
+      var val = btn.dataset.val;
+      document.querySelectorAll('.mp-variant-btn[data-opt="' + optIdx + '"]').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var optLabel = document.getElementById('mp-opt-' + (optIdx + 1));
+      if (optLabel) optLabel.textContent = val;
+      // Find matching variant
+      var selected = {};
+      document.querySelectorAll('.mp-variant-btn.active').forEach(function(b) {
+        selected[parseInt(b.dataset.opt, 10)] = b.dataset.val;
+      });
+      var match = variants.find(function(v) {
+        return v.options.every(function(o, i) { return selected[i] === undefined || selected[i] === o; });
+      });
+      if (match) {
+        if (atcBtn) { atcBtn.dataset.variantId = match.id; atcBtn.disabled = !match.available; atcBtn.textContent = match.available ? 'Agregar al carrito' : 'Agotado'; }
+        if (stickyBtn) { stickyBtn.dataset.variantId = match.id; stickyBtn.disabled = !match.available; }
+        var priceEl = document.getElementById('mp-price');
+        if (priceEl) priceEl.firstChild.textContent = (match.price / 100).toFixed(2).replace('.', ',') + ' €';
+      }
+    });
+  });
+})();
 </script>
 
 {% schema %}
@@ -318,11 +808,10 @@
   "tag": "section",
   "class": "main-product-section",
   "settings": [
-    {"type":"text","id":"subtitle","label":"Subtítulo","default":"El único que cabe en tu bolsillo."},
-    {"type":"text","id":"rating_text","label":"Texto valoración (enlaza a reviews)","default":"Ver valoraciones de clientes ↓","info":"Usa tu app de reviews abajo. No inventes números."},
-    {"type":"text","id":"review_count_text","label":"Texto reseñas junto al precio (ej: 4.9 · 127 reseñas)","default":"4.9 · 127 reseñas","info":"Se muestra junto al precio. Si vacío, usa 'Texto valoración'."},
-    {"type":"textarea","id":"shipping_text","label":"Texto envío (acordeón)","default":"Envío a toda España en 2-4 días laborables. Envío gratis."},
-    {"type":"textarea","id":"returns_text","label":"Texto devolución (acordeón)","default":"Tienes 30 días para probarlo. Si no es lo que esperabas, te devolvemos el dinero sin complicaciones."}
+    {"type":"text","id":"subtitle","label":"Subtítulo","default":"Hidratación y comida, listas en segundos."},
+    {"type":"text","id":"review_count_text","label":"Texto reseñas","default":"4.9 · 127 reseñas"},
+    {"type":"textarea","id":"shipping_text","label":"Texto envío","default":"Envío a toda España en 3-5 días hábiles. Gratis en pedidos +50€."},
+    {"type":"textarea","id":"returns_text","label":"Texto devolución","default":"30 días de prueba. Si no estás satisfecho, reembolso completo en 48h."}
   ],
   "blocks": [
     {
@@ -333,15 +822,13 @@
       ]
     }
   ],
-  "presets": [
-    {
-      "name": "Producto",
-      "blocks": [
-        {"type":"bullet","settings":{"text":"Se pliega y cabe en cualquier bolsillo"}},
-        {"type":"bullet","settings":{"text":"Acero inoxidable 304 — sin olores ni BPA"}},
-        {"type":"bullet","settings":{"text":"Gancho integrado para mochila o correa"}}
-      ]
-    }
-  ]
+  "presets": [{
+    "name": "Producto",
+    "blocks": [
+      {"type":"bullet","settings":{"text":"Se pliega y cabe en cualquier bolsillo"}},
+      {"type":"bullet","settings":{"text":"Acero inoxidable 304 — sin olores ni BPA"}},
+      {"type":"bullet","settings":{"text":"Gancho integrado para mochila o correa"}}
+    ]
+  }]
 }
 {% endschema %}

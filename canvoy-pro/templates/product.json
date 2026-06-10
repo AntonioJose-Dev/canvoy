@@ -4,7 +4,6 @@
       "type": "main-product",
       "settings": {
         "subtitle": "Hidratación y comida, listas en segundos.",
-        "rating_text": "Ver valoraciones de clientes ↓",
         "review_count_text": "4.9 · 127 reseñas",
         "shipping_text": "Envío a toda España en 3–5 días hábiles. Envío gratuito en pedidos +50€.",
         "returns_text": "Tienes 30 días para probarlo. Si no es lo que esperabas, reembolso en 48h sin preguntas."
@@ -15,33 +14,7 @@
         "bullet_3": { "type": "bullet", "settings": { "text": "Gancho integrado para mochila o correa" } }
       },
       "block_order": ["bullet_1", "bullet_2", "bullet_3"]
-    },
-    "trust_bar": {
-      "type": "trust-bar",
-      "settings": {
-        "trust1_title": "Envío gratis +50€",
-        "trust1_sub": "A toda España",
-        "trust2_title": "Devolución 30 días",
-        "trust2_sub": "Sin preguntas, sin complicaciones",
-        "trust3_title": "Pago seguro",
-        "trust3_sub": "Visa, Mastercard, PayPal y más",
-        "trust4_title": "4.9 · +127 reseñas",
-        "trust4_sub": "Dueños activos que ya lo usan"
-      }
-    },
-    "benefits_bar": {
-      "type": "product-benefits-bar",
-      "settings": {
-        "icon1": "💧", "title1": "Hidratación sin complicaciones", "text1": "Listo en segundos",
-        "icon2": "🎒", "title2": "Siempre contigo", "text2": "Cabe en mochila o bolsillo",
-        "icon3": "🛡️", "title3": "Acero 304 resistente", "text3": "Sin olores, dura años",
-        "icon4": "↩️", "title4": "Devolución 30 días", "text4": "Sin preguntas, sin complicaciones"
-      }
-    },
-    "benefits_grid": {
-      "type": "product-benefits-grid",
-      "settings": {}
     }
   },
-  "order": ["main", "trust_bar", "benefits_bar", "benefits_grid"]
+  "order": ["main"]
 }
