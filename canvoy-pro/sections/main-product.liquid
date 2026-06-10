@@ -209,6 +209,19 @@
 .mp-sticky__price { font-size: 0.85rem; color: #111827 !important; margin: 0; }
 .mp-sticky__btn { background: #FF5A1F; color: #fff !important; border: none; border-radius: 8px; padding: 10px 24px; font-size: 0.9rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 @media (max-width: 480px) { .mp-sticky__title { max-width: 100px; } .mp-sticky__btn { padding: 10px 16px; font-size: 0.82rem; } }
+
+/* ── GIFT BANNER ── */
+.mp-gift { display: none; align-items: center; gap: 12px; background: linear-gradient(135deg, #052e16 0%, #14532d 100%); border: 1.5px solid #16a34a; border-radius: 12px; padding: 12px 16px; animation: mp-gift-in .25s ease; }
+.mp-gift.visible { display: flex; }
+@keyframes mp-gift-in { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+.mp-gift__icon { font-size: 1.6rem; flex-shrink: 0; }
+.mp-gift__body { flex: 1; min-width: 0; }
+.mp-gift__tag { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #4ade80 !important; margin: 0 0 2px; }
+.mp-gift__name { font-size: 0.88rem; font-weight: 700; color: #fff !important; margin: 0 0 1px; }
+.mp-gift__sub { font-size: 0.72rem; color: #86efac !important; margin: 0; }
+.mp-gift__price { text-align: right; flex-shrink: 0; }
+.mp-gift__free { font-size: 0.95rem; font-weight: 900; color: #4ade80 !important; display: block; }
+.mp-gift__was { font-size: 0.7rem; color: #86efac !important; text-decoration: line-through; display: block; }
 </style>
 
 <div class="mp-trust" aria-label="Ventajas de compra">
@@ -317,6 +330,7 @@
                   data-price-display="{{ b_price }}"
                   data-qty="{{ block.settings.qty }}"
                   data-variant-id="{{ cv.id }}"
+                  data-bundle-index="{{ forloop.index }}"
                   role="radio"
                   aria-checked="{% if forloop.first %}true{% else %}false{% endif %}"
                   {{ block.shopify_attributes }}
@@ -336,6 +350,23 @@
               {%- endfor -%}
             </div>
           </div>
+
+          {%- if section.settings.gift_name != blank -%}
+            <div class="mp-gift" id="mp-gift" aria-live="polite" aria-label="Regalo incluido">
+              <span class="mp-gift__icon">🎁</span>
+              <div class="mp-gift__body">
+                <p class="mp-gift__tag">✔ Regalo incluido</p>
+                <p class="mp-gift__name">{{ section.settings.gift_name }}</p>
+                <p class="mp-gift__sub">Se aplica automáticamente en el checkout</p>
+              </div>
+              <div class="mp-gift__price">
+                <span class="mp-gift__free">GRATIS</span>
+                {%- if section.settings.gift_value != blank -%}
+                  <span class="mp-gift__was">{{ section.settings.gift_value }}</span>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
         {%- endif -%}
 
         {%- unless product.has_only_default_variant -%}
@@ -486,6 +517,15 @@
   var qtyInput=document.getElementById('mp-qty');
   var stickyPrice=document.getElementById('mp-sticky-price');
 
+  /* gift banner */
+  var giftEl=document.getElementById('mp-gift');
+  var giftBundleIndex={{ section.settings.gift_bundle_index | default: 3 }};
+
+  function updateGift(selectedIndex){
+    if(!giftEl)return;
+    if(selectedIndex>=giftBundleIndex){giftEl.classList.add('visible');}else{giftEl.classList.remove('visible');}
+  }
+
   document.querySelectorAll('.mp-thumb-btn').forEach(function(btn,i){
     btn.addEventListener('click',function(){
       document.querySelectorAll('.mp-thumb-btn').forEach(function(b){b.classList.remove('active');});
@@ -544,8 +584,13 @@
       if(atcBtn){atcBtn.dataset.variantId=vid;atcBtn.dataset.qty=qty;}
       if(stickyBtn){stickyBtn.dataset.variantId=vid;stickyBtn.dataset.qty=qty;}
       if(stickyPrice&&pd)stickyPrice.textContent=pd;
+      updateGift(parseInt(card.dataset.bundleIndex,10));
     });
   });
+
+  /* init: check which card starts active */
+  var firstActive=document.querySelector('.mp-bundle-card.active');
+  if(firstActive)updateGift(parseInt(firstActive.dataset.bundleIndex,10));
 
   document.querySelectorAll('.mp-variant-btn').forEach(function(btn){
     btn.addEventListener('click',function(){
@@ -589,7 +634,11 @@
     {"type":"text","id":"review_count_text","label":"Texto rese\u00f1as","default":"4.9 \u00b7 127 rese\u00f1as"},
     {"type":"text","id":"bundle_heading","label":"T\u00edtulo secci\u00f3n packs","default":"COMPRA UN PACK Y AHORRA"},
     {"type":"textarea","id":"shipping_text","label":"Texto env\u00edo","default":"Env\u00edo a toda Espa\u00f1a en 3-5 d\u00edas h\u00e1biles. Gratis en pedidos +50\u20ac."},
-    {"type":"textarea","id":"returns_text","label":"Texto devoluci\u00f3n","default":"30 d\u00edas de prueba. Si no est\u00e1s satisfecho, reembolso completo en 48h."}
+    {"type":"textarea","id":"returns_text","label":"Texto devoluci\u00f3n","default":"30 d\u00edas de prueba. Si no est\u00e1s satisfecho, reembolso completo en 48h."},
+    {"type":"header","content":"\ud83c\udf81 Regalo por pack"},
+    {"type":"text","id":"gift_name","label":"Nombre del regalo (vac\u00edo = desactivado)"},
+    {"type":"text","id":"gift_value","label":"Valor del regalo (ej: 10,00\u20ac)"},
+    {"type":"range","id":"gift_bundle_index","label":"Mostrar regalo a partir del pack n\u00ba","min":1,"max":10,"step":1,"default":3}
   ],
   "blocks": [
     {
