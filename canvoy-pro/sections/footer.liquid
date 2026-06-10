@@ -1,66 +1,306 @@
+<style>
+  .site-footer {
+    background: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: 0;
+  }
+
+  /* ---- Newsletter integrada ---- */
+  .footer-newsletter {
+    background: {{ section.settings.newsletter_bg }};
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-newsletter__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-newsletter__text h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+    color: {{ section.settings.newsletter_heading_color }};
+  }
+  .footer-newsletter__text p {
+    font-size: 0.85rem;
+    margin: 0;
+    color: {{ section.settings.newsletter_sub_color }};
+  }
+  .footer-newsletter__text strong {
+    color: {{ section.settings.newsletter_heading_color }};
+  }
+  .footer-newsletter__form {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    max-width: 420px;
+    min-width: 260px;
+  }
+  .footer-newsletter__input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .footer-newsletter__input::placeholder { color: rgba(255,255,255,0.5); }
+  .footer-newsletter__input:focus { border-color: rgba(255,255,255,0.5); }
+  .footer-newsletter__btn {
+    padding: 10px 20px;
+    background: #FF5A1F;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity .15s;
+  }
+  .footer-newsletter__btn:hover { opacity: 0.88; }
+  .footer-newsletter__success {
+    font-size: 0.88rem;
+    color: #86efac;
+    margin-top: 6px;
+  }
+
+  /* ---- Grid principal ---- */
+  .site-footer__main {
+    padding: 48px 0 32px;
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 768px) {
+    .site-footer__grid { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-newsletter__inner { flex-direction: column; align-items: flex-start; }
+    .footer-newsletter__form { max-width: 100%; width: 100%; }
+  }
+
+  .footer-brand__logo {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .footer-brand__desc {
+    font-size: 0.85rem;
+    opacity: 0.65;
+    margin: 0 0 16px;
+    max-width: 260px;
+  }
+  .footer-social { display: flex; gap: 12px; }
+  .footer-social__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: inherit;
+    transition: border-color .15s, background .15s;
+  }
+  .footer-social__link:hover { border-color: #FF5A1F; background: rgba(255,90,31,0.1); }
+
+  .footer-col__title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+    margin: 0 0 14px;
+  }
+  .footer-col__links { display: flex; flex-direction: column; gap: 8px; }
+  .footer-col__link {
+    font-size: 0.88rem;
+    color: inherit;
+    opacity: 0.75;
+    text-decoration: none;
+    transition: opacity .15s;
+  }
+  .footer-col__link:hover { opacity: 1; }
+
+  /* ---- Bottom bar ---- */
+  .site-footer__bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .site-footer__copy {
+    font-size: 0.78rem;
+    opacity: 0.45;
+    margin: 0;
+  }
+
+  /* ---- Payment icons SVG ---- */
+  .footer-payment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .footer-payment__icon {
+    height: 24px;
+    background: #fff;
+    border-radius: 4px;
+    padding: 2px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-payment__icon svg { height: 16px; width: auto; display: block; }
+</style>
+
+{%- if section.settings.show_newsletter -%}
+<div class="footer-newsletter">
+  <div class="wrap footer-newsletter__inner">
+    <div class="footer-newsletter__text">
+      <h3>{{ section.settings.nl_heading }}</h3>
+      <p>{{ section.settings.nl_subheading }}</p>
+    </div>
+    {%- form 'customer', class: 'footer-newsletter__formwrap' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter,footer">
+      <div class="footer-newsletter__form">
+        <input
+          type="email"
+          name="contact[email]"
+          class="footer-newsletter__input"
+          placeholder="{{ section.settings.nl_placeholder }}"
+          required
+          aria-label="Email"
+        >
+        <button type="submit" class="footer-newsletter__btn">{{ section.settings.nl_btn }}</button>
+      </div>
+      {%- if form.posted_successfully? -%}
+        <p class="footer-newsletter__success">✓ ¡Dentro! Revisa tu correo para el cupón.</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+{%- endif -%}
+
 <footer class="site-footer">
   <div class="wrap">
-    <div class="site-footer__grid">
-      <div class="footer-brand">
-        <a href="{{ routes.root_url }}" class="footer-brand__logo">{{ shop.name | upcase }}</a>
-        <p class="footer-brand__desc">{{ section.settings.tagline }}</p>
-        <div class="footer-social">
-          {%- assign ig = section.settings.instagram | default: settings.instagram -%}
-          {%- assign tt = section.settings.tiktok | default: settings.tiktok -%}
-          {%- if ig != blank -%}
-            <a href="{{ ig }}" class="footer-social__link" aria-label="Instagram" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-          {%- endif -%}
-          {%- if tt != blank -%}
-            <a href="{{ tt }}" class="footer-social__link" aria-label="TikTok" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
-            </a>
-          {%- endif -%}
+    <div class="site-footer__main">
+      <div class="site-footer__grid">
+
+        <div class="footer-brand">
+          <a href="{{ routes.root_url }}" class="footer-brand__logo">{{ shop.name | upcase }}</a>
+          <p class="footer-brand__desc">{{ section.settings.tagline }}</p>
+          <div class="footer-social">
+            {%- assign ig = section.settings.instagram -%}
+            {%- assign tt = section.settings.tiktok -%}
+            {%- if ig != blank -%}
+              <a href="{{ ig }}" class="footer-social__link" aria-label="Instagram" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if tt != blank -%}
+              <a href="{{ tt }}" class="footer-social__link" aria-label="TikTok" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
         </div>
-      </div>
-      <div class="footer-col">
-        <p class="footer-col__title">Tienda</p>
-        <div class="footer-col__links">
-          {%- render 'footer-shop-links' -%}
+
+        <div class="footer-col">
+          <p class="footer-col__title">Tienda</p>
+          <div class="footer-col__links">
+            {%- render 'footer-shop-links' -%}
+          </div>
         </div>
-      </div>
-      <div class="footer-col">
-        <p class="footer-col__title">Ayuda</p>
-        <div class="footer-col__links">
-          {%- if shop.shipping_policy -%}
-            <a href="{{ shop.shipping_policy.url }}" class="footer-col__link">Envíos</a>
-          {%- endif -%}
-          {%- if shop.refund_policy -%}
-            <a href="{{ shop.refund_policy.url }}" class="footer-col__link">Devoluciones</a>
-          {%- endif -%}
-          {%- if shop.privacy_policy -%}
-            <a href="{{ shop.privacy_policy.url }}" class="footer-col__link">Privacidad</a>
-          {%- endif -%}
-          {%- if shop.terms_of_service -%}
-            <a href="{{ shop.terms_of_service.url }}" class="footer-col__link">Términos</a>
-          {%- endif -%}
+
+        <div class="footer-col">
+          <p class="footer-col__title">Ayuda</p>
+          <div class="footer-col__links">
+            {%- if shop.shipping_policy -%}
+              <a href="{{ shop.shipping_policy.url }}" class="footer-col__link">Envíos</a>
+            {%- endif -%}
+            {%- if shop.refund_policy -%}
+              <a href="{{ shop.refund_policy.url }}" class="footer-col__link">Devoluciones</a>
+            {%- endif -%}
+            {%- if shop.privacy_policy -%}
+              <a href="{{ shop.privacy_policy.url }}" class="footer-col__link">Privacidad</a>
+            {%- endif -%}
+            {%- if shop.terms_of_service -%}
+              <a href="{{ shop.terms_of_service.url }}" class="footer-col__link">Términos</a>
+            {%- endif -%}
+            <a href="/pages/contacto" class="footer-col__link">Contacto</a>
+          </div>
         </div>
+
       </div>
     </div>
+
     <div class="site-footer__bottom">
       <p class="site-footer__copy">© {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados.</p>
-      <div class="footer-payment">
-        <span class="payment-icon">VISA</span>
-        <span class="payment-icon">MC</span>
-        <span class="payment-icon">PayPal</span>
-        <span class="payment-icon">Bizum</span>
+      <div class="footer-payment" aria-label="Métodos de pago aceptados">
+        <!-- Visa -->
+        <span class="footer-payment__icon" title="Visa">
+          <svg viewBox="0 0 48 16" xmlns="http://www.w3.org/2000/svg"><text x="0" y="13" font-family="Arial" font-weight="900" font-size="14" fill="#1A1F71">VISA</text></svg>
+        </span>
+        <!-- Mastercard -->
+        <span class="footer-payment__icon" title="Mastercard">
+          <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><circle cx="14" cy="12" r="10" fill="#EB001B"/><circle cx="24" cy="12" r="10" fill="#F79E1B"/><path d="M19 5.27a10 10 0 010 13.46A10 10 0 0119 5.27z" fill="#FF5F00"/></svg>
+        </span>
+        <!-- PayPal -->
+        <span class="footer-payment__icon" title="PayPal">
+          <svg viewBox="0 0 60 16" xmlns="http://www.w3.org/2000/svg"><text x="0" y="13" font-family="Arial" font-weight="700" font-size="12" fill="#003087">Pay</text><text x="22" y="13" font-family="Arial" font-weight="700" font-size="12" fill="#009CDE">Pal</text></svg>
+        </span>
+        <!-- Bizum -->
+        <span class="footer-payment__icon" title="Bizum">
+          <svg viewBox="0 0 60 16" xmlns="http://www.w3.org/2000/svg"><text x="0" y="13" font-family="Arial" font-weight="800" font-size="12" fill="#00B4D8">bizum</text></svg>
+        </span>
+        <!-- Apple Pay -->
+        {%- if section.settings.show_applepay -%}
+        <span class="footer-payment__icon" title="Apple Pay">
+          <svg viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg"><text x="2" y="17" font-family="-apple-system,Arial" font-weight="600" font-size="11" fill="#000">  Pay</text></svg>
+        </span>
+        {%- endif -%}
       </div>
     </div>
+
   </div>
 </footer>
+
 {% schema %}
 {
   "name": "Footer",
   "settings": [
+    {"type":"header","content":"Marca"},
+    {"type":"color","id":"bg_color","label":"Fondo footer","default":"#111827"},
+    {"type":"color","id":"text_color","label":"Color texto","default":"#f9fafb"},
     {"type":"textarea","id":"tagline","label":"Tagline","default":"Accesorios para dueños que no se quedan en casa."},
     {"type":"url","id":"instagram","label":"Instagram URL"},
-    {"type":"url","id":"tiktok","label":"TikTok URL"}
+    {"type":"url","id":"tiktok","label":"TikTok URL"},
+    {"type":"header","content":"Newsletter integrada"},
+    {"type":"checkbox","id":"show_newsletter","label":"Mostrar newsletter en footer","default":true},
+    {"type":"color","id":"newsletter_bg","label":"Fondo newsletter","default":"#1f2937"},
+    {"type":"color","id":"newsletter_heading_color","label":"Color titular newsletter","default":"#ffffff"},
+    {"type":"color","id":"newsletter_sub_color","label":"Color subtítulo newsletter","default":"#9ca3af"},
+    {"type":"text","id":"nl_heading","label":"Titular","default":"10% de descuento en tu primer pedido"},
+    {"type":"text","id":"nl_subheading","label":"Subtítulo","default":"Novedades, rutas y ofertas exclusivas. Sin spam, solo lo bueno."},
+    {"type":"text","id":"nl_placeholder","label":"Placeholder input","default":"tu@email.com"},
+    {"type":"text","id":"nl_btn","label":"Texto botón","default":"Quiero el 10%"},
+    {"type":"header","content":"Métodos de pago"},
+    {"type":"checkbox","id":"show_applepay","label":"Mostrar Apple Pay","default":false,"info":"Activa solo si tienes Apple Pay configurado en Shopify Payments."}
   ]
 }
 {% endschema %}
