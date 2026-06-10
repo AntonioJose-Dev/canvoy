@@ -6,8 +6,8 @@
         "subtitle": "Hidratación y comida, listas en segundos.",
         "rating_text": "Ver valoraciones de clientes ↓",
         "review_count_text": "4.9 · 127 reseñas",
-        "shipping_text": "Envío a toda España en 2-4 días laborables. Envío gratis.",
-        "returns_text": "Tienes 30 días para probarlo. Si no es lo que esperabas, te devolvemos el dinero sin complicaciones."
+        "shipping_text": "Envío a toda España en 3–5 días hábiles. Envío gratuito en pedidos +50€.",
+        "returns_text": "Tienes 30 días para probarlo. Si no es lo que esperabas, reembolso en 48h sin preguntas."
       },
       "blocks": {
         "bullet_1": { "type": "bullet", "settings": { "text": "Se pliega y cabe en cualquier bolsillo" } },
@@ -18,7 +18,16 @@
     },
     "trust_bar": {
       "type": "trust-bar",
-      "settings": {}
+      "settings": {
+        "icon1": "🚚",
+        "text1": "Envío gratis +50€",
+        "icon2": "↩️",
+        "text2": "Devolución 30 días",
+        "icon3": "🔒",
+        "text3": "Pago seguro",
+        "icon4": "⭐",
+        "text4": "4.9 · +127 reseñas"
+      }
     },
     "benefits_bar": {
       "type": "product-benefits-bar",
@@ -28,6 +37,10 @@
         "icon3": "🛡️", "title3": "Acero 304 resistente", "text3": "Sin olores, dura años",
         "icon4": "↩️", "title4": "Devolución 30 días", "text4": "Sin preguntas, sin complicaciones"
       }
+    },
+    "benefits_grid": {
+      "type": "product-benefits-grid",
+      "settings": {}
     },
     "social_proof": {
       "type": "product-social-proof",
@@ -56,7 +69,7 @@
         "t1": { "type": "testimonial", "settings": { "text": "Salimos todos los fines de semana a la sierra. Desde que tengo la CANVOY no he vuelto a improvisar. Mi golden se la terminó en 2 minutos.", "name": "María L.", "dog_breed": "Golden Retriever", "city": "Madrid", "verified": true } },
         "t2": { "type": "testimonial", "settings": { "text": "Pensé que sería otro gadget más. Llevo 3 meses usándola a diario y el cierre no gotea ni dentro de la mochila.", "name": "Carlos R.", "dog_breed": "Labrador", "city": "Barcelona", "verified": true } },
         "t3": { "type": "testimonial", "settings": { "text": "La compré por el diseño y me quedé por lo práctica. Mi border collie la reconoce cuando la saco del bolsillo.", "name": "Ana M.", "dog_breed": "Border Collie", "city": "Valencia", "verified": true } },
-        "t4": { "type": "testimonial", "settings": { "text": "No gotea en la mochila. Eso para mí lo cambia todo.", "name": "Sofia L.", "dog_breed": "Husky", "city": "Bilbao", "verified": true } }
+        "t4": { "type": "testimonial", "settings": { "text": "No gotea en la mochila. Eso para mí lo cambia todo.", "name": "Sofía L.", "dog_breed": "Husky", "city": "Bilbao", "verified": true } }
       },
       "block_order": ["t1", "t2", "t3", "t4"]
     },
@@ -93,13 +106,14 @@
       "type": "product-faq",
       "settings": { "tag": "Dudas frecuentes", "heading": "Preguntas frecuentes" },
       "blocks": {
-        "f1": { "type": "faq", "settings": { "question": "¿Cuánta agua cabe?", "answer": "285ml — suficiente para razas pequeñas y medianas en un paseo o ruta de varias horas." } },
-        "f2": { "type": "faq", "settings": { "question": "¿Realmente no gotea?", "answer": "El sello de silicona garantiza cierre hermético. Si hay cualquier problema en los primeros 30 días, te lo resolvemos sin coste." } },
-        "f3": { "type": "faq", "settings": { "question": "¿Cuánto tarda en llegar a España?", "answer": "3 a 5 días hábiles con número de seguimiento en tiempo real desde el momento del envío." } },
-        "f4": { "type": "faq", "settings": { "question": "¿Es segura para mi perro?", "answer": "100%. Acero inoxidable 304 grado alimentario, sin BPA. El cuenco es silicona alimentaria — el mismo material que los chupetes de bebé." } },
-        "f5": { "type": "faq", "settings": { "question": "¿Cómo se limpia?", "answer": "10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto." } }
+        "f1": { "type": "faq", "settings": { "question": "¿Cuánta agua cabe?", "answer": "285ml — suficiente para razas pequeñas y medianas en un paseo o ruta de varias horas. Para razas grandes como pastor alemán o labrador, recomendamos rellenar cada 45-60 minutos de actividad intensa." } },
+        "f2": { "type": "faq", "settings": { "question": "¿Realmente no gotea?", "answer": "El sello de silicona garantiza cierre hermético. Puedes meterla al revés en tu mochila y no gotea. Si en los primeros 30 días tienes cualquier problema con el cierre, te enviamos una nueva sin coste." } },
+        "f3": { "type": "faq", "settings": { "question": "¿Cuánto tarda en llegar a España?", "answer": "3 a 5 días hábiles con número de seguimiento en tiempo real desde el momento del envío. También enviamos a Portugal, Francia e Italia." } },
+        "f4": { "type": "faq", "settings": { "question": "¿Es segura para mi perro?", "answer": "100%. Acero inoxidable 304 grado alimentario, sin BPA. El cuenco es silicona alimentaria — el mismo material que los chupetes de bebé. Certificada para contacto con alimentos." } },
+        "f5": { "type": "faq", "settings": { "question": "¿Cómo se limpia?", "answer": "10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto. El cuenco de silicona se desmonta para limpieza en profundidad." } },
+        "f6": { "type": "faq", "settings": { "question": "¿Qué incluye el Kit de aventura?", "answer": "El Kit incluye la botella CANVOY + los productos complementarios que añadas desde la sección Bundle del editor de temas. Puedes personalizar el kit con los accesorios que más uses en tus rutas." } }
       },
-      "block_order": ["f1", "f2", "f3", "f4", "f5"]
+      "block_order": ["f1", "f2", "f3", "f4", "f5", "f6"]
     },
     "related": {
       "type": "product-recommended",
@@ -107,7 +121,9 @@
         "tag": "También te puede gustar",
         "heading": "Más accesorios de aventura",
         "subheading": "Accesorios que combinan con tu ruta.",
-        "limit": 4, "show_view_all": true, "view_all_text": "Ver toda la tienda"
+        "limit": 4,
+        "show_view_all": true,
+        "view_all_text": "Ver toda la tienda"
       }
     },
     "cta_banner": {
@@ -131,6 +147,7 @@
     "main",
     "trust_bar",
     "benefits_bar",
+    "benefits_grid",
     "social_proof",
     "testimonials",
     "guarantee",
