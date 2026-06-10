@@ -3,23 +3,8 @@
   {%- assign savings_amount = cv.compare_at_price | minus: cv.price -%}
   {%- assign savings_pct = savings_amount | times: 100 | divided_by: cv.compare_at_price -%}
 {%- endif -%}
-{%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
-
-{%- comment -%}
-  FASE 6 — Detección de opción de pack/cantidad.
-  Si el producto tiene una opción llamada "Cantidad", "Pack", "Unidades" o "Bundle"
-  (case-insensitive), sus valores se renderizan como bundle cards.
-  El resto de opciones (Color, Talla…) siguen siendo pills normales.
-{%- endcomment -%}
-{%- assign pack_option_index = nil -%}
-{%- assign pack_option_name  = nil -%}
-{%- for opt in product.options -%}
-  {%- assign opt_lower = opt | downcase -%}
-  {%- if opt_lower == 'cantidad' or opt_lower == 'pack' or opt_lower == 'unidades' or opt_lower == 'bundle' -%}
-    {%- assign pack_option_index = forloop.index0 -%}
-    {%- assign pack_option_name  = opt -%}
-  {%- endif -%}
-{%- endfor -%}
+{%- assign bullet_blocks  = section.blocks | where: 'type', 'bullet' -%}
+{%- assign bundle_blocks  = section.blocks | where: 'type', 'bundle' -%}
 
 <style>
 /* ── BASE ── */
@@ -78,15 +63,20 @@
 .mp-bullet { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; font-weight: 600; color: #111827 !important; }
 .mp-bullet__check { width: 20px; height: 20px; border-radius: 50%; background: #FF5A1F; color: #fff !important; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-/* variant pills (color/talla — no-pack) */
+/* variant pills */
 .mp-variant-label { font-size: 0.85rem; font-weight: 600; margin: 0 0 8px; color: #111827 !important; }
 .mp-variant-options { display: flex; gap: 8px; flex-wrap: wrap; }
 .mp-variant-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #d1d5db; background: #fff; font-size: 0.85rem; cursor: pointer; transition: all .15s; color: #374151 !important; }
 .mp-variant-btn.active, .mp-variant-btn:hover { border-color: #FF5A1F; background: #fff7f4; color: #FF5A1F !important; font-weight: 600; }
 
-/* ── FASE 6: BUNDLE CARDS ── */
-.mp-bundle-wrap { display: flex; flex-direction: column; gap: 8px; }
-.mp-bundle-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280 !important; margin: 0; }
+/* ── FASE 7: BUNDLE CARDS hardcoded ── */
+.mp-bundle-section { display: flex; flex-direction: column; gap: 10px; }
+.mp-bundle-heading {
+  font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #FF5A1F !important;
+  background: #fff7f4; border: 1px solid #fed7aa;
+  border-radius: 8px; padding: 7px 14px; text-align: center; margin: 0;
+}
 .mp-bundle-cards { display: flex; flex-direction: column; gap: 8px; }
 
 .mp-bundle-card {
@@ -99,65 +89,43 @@
 }
 .mp-bundle-card:hover { border-color: #fdba74; background: #fffbf7; }
 .mp-bundle-card.active {
-  border-color: #FF5A1F;
-  background: #fff7f4;
+  border-color: #FF5A1F; background: #fff7f4;
   box-shadow: 0 0 0 3px rgba(255,90,31,0.10);
 }
 .mp-bundle-card:focus-visible { outline: 2px solid #FF5A1F; outline-offset: 2px; }
 
-/* badge «Más popular» / «Mejor precio» */
 .mp-bundle-card__badge {
   position: absolute; top: -11px; left: 14px;
   background: #FF5A1F; color: #fff !important;
   font-size: 0.65rem; font-weight: 800;
   text-transform: uppercase; letter-spacing: 0.06em;
-  padding: 3px 10px; border-radius: 20px;
-  white-space: nowrap;
+  padding: 3px 10px; border-radius: 20px; white-space: nowrap;
 }
 
-/* radio circle */
 .mp-bundle-card__radio {
   width: 20px; height: 20px; border-radius: 50%;
   border: 2px solid #d1d5db; background: #fff;
   flex-shrink: 0; display: flex; align-items: center; justify-content: center;
   transition: border-color .15s;
 }
-.mp-bundle-card.active .mp-bundle-card__radio {
-  border-color: #FF5A1F; background: #FF5A1F;
-}
+.mp-bundle-card.active .mp-bundle-card__radio { border-color: #FF5A1F; background: #FF5A1F; }
 .mp-bundle-card__radio-dot {
   width: 8px; height: 8px; border-radius: 50%;
   background: #fff; opacity: 0; transition: opacity .15s;
 }
 .mp-bundle-card.active .mp-bundle-card__radio-dot { opacity: 1; }
 
-/* info: título + precio unitario */
 .mp-bundle-card__info { flex: 1; min-width: 0; }
-.mp-bundle-card__title {
-  font-size: 0.9rem; font-weight: 700;
-  color: #111827 !important; margin: 0 0 2px;
-}
-.mp-bundle-card__unit {
-  font-size: 0.75rem; color: #6b7280 !important; margin: 0;
-}
+.mp-bundle-card__title { font-size: 0.9rem; font-weight: 700; color: #111827 !important; margin: 0 0 2px; display: block; }
+.mp-bundle-card__unit  { font-size: 0.75rem; color: #6b7280 !important; margin: 0; display: block; }
 
-/* precio total */
 .mp-bundle-card__price-wrap { text-align: right; flex-shrink: 0; }
-.mp-bundle-card__price {
-  font-size: 1.05rem; font-weight: 900;
-  color: #111827 !important; margin: 0;
-}
+.mp-bundle-card__price   { font-size: 1.05rem; font-weight: 900; color: #111827 !important; margin: 0; display: block; }
 .mp-bundle-card.active .mp-bundle-card__price { color: #FF5A1F !important; }
-.mp-bundle-card__compare {
-  font-size: 0.75rem; color: #9ca3af !important;
-  text-decoration: line-through; margin: 0;
-}
-.mp-bundle-card__saving {
-  font-size: 0.7rem; font-weight: 700;
-  color: #16a34a !important; margin: 0;
-}
+.mp-bundle-card__compare { font-size: 0.75rem; color: #9ca3af !important; text-decoration: line-through; margin: 0; display: block; }
+.mp-bundle-card__saving  { font-size: 0.7rem; font-weight: 700; color: #16a34a !important; margin: 0; display: block; }
 
-/* QTY + ATC */
+/* ATC */
 .mp-qty-label { font-size: 0.8rem; font-weight: 600; color: #6b7280 !important; text-transform: uppercase; letter-spacing: 0.05em; }
 .mp-atc-row { display: flex; gap: 10px; }
 .mp-qty { display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 10px; overflow: hidden; }
@@ -170,7 +138,7 @@
 .mp-atc-btn:active { transform: scale(0.98); }
 .mp-atc-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
-/* ── FASE 5 ── */
+/* FASE 5 */
 .mp-urgency-wrap { display: flex; flex-direction: column; gap: 8px; }
 .mp-viral-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color: #fff !important; border-radius: 8px; padding: 7px 14px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; width: fit-content; }
 .mp-viral-badge__dot { width: 7px; height: 7px; border-radius: 50%; background: #FF5A1F; flex-shrink: 0; animation: mp-pulse 1s ease-in-out infinite; }
@@ -275,7 +243,7 @@
 .mp-cta-banner__btn:hover { opacity: 0.9; }
 .mp-cta-banner__trust { font-size: 0.78rem; color: #6b7280 !important; margin: 16px 0 0; }
 
-/* STICKY ATC */
+/* STICKY */
 .mp-sticky { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: #fff !important; border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
 .mp-sticky.visible { transform: translateY(0); }
 .mp-sticky__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 20px; max-width: 1200px; margin: 0 auto; }
@@ -304,6 +272,8 @@
 <div class="mp">
   <div class="wrap">
     <div class="mp-grid">
+
+      <!-- GALLERY -->
       <div class="mp-gallery">
         <div class="mp-gallery__main-wrap">
           {%- assign featured_media = cv.featured_media | default: product.featured_media -%}
@@ -330,6 +300,7 @@
         {%- endif -%}
       </div>
 
+      <!-- BUYBOX -->
       <div class="mp-buybox" id="mp-buybox">
 
         <!-- FASE 5: urgency -->
@@ -361,7 +332,8 @@
           <span>{{ section.settings.review_count_text | default: '4.9 · 127 reseñas' }}</span>
         </a>
 
-        <div class="mp-price-wrap">
+        <!-- precio principal — se oculta si hay bundle cards activos -->
+        <div class="mp-price-wrap" id="mp-price-wrap">
           {%- if cv.compare_at_price > cv.price -%}
             <p class="mp-price-compare">{{ cv.compare_at_price | money }}</p>
           {%- endif -%}
@@ -393,129 +365,90 @@
           </ul>
         {%- endif -%}
 
+        <!-- ── FASE 7: BUNDLE CARDS hardcoded ── -->
+        {%- if bundle_blocks.size > 0 -%}
+          <div class="mp-bundle-section">
+            <p class="mp-bundle-heading">{{ section.settings.bundle_heading | default: '🐾 COMPRA UN PACK Y AHORRA' }}</p>
+            <div class="mp-bundle-cards" role="radiogroup" aria-label="Seleccionar pack">
+              {%- for block in bundle_blocks -%}
+                {%- assign b_price   = block.settings.price   | default: '22,95€' -%}
+                {%- assign b_compare = block.settings.compare_price -%}
+                {%- assign b_title   = block.settings.title   | default: 'CANVOY Pack 1' -%}
+                {%- assign b_badge   = block.settings.badge_text -%}
+                {%- assign b_unit    = block.settings.unit_label -%}
+                {%- assign b_saving  = block.settings.saving_text -%}
+                <button
+                  type="button"
+                  class="mp-bundle-card{% if forloop.first %} active{% endif %}"
+                  data-price-display="{{ b_price }}"
+                  data-qty="{{ block.settings.qty | default: 1 }}"
+                  data-variant-id="{{ cv.id }}"
+                  role="radio"
+                  aria-checked="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-label="{{ b_title }} — {{ b_price }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if b_badge != blank -%}
+                    <span class="mp-bundle-card__badge" aria-hidden="true">{{ b_badge }}</span>
+                  {%- endif -%}
+                  <span class="mp-bundle-card__radio" aria-hidden="true">
+                    <span class="mp-bundle-card__radio-dot"></span>
+                  </span>
+                  <span class="mp-bundle-card__info">
+                    <span class="mp-bundle-card__title">{{ b_title }}</span>
+                    {%- if b_unit != blank -%}
+                      <span class="mp-bundle-card__unit">{{ b_unit }}</span>
+                    {%- endif -%}
+                  </span>
+                  <span class="mp-bundle-card__price-wrap">
+                    <span class="mp-bundle-card__price">{{ b_price }}</span>
+                    {%- if b_compare != blank -%}
+                      <span class="mp-bundle-card__compare">{{ b_compare }}</span>
+                    {%- endif -%}
+                    {%- if b_saving != blank -%}
+                      <span class="mp-bundle-card__saving">{{ b_saving }}</span>
+                    {%- endif -%}
+                  </span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <!-- variant pills (color/talla si existen) -->
         {%- unless product.has_only_default_variant -%}
           {%- for option in product.options_with_values -%}
-            {%- assign opt_lower = option.name | downcase -%}
-            {%- assign is_pack_opt = false -%}
-            {%- if opt_lower == 'cantidad' or opt_lower == 'pack' or opt_lower == 'unidades' or opt_lower == 'bundle' -%}
-              {%- assign is_pack_opt = true -%}
-            {%- endif -%}
-
-            {%- if is_pack_opt -%}
-              <!-- FASE 6: bundle cards para esta opción -->
-              <div class="mp-bundle-wrap" data-pack-opt="{{ forloop.index0 }}">
-                <p class="mp-bundle-label">Elige tu pack</p>
-                <div class="mp-bundle-cards" role="radiogroup" aria-label="Seleccionar cantidad">
-                  {%- for value in option.values -%}
-                    {%- comment -%}
-                      Encontrar la variante correspondiente a este valor de pack
-                      (asumiendo que las otras opciones mantienen su valor seleccionado actual)
-                    {%- endcomment -%}
-                    {%- assign pack_variant = nil -%}
-                    {%- for v in product.variants -%}
-                      {%- assign v_opt = v.options[forloop.parentloop.index0] -%}
-                      {%- if v_opt == value -%}
-                        {%- unless pack_variant -%}
-                          {%- assign pack_variant = v -%}
-                        {%- endunless -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-
-                    {%- assign is_first = forloop.first -%}
-                    {%- assign is_last  = forloop.last -%}
-                    {%- assign loop_idx = forloop.index -%}
-                    {%- assign total_vals = option.values.size -%}
-                    {%- assign mid_idx   = total_vals | divided_by: 2 | ceil -%}
-
-                    {%- comment -%}Calcular precio unitario aproximado{%- endcomment -%}
-                    {%- assign pack_qty   = 1 -%}
-                    {%- assign val_lower  = value | downcase -%}
-                    {%- if val_lower contains '3' -%}{%- assign pack_qty = 3 -%}
-                    {%- elsif val_lower contains '2' -%}{%- assign pack_qty = 2 -%}
-                    {%- endif -%}
-
-                    {%- assign unit_price_cents = pack_variant.price | divided_by: pack_qty -%}
-
-                    {%- comment -%}Ahorro vs precio de referencia (compare_at o 1u × qty){%- endcomment -%}
-                    {%- assign ref_price = pack_variant.compare_at_price -%}
-                    {%- assign has_saving = false -%}
-                    {%- if ref_price > pack_variant.price -%}
-                      {%- assign saving_cents = ref_price | minus: pack_variant.price -%}
-                      {%- assign has_saving = true -%}
-                    {%- endif -%}
-
-                    {%- assign is_active = false -%}
-                    {%- if value == option.selected_value -%}{%- assign is_active = true -%}{%- endif -%}
-
-                    <button
-                      type="button"
-                      class="mp-bundle-card{% if is_active %} active{% endif %}"
-                      data-opt="{{ forloop.parentloop.index0 }}"
-                      data-val="{{ value }}"
-                      data-variant-id="{{ pack_variant.id }}"
-                      data-price="{{ pack_variant.price }}"
-                      role="radio"
-                      aria-checked="{% if is_active %}true{% else %}false{% endif %}"
-                      aria-label="{{ value }} — {{ pack_variant.price | money }}"
-                      {% unless pack_variant.available %}disabled style="opacity:0.5;cursor:not-allowed"{% endunless %}
-                    >
-                      {%- comment -%}Badge: más popular en la del medio, mejor precio en la última{%- endcomment -%}
-                      {%- if total_vals >= 3 and loop_idx == mid_idx -%}
-                        <span class="mp-bundle-card__badge" aria-hidden="true">⭐ Más popular</span>
-                      {%- elsif is_last and total_vals > 1 -%}
-                        <span class="mp-bundle-card__badge" aria-hidden="true">💰 Mejor precio</span>
-                      {%- endif -%}
-
-                      <span class="mp-bundle-card__radio" aria-hidden="true">
-                        <span class="mp-bundle-card__radio-dot"></span>
-                      </span>
-
-                      <span class="mp-bundle-card__info">
-                        <span class="mp-bundle-card__title">{{ value }}</span>
-                        <span class="mp-bundle-card__unit">{{ unit_price_cents | money }} / unidad</span>
-                      </span>
-
-                      <span class="mp-bundle-card__price-wrap">
-                        <span class="mp-bundle-card__price">{{ pack_variant.price | money }}</span>
-                        {%- if has_saving -%}
-                          <span class="mp-bundle-card__compare">{{ ref_price | money }}</span>
-                          <span class="mp-bundle-card__saving">↓ Ahorras {{ saving_cents | money }}</span>
-                        {%- endif -%}
-                      </span>
-                    </button>
-                  {%- endfor -%}
-                </div>
+            <div>
+              <p class="mp-variant-label">{{ option.name }}: <span id="mp-opt-{{ forloop.index }}">{{ option.selected_value }}</span></p>
+              <div class="mp-variant-options">
+                {%- for value in option.values -%}
+                  <button type="button" class="mp-variant-btn{% if value == option.selected_value %} active{% endif %}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ value }}">{{ value }}</button>
+                {%- endfor -%}
               </div>
-
-            {%- else -%}
-              <!-- Opción normal (color, talla…) — pills existentes -->
-              <div>
-                <p class="mp-variant-label">{{ option.name }}: <span id="mp-opt-{{ forloop.index }}">{{ option.selected_value }}</span></p>
-                <div class="mp-variant-options">
-                  {%- for value in option.values -%}
-                    <button type="button" class="mp-variant-btn{% if value == option.selected_value %} active{% endif %}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ value }}">{{ value }}</button>
-                  {%- endfor -%}
-                </div>
-              </div>
-            {%- endif -%}
+            </div>
           {%- endfor -%}
         {%- endunless -%}
 
+        <!-- ATC -->
         <div>
-          <p class="mp-qty-label">Cantidad</p>
+          {%- if bundle_blocks.size == 0 -%}
+            <p class="mp-qty-label">Cantidad</p>
+          {%- endif -%}
           <div class="mp-atc-row" id="mp-atc-anchor">
-            <div class="mp-qty">
-              <button type="button" class="mp-qty-btn" id="mp-dec" aria-label="Reducir">−</button>
-              <input type="number" class="mp-qty-input" id="mp-qty" value="1" min="1" max="99" aria-label="Cantidad">
-              <button type="button" class="mp-qty-btn" id="mp-inc" aria-label="Aumentar">+</button>
-            </div>
-            <button type="button" class="mp-atc-btn" id="mp-atc" data-variant-id="{{ cv.id }}" {% unless cv.available %}disabled{% endunless %}>
+            {%- if bundle_blocks.size == 0 -%}
+              <div class="mp-qty">
+                <button type="button" class="mp-qty-btn" id="mp-dec" aria-label="Reducir">−</button>
+                <input type="number" class="mp-qty-input" id="mp-qty" value="1" min="1" max="99" aria-label="Cantidad">
+                <button type="button" class="mp-qty-btn" id="mp-inc" aria-label="Aumentar">+</button>
+              </div>
+            {%- endif -%}
+            <button type="button" class="mp-atc-btn" id="mp-atc" data-variant-id="{{ cv.id }}" data-qty="1" {% unless cv.available %}disabled{% endunless %}>
               {%- if cv.available -%}Agregar al carrito{%- else -%}Agotado{%- endif -%}
             </button>
           </div>
         </div>
 
-        <!-- FASE 4: FOMO -->
+        <!-- FOMO -->
         {%- if cv.available -%}
           <div class="mp-fomo" id="mp-fomo" aria-live="polite">
             <span class="mp-fomo__dot" aria-hidden="true"></span>
@@ -523,7 +456,7 @@
           </div>
         {%- endif -%}
 
-        <!-- FASE 4: mini trust row -->
+        <!-- mini trust -->
         <div class="mp-trust-mini">
           <div class="mp-trust-mini__item"><span class="mp-trust-mini__icon">🛡️</span><span class="mp-trust-mini__label">Garantía 30 días</span><span class="mp-trust-mini__sub">Reembolso total</span></div>
           <div class="mp-trust-mini__item"><span class="mp-trust-mini__icon">🚚</span><span class="mp-trust-mini__label">Envío 3–5 días</span><span class="mp-trust-mini__sub">Gratis desde 50€</span></div>
@@ -635,139 +568,133 @@
         <p class="mp-sticky__price" id="mp-sticky-price">{{ cv.price | money }}</p>
       </div>
     </div>
-    <button type="button" class="mp-sticky__btn" id="mp-sticky-atc" data-variant-id="{{ cv.id }}" {% unless cv.available %}disabled{% endunless %}>Agregar al carrito</button>
+    <button type="button" class="mp-sticky__btn" id="mp-sticky-atc" data-variant-id="{{ cv.id }}" data-qty="1" {% unless cv.available %}disabled{% endunless %}>Agregar al carrito</button>
   </div>
 </div>
 
 <script>
 (function() {
-  var variants = {{ product.variants | json }};
-  var mainImg  = document.getElementById('mp-main-img');
-  var counter  = document.getElementById('mp-counter');
-  var atcBtn   = document.getElementById('mp-atc');
-  var stickyBtn= document.getElementById('mp-sticky-atc');
-  var qtyInput = document.getElementById('mp-qty');
-  var priceEl  = document.getElementById('mp-price');
+  var variants  = {{ product.variants | json }};
+  var mainImg   = document.getElementById('mp-main-img');
+  var counter   = document.getElementById('mp-counter');
+  var atcBtn    = document.getElementById('mp-atc');
+  var stickyBtn = document.getElementById('mp-sticky-atc');
+  var qtyInput  = document.getElementById('mp-qty');
 
   /* ── gallery ── */
   document.querySelectorAll('.mp-thumb-btn').forEach(function(btn, i) {
     btn.addEventListener('click', function() {
-      document.querySelectorAll('.mp-thumb-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.mp-thumb-btn').forEach(function(b){ b.classList.remove('active'); });
       btn.classList.add('active');
       if (mainImg && btn.dataset.src) mainImg.src = btn.dataset.src;
       if (counter) counter.textContent = (i+1) + ' / ' + document.querySelectorAll('.mp-thumb-btn').length;
     });
   });
 
-  /* ── qty ── */
+  /* ── qty (sin bundles) ── */
   var decBtn = document.getElementById('mp-dec');
   var incBtn = document.getElementById('mp-inc');
-  if (decBtn) decBtn.addEventListener('click', function() { var v=parseInt(qtyInput.value,10)||1; if(v>1) qtyInput.value=v-1; });
-  if (incBtn) incBtn.addEventListener('click', function() { var v=parseInt(qtyInput.value,10)||1; qtyInput.value=v+1; });
+  if (decBtn) decBtn.addEventListener('click', function(){ var v=parseInt(qtyInput.value,10)||1; if(v>1) qtyInput.value=v-1; });
+  if (incBtn) incBtn.addEventListener('click', function(){ var v=parseInt(qtyInput.value,10)||1; qtyInput.value=v+1; });
 
   /* ── addToCart ── */
   function addToCart(variantId, qty, btn, orig) {
     btn.textContent = 'Añadiendo…'; btn.disabled = true;
     fetch('/cart/add.js', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({id:parseInt(variantId,10), quantity:qty})
-    }).then(function(r){return r.json();}).then(function(){
+      body: JSON.stringify({id: parseInt(variantId,10), quantity: parseInt(qty,10)||1})
+    }).then(function(r){ return r.json(); }).then(function(){
       btn.textContent = '✓ Añadido';
       document.dispatchEvent(new CustomEvent('cart:updated'));
       setTimeout(function(){ btn.textContent=orig; btn.disabled=false; }, 2200);
     }).catch(function(){ btn.textContent=orig; btn.disabled=false; });
   }
 
-  if (atcBtn) atcBtn.addEventListener('click', function() {
-    addToCart(atcBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, atcBtn, 'Agregar al carrito');
+  if (atcBtn) atcBtn.addEventListener('click', function(){
+    var qty = qtyInput ? parseInt(qtyInput.value,10)||1 : parseInt(atcBtn.dataset.qty,10)||1;
+    addToCart(atcBtn.dataset.variantId, qty, atcBtn, 'Agregar al carrito');
   });
   var ctaBtn = document.getElementById('mp-cta-atc');
-  if (ctaBtn) ctaBtn.addEventListener('click', function() {
-    addToCart(atcBtn ? atcBtn.dataset.variantId : '{{ cv.id }}', 1, ctaBtn, 'Añadir al carrito');
+  if (ctaBtn) ctaBtn.addEventListener('click', function(){
+    var vid = atcBtn ? atcBtn.dataset.variantId : '{{ cv.id }}';
+    var qty = atcBtn ? parseInt(atcBtn.dataset.qty,10)||1 : 1;
+    addToCart(vid, qty, ctaBtn, 'Añadir al carrito');
   });
-  if (stickyBtn) stickyBtn.addEventListener('click', function() {
-    addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, stickyBtn, 'Agregar al carrito');
+  if (stickyBtn) stickyBtn.addEventListener('click', function(){
+    var qty = parseInt(stickyBtn.dataset.qty,10)||1;
+    addToCart(stickyBtn.dataset.variantId, qty, stickyBtn, 'Agregar al carrito');
   });
 
   /* ── sticky ── */
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
   if (anchor && sticky) {
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function(){
       sticky.classList.toggle('visible', anchor.getBoundingClientRect().bottom < 0);
     }, { passive:true });
   }
 
   /* ── accordions + FAQ ── */
-  document.querySelectorAll('.mp-accordion-btn, .mp-faq__q').forEach(function(btn) {
-    btn.addEventListener('click', function() {
+  document.querySelectorAll('.mp-accordion-btn, .mp-faq__q').forEach(function(btn){
+    btn.addEventListener('click', function(){
       var open = btn.getAttribute('aria-expanded')==='true';
       btn.setAttribute('aria-expanded', !open);
       btn.nextElementSibling.classList.toggle('open', !open);
     });
   });
 
-  /* ── helper: sync variant to ATC buttons + price ── */
-  function syncVariant(match) {
-    if (!match) return;
-    if (atcBtn)    { atcBtn.dataset.variantId=match.id; atcBtn.disabled=!match.available; atcBtn.textContent=match.available?'Agregar al carrito':'Agotado'; }
-    if (stickyBtn) { stickyBtn.dataset.variantId=match.id; stickyBtn.disabled=!match.available; }
-    if (priceEl)   { priceEl.childNodes[0].textContent = (match.price/100).toFixed(2).replace('.',',')+' €'; }
-  }
-
-  /* ── FASE 6: bundle cards ── */
-  document.querySelectorAll('.mp-bundle-card').forEach(function(card) {
-    card.addEventListener('click', function() {
-      if (card.disabled) return;
-      var optIdx = parseInt(card.dataset.opt, 10);
-      /* desactivar otras cards del mismo grupo */
-      document.querySelectorAll('.mp-bundle-card[data-opt="'+optIdx+'"]').forEach(function(c) {
+  /* ── FASE 7: bundle cards ── */
+  var stickyPrice = document.getElementById('mp-sticky-price');
+  document.querySelectorAll('.mp-bundle-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      document.querySelectorAll('.mp-bundle-card').forEach(function(c){
         c.classList.remove('active');
-        c.setAttribute('aria-checked', 'false');
+        c.setAttribute('aria-checked','false');
       });
       card.classList.add('active');
-      card.setAttribute('aria-checked', 'true');
-
-      /* obtener selección completa (bundles + pills) */
-      var selected = {};
-      document.querySelectorAll('.mp-bundle-card.active').forEach(function(c) { selected[parseInt(c.dataset.opt,10)]=c.dataset.val; });
-      document.querySelectorAll('.mp-variant-btn.active').forEach(function(b) { selected[parseInt(b.dataset.opt,10)]=b.dataset.val; });
-
-      var match = variants.find(function(v) {
-        return v.options.every(function(o,i) { return selected[i]===undefined || selected[i]===o; });
-      });
-      syncVariant(match);
+      card.setAttribute('aria-checked','true');
+      /* sync ATC qty + price display */
+      var qty = card.dataset.qty || '1';
+      var vid = card.dataset.variantId;
+      var priceDisplay = card.dataset.priceDisplay || '';
+      if (atcBtn)    { atcBtn.dataset.variantId=vid; atcBtn.dataset.qty=qty; }
+      if (stickyBtn) { stickyBtn.dataset.variantId=vid; stickyBtn.dataset.qty=qty; }
+      if (stickyPrice && priceDisplay) stickyPrice.textContent = priceDisplay;
     });
   });
 
-  /* ── variant pills (color/talla) ── */
-  document.querySelectorAll('.mp-variant-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
+  /* ── variant pills ── */
+  document.querySelectorAll('.mp-variant-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
       var optIdx = parseInt(btn.dataset.opt, 10);
-      document.querySelectorAll('.mp-variant-btn[data-opt="'+optIdx+'"]').forEach(function(b){b.classList.remove('active');});
+      document.querySelectorAll('.mp-variant-btn[data-opt="'+optIdx+'"]').forEach(function(b){ b.classList.remove('active'); });
       btn.classList.add('active');
       var lbl = document.getElementById('mp-opt-'+(optIdx+1));
       if (lbl) lbl.textContent = btn.dataset.val;
       var selected = {};
-      document.querySelectorAll('.mp-bundle-card.active').forEach(function(c) { selected[parseInt(c.dataset.opt,10)]=c.dataset.val; });
-      document.querySelectorAll('.mp-variant-btn.active').forEach(function(b) { selected[parseInt(b.dataset.opt,10)]=b.dataset.val; });
-      var match = variants.find(function(v) { return v.options.every(function(o,i){ return selected[i]===undefined||selected[i]===o; }); });
-      syncVariant(match);
+      document.querySelectorAll('.mp-variant-btn.active').forEach(function(b){ selected[parseInt(b.dataset.opt,10)]=b.dataset.val; });
+      var match = variants.find(function(v){ return v.options.every(function(o,i){ return selected[i]===undefined||selected[i]===o; }); });
+      if (match) {
+        if (atcBtn)    { atcBtn.dataset.variantId=match.id; atcBtn.disabled=!match.available; atcBtn.textContent=match.available?'Agregar al carrito':'Agotado'; }
+        if (stickyBtn) { stickyBtn.dataset.variantId=match.id; stickyBtn.disabled=!match.available; }
+        /* también actualizamos todas las bundle cards */
+        document.querySelectorAll('.mp-bundle-card').forEach(function(c){ c.dataset.variantId=match.id; });
+      }
     });
   });
 
-  /* ── FASE 4: FOMO counter ── */
+  /* ── FOMO ── */
   var fomoEl = document.getElementById('mp-fomo-num');
   if (fomoEl) {
     var fomoBase = Math.floor(Math.random()*17)+8;
     fomoEl.textContent = fomoBase;
     setInterval(function(){
-      fomoBase = Math.max(6, Math.min(30, fomoBase + Math.floor(Math.random()*5)-2));
+      fomoBase = Math.max(6, Math.min(30, fomoBase+Math.floor(Math.random()*5)-2));
       fomoEl.textContent = fomoBase;
     }, Math.floor(Math.random()*17000)+18000);
   }
 
-  /* ── FASE 5: countdown rolling ── */
+  /* ── countdown ── */
   var cdM = document.getElementById('mp-cd-m');
   var cdS = document.getElementById('mp-cd-s');
   if (cdM && cdS) {
@@ -793,6 +720,7 @@
   "settings": [
     {"type":"text","id":"subtitle","label":"Subtítulo","default":"Hidratación y comida, listas en segundos."},
     {"type":"text","id":"review_count_text","label":"Texto reseñas","default":"4.9 · 127 reseñas"},
+    {"type":"text","id":"bundle_heading","label":"Título sección packs","default":"🐾 COMPRA UN PACK Y AHORRA"},
     {"type":"textarea","id":"shipping_text","label":"Texto envío","default":"Envío a toda España en 3-5 días hábiles. Gratis en pedidos +50€."},
     {"type":"textarea","id":"returns_text","label":"Texto devolución","default":"30 días de prueba. Si no estás satisfecho, reembolso completo en 48h."}
   ],
@@ -801,6 +729,19 @@
       "type": "bullet",
       "name": "Beneficio rápido",
       "settings": [{"type":"text","id":"text","label":"Texto","default":"Se pliega y cabe en cualquier bolsillo"}]
+    },
+    {
+      "type": "bundle",
+      "name": "Pack / Bundle",
+      "settings": [
+        {"type":"text","id":"title","label":"Nombre del pack","default":"CANVOY Pack 1"},
+        {"type":"text","id":"price","label":"Precio (texto, ej: 22,95€)","default":"22,95€"},
+        {"type":"text","id":"compare_price","label":"Precio tachado (dejar vacío si no)","default":""},
+        {"type":"text","id":"saving_text","label":"Texto ahorro (ej: ↓ Ahorras 5€)","default":""},
+        {"type":"text","id":"unit_label","label":"Precio por unidad (ej: 22,95€ / ud)","default":""},
+        {"type":"text","id":"badge_text","label":"Badge (ej: ⭐ Más popular — dejar vacío si no)","default":""},
+        {"type":"range","id":"qty","label":"Unidades que añade al carrito","min":1,"max":10,"step":1,"default":1}
+      ]
     }
   ],
   "presets": [{
@@ -808,7 +749,10 @@
     "blocks": [
       {"type":"bullet","settings":{"text":"Se pliega y cabe en cualquier bolsillo"}},
       {"type":"bullet","settings":{"text":"Acero inoxidable 304 — sin olores ni BPA"}},
-      {"type":"bullet","settings":{"text":"Gancho integrado para mochila o correa"}}
+      {"type":"bullet","settings":{"text":"Gancho integrado para mochila o correa"}},
+      {"type":"bundle","settings":{"title":"CANVOY Pack 1","price":"22,95€","compare_price":"","saving_text":"","unit_label":"22,95€ / ud","badge_text":"","qty":1}},
+      {"type":"bundle","settings":{"title":"CANVOY Pack 2","price":"39,95€","compare_price":"45,90€","saving_text":"↓ Ahorras 5,95€","unit_label":"19,97€ / ud","badge_text":"⭐ Más popular","qty":2}},
+      {"type":"bundle","settings":{"title":"CANVOY Pack 3","price":"49,95€","compare_price":"68,85€","saving_text":"↓ Ahorras 18,90€","unit_label":"16,65€ / ud","badge_text":"💰 Mejor precio","qty":3}}
     ]
   }]
 }
