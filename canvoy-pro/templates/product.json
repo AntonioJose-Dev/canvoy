@@ -19,14 +19,14 @@
     "trust_bar": {
       "type": "trust-bar",
       "settings": {
-        "icon1": "🚚",
-        "text1": "Envío gratis +50€",
-        "icon2": "↩️",
-        "text2": "Devolución 30 días",
-        "icon3": "🔒",
-        "text3": "Pago seguro",
-        "icon4": "⭐",
-        "text4": "4.9 · +127 reseñas"
+        "trust1_title": "Envío gratis +50€",
+        "trust1_sub": "A toda España",
+        "trust2_title": "Devolución 30 días",
+        "trust2_sub": "Sin preguntas, sin complicaciones",
+        "trust3_title": "Pago seguro",
+        "trust3_sub": "Visa, Mastercard, PayPal y más",
+        "trust4_title": "4.9 · +127 reseñas",
+        "trust4_sub": "Dueños activos que ya lo usan"
       }
     },
     "benefits_bar": {
