@@ -587,12 +587,27 @@
     addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, stickyBtn, 'Agregar al carrito');
   });
 
+  /* STICKY: solo activa tras el primer scroll del usuario */
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
   if (anchor && sticky && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function(entries) {
-      sticky.classList.toggle('visible', !entries[0].isIntersecting);
-    }, {threshold: 0.1}).observe(anchor);
+    var hasScrolled = false;
+    var anchorHidden = false;
+
+    var observer = new IntersectionObserver(function(entries) {
+      anchorHidden = !entries[0].isIntersecting;
+      if (hasScrolled) {
+        sticky.classList.toggle('visible', anchorHidden);
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(anchor);
+
+    window.addEventListener('scroll', function onFirstScroll() {
+      hasScrolled = true;
+      sticky.classList.toggle('visible', anchorHidden);
+      window.removeEventListener('scroll', onFirstScroll);
+    }, { passive: true });
   }
 
   document.querySelectorAll('.mp-accordion-btn').forEach(function(btn) {
@@ -625,7 +640,7 @@
         if (atcBtn) { atcBtn.dataset.variantId=match.id; atcBtn.disabled=!match.available; atcBtn.textContent=match.available?'Agregar al carrito':'Agotado'; }
         if (stickyBtn) { stickyBtn.dataset.variantId=match.id; stickyBtn.disabled=!match.available; }
         var priceEl = document.getElementById('mp-price');
-        if (priceEl) priceEl.childNodes[0].textContent = (match.price/100).toFixed(2).replace('.',',')+' €';
+        if (priceEl) priceEl.childNodes[0].textContent = (match.price/100).toFixed(2).replace('.',',')+' €';
       }
     });
   });
