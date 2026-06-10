@@ -58,12 +58,12 @@
 .mp-gallery__main-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #f3f4f6; aspect-ratio: 1; }
 .mp-gallery__main { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ── FASE 2: galeria compacta en móvil para que el buybox sea visible above the fold ── */
+/* ── FASE 2: galeria compacta en móvil ── */
 @media (max-width: 768px) {
   .mp-gallery__main-wrap { aspect-ratio: 4/3; border-radius: 12px; }
-  .mp-gallery__thumbs { display: none; } /* ocultar thumbs en móvil — el sticky y swipe cubren la navegación */
+  .mp-gallery__thumbs { display: none; }
   .mp-title { font-size: 1.25rem !important; }
-  .mp-subtitle { font-size: 0.88rem !important; }
+  .mp-subtitle { font-size: 0.85rem !important; }
   .mp-price-current { font-size: 1.5rem !important; }
   .mp-buybox { gap: 12px; }
 }
@@ -93,7 +93,13 @@
 .mp-buybox { display: flex; flex-direction: column; gap: 16px; background: #fff; }
 .mp-vendor { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af !important; margin: 0; }
 .mp-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0; color: #111827 !important; }
-.mp-subtitle { font-size: 0.95rem; color: #6b7280 !important; margin: 0; }
+
+/* ── FASE 3: subtitulo debajo del precio, más compacto ── */
+.mp-subtitle { font-size: 0.88rem; color: #6b7280 !important; margin: 0; }
+
+/* Rating ANTES del precio — sube percepción de valor */
+.mp-rating { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #374151 !important; text-decoration: none; }
+.mp-stars { color: #f59e0b !important; display: flex; gap: 1px; }
 
 .mp-price-wrap { display: flex; flex-direction: column; gap: 2px; }
 .mp-price-compare { font-size: 0.9rem; color: #9ca3af !important; text-decoration: line-through; margin: 0; }
@@ -101,13 +107,29 @@
 .mp-price-badge { background: #FF5A1F; color: #fff !important; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
 .mp-price-tax { font-size: 0.75rem; color: #9ca3af !important; margin: 0; }
 
-.mp-rating { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #374151 !important; text-decoration: none; }
-.mp-stars { color: #f59e0b !important; display: flex; gap: 1px; }
+/* Stock badge — nueva señal de urgencia visual */
+.mp-stock {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; font-weight: 600; color: #16a34a !important;
+}
+.mp-stock__dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #16a34a; flex-shrink: 0;
+  animation: mp-pulse 2s ease-in-out infinite;
+}
+@keyframes mp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
 
-.mp-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
-.mp-bullet { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #374151 !important; }
+/* ── FASE 3: bullets con más peso visual ── */
+.mp-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.mp-bullet {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.92rem; font-weight: 600; color: #111827 !important;
+}
 .mp-bullet__check {
-  width: 18px; height: 18px; border-radius: 50%;
+  width: 20px; height: 20px; border-radius: 50%;
   background: #FF5A1F; color: #fff !important;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
@@ -132,9 +154,10 @@
 .mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; color: #111827 !important; background: #fff; -moz-appearance: textfield; }
 .mp-qty-input::-webkit-inner-spin-button, .mp-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
 .mp-atc-btn {
-  flex: 1; height: 48px; background: #FF5A1F; color: #fff !important;
+  flex: 1; height: 52px; background: #FF5A1F; color: #fff !important;
   border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
   cursor: pointer; transition: opacity .15s, transform .1s;
+  letter-spacing: 0.01em;
 }
 .mp-atc-btn:hover { opacity: 0.9; }
 .mp-atc-btn:active { transform: scale(0.98); }
@@ -342,11 +365,18 @@
       </div>
 
       <div class="mp-buybox" id="mp-buybox">
+
+        {{- '<!-- ── FASE 3: orden CRO ─ vendor > título > estrellas > precio > stock > subtitle > bullets > variantes > ATC ── -->' -}}
+
         <p class="mp-vendor">{{ product.vendor | default: shop.name }}</p>
+
         <h1 class="mp-title">{{ product.title }}</h1>
-        {%- if section.settings.subtitle != blank -%}
-          <p class="mp-subtitle">{{ section.settings.subtitle }}</p>
-        {%- endif -%}
+
+        {{- '<!-- estrellas antes del precio: anclan valor percibido antes de ver el número -->' -}}
+        <a href="#mp-reviews" class="mp-rating">
+          <span class="mp-stars" aria-hidden="true">★★★★★</span>
+          <span>{{ section.settings.review_count_text | default: '4.9 · 127 reseñas' }}</span>
+        </a>
 
         <div class="mp-price-wrap">
           {%- if cv.compare_at_price > cv.price -%}
@@ -359,17 +389,21 @@
           <p class="mp-price-tax">IVA incluido{%- if section.settings.shipping_text != blank -%} &middot; {{ section.settings.shipping_text }}{%- endif -%}</p>
         </div>
 
-        <a href="#mp-reviews" class="mp-rating">
-          <span class="mp-stars" aria-hidden="true">★★★★★</span>
-          <span>{{ section.settings.review_count_text | default: '4.9 · 127 reseñas' }}</span>
-        </a>
+        {{- '<!-- stock pulsante: urgencia discreta pero efectiva -->' -}}
+        {%- if cv.available -%}
+          <span class="mp-stock"><span class="mp-stock__dot"></span> En stock — envío en 24–48h</span>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="mp-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
 
         {%- if bullet_blocks.size > 0 -%}
           <ul class="mp-bullets">
             {%- for block in bullet_blocks -%}
               <li class="mp-bullet" {{ block.shopify_attributes }}>
                 <span class="mp-bullet__check" aria-hidden="true">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </span>
                 {{ block.settings.text }}
               </li>
@@ -503,7 +537,7 @@
       <div class="mp-faq__list">
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánta agua cabe? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">285ml — suficiente para razas pequeñas y medianas en un paseo largo. Para razas grandes recomendamos rellenar cada 45-60 minutos.</div></div>
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Realmente no gotea? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">El sello de silicona garantiza cierre hermético. Puedes meterla al revés en tu mochila. Si hay cualquier problema en 30 días, te enviamos una nueva sin coste.</div></div>
-        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</div></div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</p></div></div>
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Es segura para mi perro? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">100%. Acero inoxidable 304 grado alimentario, sin BPA. Cuenco de silicona alimentaria — el mismo material que los chupetes de bebé.</div></div>
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cómo se limpia? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto. El cuenco se desmonta para limpieza en profundidad.</div></div>
       </div>
@@ -609,7 +643,6 @@
       var anchorGone = rect.bottom < 0;
       sticky.classList.toggle('visible', anchorGone);
     }
-
     window.addEventListener('scroll', updateSticky, { passive: true });
   }
 
