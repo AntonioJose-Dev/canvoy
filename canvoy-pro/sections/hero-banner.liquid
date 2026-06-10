@@ -5,6 +5,7 @@
     {%- assign hero_img = section.settings.fallback_collection.products.first.featured_image -%}
   {%- endif -%}
 {%- endif -%}
+
 {%- assign cta1_url = section.settings.cta1_url -%}
 {%- if cta1_url == blank and section.settings.cta1_collection != blank -%}
   {%- assign cta1_url = section.settings.cta1_collection.url -%}
@@ -12,6 +13,7 @@
 {%- if cta1_url == blank -%}
   {%- assign cta1_url = routes.all_products_collection_url -%}
 {%- endif -%}
+
 {%- assign cta2_url = section.settings.cta2_url -%}
 {%- if cta2_url == blank and section.settings.cta2_collection != blank -%}
   {%- assign cta2_url = section.settings.cta2_collection.url -%}
@@ -19,16 +21,19 @@
 {%- if cta2_url == blank -%}
   {%- assign cta2_url = routes.all_products_collection_url -%}
 {%- endif -%}
+
 <section class="hero">
   <div class="hero__bg">
     {%- if hero_img != blank -%}
-      <img src="{{ hero_img | image_url: width: 1920 }}"
-           srcset="{{ hero_img | image_url: width: 800 }} 800w, {{ hero_img | image_url: width: 1200 }} 1200w, {{ hero_img | image_url: width: 1920 }} 1920w"
-           sizes="100vw"
-           alt="{{ section.settings.heading | escape }}"
-           loading="eager"
-           fetchpriority="high"
-           width="1920" height="1080">
+      <img
+        src="{{ hero_img | image_url: width: 1920 }}"
+        srcset="{{ hero_img | image_url: width: 800 }} 800w, {{ hero_img | image_url: width: 1200 }} 1200w, {{ hero_img | image_url: width: 1920 }} 1920w"
+        sizes="100vw"
+        alt="{{ section.settings.heading | escape }}"
+        loading="eager"
+        fetchpriority="high"
+        width="1920" height="1080"
+      >
     {%- else -%}
       <div class="hero__placeholder" aria-hidden="true">
         <div class="hero__placeholder-glow"></div>
@@ -36,14 +41,31 @@
     {%- endif -%}
     <div class="hero__overlay" style="opacity:{{ section.settings.overlay_opacity | divided_by: 100.0 }}"></div>
   </div>
+
   <div class="wrap hero__content">
     {%- if section.settings.tag != blank -%}
       <p class="hero__tag">{{ section.settings.tag }}</p>
     {%- endif -%}
+
     <h1>{{ section.settings.heading }}</h1>
+
     {%- if section.settings.subheading != blank -%}
       <p class="hero__sub">{{ section.settings.subheading }}</p>
     {%- endif -%}
+
+    {%- if section.settings.show_social_proof_line -%}
+      <p class="hero__social-proof">
+        <span class="hero__stars" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </span>
+        {{ section.settings.social_proof_line }}
+      </p>
+    {%- endif -%}
+
     <div class="hero__ctas">
       {%- if section.settings.cta1_text != blank -%}
         <a href="{{ cta1_url }}" class="btn btn--primary btn--lg">{{ section.settings.cta1_text }}</a>
@@ -52,11 +74,13 @@
         <a href="{{ cta2_url }}" class="btn btn--outline btn--lg">{{ section.settings.cta2_text }}</a>
       {%- endif -%}
     </div>
+
     {%- if section.settings.show_trust_note -%}
       <p class="hero__trust-note">{{ section.settings.trust_note }}</p>
     {%- endif -%}
   </div>
 </section>
+
 {% schema %}
 {
   "name": "Hero",
@@ -64,17 +88,23 @@
     {"type":"image_picker","id":"image","label":"Imagen de fondo","info":"Foto real outdoor de perro o producto. Si está vacía, usa imagen de la colección de respaldo."},
     {"type":"collection","id":"fallback_collection","label":"Colección de respaldo (imagen hero)"},
     {"type":"range","id":"overlay_opacity","min":0,"max":90,"step":5,"unit":"%","label":"Opacidad overlay","default":65},
-    {"type":"text","id":"tag","label":"Etiqueta superior","default":"Nueva colección 2025"},
-    {"type":"text","id":"heading","label":"Titular","default":"Todo lo que necesita tu perro para salir contigo"},
-    {"type":"textarea","id":"subheading","label":"Subtítulo","default":"Accesorios de aventura diseñados para dueños activos. Ligeros, resistentes y listos para cualquier ruta."},
-    {"type":"text","id":"cta1_text","label":"Botón 1 texto","default":"Comprar para perros"},
+    {"type":"header","content":"Textos"},
+    {"type":"text","id":"tag","label":"Etiqueta superior","default":"Accesorios para perros activos","info":"Breve, específico. Ej: 'Para perros que no paran'."},
+    {"type":"text","id":"heading","label":"Titular principal","default":"Built for dogs that don't slow down.","info":"Voz de marca CANVOY: directa, activa, orientada al perro aventurero. Evita frases genéricas."},
+    {"type":"textarea","id":"subheading","label":"Subtítulo","default":"Gear ligero y resistente para salir sin improvisar. Diseñado para dueños que van a todos lados con su perro."},
+    {"type":"header","content":"Prueba social en hero"},
+    {"type":"checkbox","id":"show_social_proof_line","label":"Mostrar línea de prueba social","default":true},
+    {"type":"text","id":"social_proof_line","label":"Texto prueba social","default":"4.9 ★ · +500 dueños activos ya usan CANVOY","info":"Se muestra con estrellas. Actualiza cuando tengas más reviews."},
+    {"type":"header","content":"CTAs"},
+    {"type":"text","id":"cta1_text","label":"Botón 1 texto","default":"Ver accesorios"},
     {"type":"collection","id":"cta1_collection","label":"Botón 1 — Colección"},
     {"type":"url","id":"cta1_url","label":"Botón 1 — URL personalizada (opcional)"},
-    {"type":"text","id":"cta2_text","label":"Botón 2 texto","default":"Ver toda la tienda"},
+    {"type":"text","id":"cta2_text","label":"Botón 2 texto","default":"Nuestro bestseller →"},
     {"type":"collection","id":"cta2_collection","label":"Botón 2 — Colección"},
-    {"type":"url","id":"cta2_url","label":"Botón 2 — URL personalizada (opcional)"},
+    {"type":"url","id":"cta2_url","label":"Botón 2 — URL personalizada (opcional)","info":"Apunta a tu producto más vendido, no a la tienda general."},
+    {"type":"header","content":"Trust note"},
     {"type":"checkbox","id":"show_trust_note","label":"Mostrar nota de confianza bajo CTAs","default":true},
-    {"type":"text","id":"trust_note","label":"Nota de confianza","default":"Envío gratis +50€ · Devolución 30 días · Pago seguro"}
+    {"type":"text","id":"trust_note","label":"Nota de confianza","default":"🚚 Envío gratis +50€  ·  ↩️ Devolución 30 días  ·  🔒 Pago seguro"}
   ],
   "presets":[{"name":"Hero Banner"}]
 }

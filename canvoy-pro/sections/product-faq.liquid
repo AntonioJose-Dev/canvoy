@@ -17,6 +17,28 @@
     </div>
   </div>
 </section>
+
+{%- if section.blocks.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for block in section.blocks -%}
+      {
+        "@type": "Question",
+        "name": {{ block.settings.question | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ block.settings.answer | json }}
+        }
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "FAQ producto",
@@ -38,10 +60,11 @@
     {
       "name": "FAQ producto",
       "blocks": [
-        {"type":"faq","settings":{"question":"¿Cómo se utiliza durante los paseos?","answer":"Despliega el tazón, añade agua o comida y listo. En pocos segundos tu perro puede beber."}},
-        {"type":"faq","settings":{"question":"¿Es fácil de transportar?","answer":"Sí. Se pliega hasta caber en un bolsillo y puedes colgarlo con el gancho integrado."}},
-        {"type":"faq","settings":{"question":"¿Se puede limpiar en lavavajillas?","answer":"Sí, en programa suave. El acero inoxidable 304 aguanta el uso diario."}},
-        {"type":"faq","settings":{"question":"¿Puedo devolverlo si no me convence?","answer":"Tienes 30 días para devolverlo sin complicaciones."}}
+        {"type":"faq","settings":{"question":"¿Cuánta agua cabe?","answer":"285ml — suficiente para razas pequeñas y medianas en un paseo o ruta de varias horas."}},
+        {"type":"faq","settings":{"question":"¿Realmente no gotea?","answer":"El sello de silicona garantiza cierre hermético. Si hay cualquier problema en los primeros 30 días, te lo resolvemos sin coste."}},
+        {"type":"faq","settings":{"question":"¿Cuánto tarda en llegar a España?","answer":"3 a 5 días hábiles con número de seguimiento en tiempo real desde el momento del envío."}},
+        {"type":"faq","settings":{"question":"¿Es segura para mi perro?","answer":"100%. Acero inoxidable 304 grado alimentario, sin BPA. El cuenco es silicona alimentaria — el mismo material que los chupetes de bebé."}},
+        {"type":"faq","settings":{"question":"¿Cómo se limpia?","answer":"10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto."}}
       ]
     }
   ]

@@ -1,23 +1,61 @@
 {% if section.settings.show %}
-<div class="announcement-bar" style="background:{{ section.settings.bg }};color:{{ section.settings.text_color }}">
+<div
+  class="announcement-bar"
+  style="background:{{ section.settings.bg }};color:{{ section.settings.text_color }}"
+  {%- if section.settings.bar_url != blank -%} role="link" style="cursor:pointer" {%- endif -%}
+>
+  {%- if section.settings.bar_url != blank -%}
+    <a href="{{ section.settings.bar_url }}" class="announcement-bar__link-overlay" aria-label="{{ section.settings.message }}" tabindex="0"></a>
+  {%- endif -%}
   <div class="announcement-bar__track">
     {%- capture messages -%}
-      {%- if section.settings.message != blank -%}<span class="announcement-bar__item">{{ section.settings.message }}</span>{%- endif -%}
-      {%- if section.settings.message_2 != blank -%}<span class="announcement-bar__item">{{ section.settings.message_2 }}</span>{%- endif -%}
-      {%- if section.settings.message_3 != blank -%}<span class="announcement-bar__item">{{ section.settings.message_3 }}</span>{%- endif -%}
+      {%- if section.settings.message != blank -%}
+        <span class="announcement-bar__item">
+          {%- if section.settings.message_icon != blank -%}<span aria-hidden="true">{{ section.settings.message_icon }}</span> {%- endif -%}
+          {{ section.settings.message }}
+          {%- if section.settings.message_cta != blank -%}<strong class="announcement-bar__cta">&nbsp;· {{ section.settings.message_cta }} →</strong>{%- endif -%}
+        </span>
+      {%- endif -%}
+      {%- if section.settings.message_2 != blank -%}
+        <span class="announcement-bar__item">{{ section.settings.message_2 }}</span>
+      {%- endif -%}
+      {%- if section.settings.message_3 != blank -%}
+        <span class="announcement-bar__item">{{ section.settings.message_3 }}</span>
+      {%- endif -%}
     {%- endcapture -%}
     {{ messages }}{{ messages }}
   </div>
 </div>
+
+<style>
+  .announcement-bar { position: relative; overflow: hidden; }
+  .announcement-bar__link-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+  }
+  .announcement-bar__cta {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
 {% endif %}
+
 {% schema %}
 {
   "name": "Barra de anuncio",
   "settings": [
     {"type":"checkbox","id":"show","label":"Mostrar","default":true},
-    {"type":"text","id":"message","label":"Mensaje 1","default":"🚚 Envío GRATIS en pedidos +50€ a España"},
+    {"type":"header","content":"Mensaje principal"},
+    {"type":"text","id":"message_icon","label":"Icono mensaje 1","default":"🚔"},
+    {"type":"text","id":"message","label":"Mensaje 1","default":"Envío GRATIS en pedidos +50€ a España"},
+    {"type":"text","id":"message_cta","label":"CTA inline (opcional)","default":"Ver oferta","info":"Aparece como ' · Ver oferta →' al final del mensaje 1. Déjalo vacío para ocultarlo."},
+    {"type":"url","id":"bar_url","label":"URL destino (toda la barra es clickable)","info":"Apunta a una colección, producto o página de oferta. Si está vacío, la barra no es clickable."},
+    {"type":"header","content":"Mensajes secundarios"},
     {"type":"text","id":"message_2","label":"Mensaje 2","default":"↩️ Devolución 30 días sin preguntas"},
-    {"type":"text","id":"message_3","label":"Mensaje 3","default":"⭐ Calidad testada por dueños activos"},
+    {"type":"text","id":"message_3","label":"Mensaje 3","default":"⭐ +500 dueños activos confían en CANVOY"},
+    {"type":"header","content":"Estilo"},
     {"type":"color","id":"bg","label":"Fondo","default":"#FF5A1F"},
     {"type":"color","id":"text_color","label":"Texto","default":"#ffffff"}
   ],
