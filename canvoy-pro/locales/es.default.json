@@ -1,0 +1,34 @@
+{
+  "general": {
+    "meta": {
+      "page": "Página {{ page_number }}"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Ir al contenido"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Añadir al carrito",
+      "sold_out": "Agotado"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Carrito",
+      "empty": "Tu carrito está vacío"
+    }
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente"
+  },
+  "customer": {
+    "login": {
+      "title": "Iniciar sesión"
+    },
+    "register": {
+      "title": "Crear cuenta"
+    }
+  }
+}

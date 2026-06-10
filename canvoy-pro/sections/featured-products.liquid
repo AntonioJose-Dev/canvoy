@@ -1,0 +1,46 @@
+<section class="section featured-products">
+  <div class="wrap">
+    <div class="section-head section-head--centered">
+      <p class="section-tag">{{ section.settings.tag }}</p>
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p>{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+    {%- assign col = section.settings.collection -%}
+    {%- if col == blank -%}
+      {%- assign col = collections.all -%}
+    {%- endif -%}
+    {%- if col.products.size > 0 -%}
+      <div class="products-grid products-grid--{{ section.settings.columns }}">
+        {%- for product in col.products limit: section.settings.limit -%}
+          {%- render 'product-card', card_product: product -%}
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.show_view_all -%}
+        <div class="featured-products__cta">
+          <a href="{{ col.url }}" class="btn btn--outline btn--lg">{{ section.settings.view_all_text }}</a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Productos destacados",
+  "settings": [
+    {"type":"text","id":"tag","label":"Etiqueta","default":"Lo más vendido"},
+    {"type":"text","id":"heading","label":"Titular","default":"Favoritos de la manada"},
+    {"type":"textarea","id":"subheading","label":"Subtítulo","default":"Los accesorios que más eligen nuestros clientes."},
+    {"type":"collection","id":"collection","label":"Colección","info":"Vacío = todos los productos"},
+    {"type":"range","id":"limit","min":2,"max":8,"step":1,"label":"Número de productos","default":4},
+    {"type":"select","id":"columns","label":"Columnas","default":"4","options":[
+      {"value":"3","label":"3"},
+      {"value":"4","label":"4"}
+    ]},
+    {"type":"checkbox","id":"show_view_all","label":"Mostrar botón ver todos","default":true},
+    {"type":"text","id":"view_all_text","label":"Texto botón","default":"Ver todos los productos"}
+  ],
+  "presets":[{"name":"Productos destacados"}]
+}
+{% endschema %}

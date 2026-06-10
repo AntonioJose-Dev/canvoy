@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "tag": "Nueva colección 2025",
+        "heading": "Todo lo que necesita tu perro para salir contigo",
+        "subheading": "Accesorios de aventura diseñados para dueños activos. Ligeros, resistentes y listos para cualquier ruta.",
+        "cta1_text": "Comprar para perros",
+        "cta2_text": "Ver toda la tienda",
+        "show_trust_note": true,
+        "trust_note": "Envío gratis +50€ · Devolución 30 días · Pago seguro",
+        "overlay_opacity": 65
+      }
+    },
+    "trust": {
+      "type": "trust-bar",
+      "settings": {}
+    },
+    "collections": {
+      "type": "featured-collections",
+      "settings": {
+        "tag": "Nuestras categorías",
+        "heading": "Equipado para cada aventura",
+        "subheading": "Desde el paseo diario hasta la ruta de montaña."
+      }
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "tag": "Lo más vendido",
+        "heading": "Favoritos de la manada",
+        "subheading": "Los accesorios que más eligen nuestros clientes.",
+        "limit": 4,
+        "columns": "4",
+        "show_view_all": true,
+        "view_all_text": "Ver todos los productos"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "collections",
+    "featured_products",
+    "testimonials",
+    "newsletter"
+  ]
+}

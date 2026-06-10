@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.bg | default: '#0C0C14' }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <title>{{ page_title }}{%- if current_page != 1 %} — Página {{ current_page }}{% endif %}{%- unless page_title contains shop.name %} — {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  {{ content_for_header }}
+  {{- 'theme.css' | asset_url | stylesheet_tag -}}
+  <style>
+    :root {
+      --accent: {{ settings.accent | default: '#FF5A1F' }};
+      --accent-hover: {{ settings.accent | default: '#FF5A1F' | color_modify: 'lightness', 12 }};
+      --bg: {{ settings.bg | default: '#0C0C14' }};
+    }
+  </style>
+  <script>
+    window.CanvoyTheme = {
+      moneyFormat: {{ shop.money_format | json }},
+      freeShippingThreshold: {{ settings.free_shipping_threshold | default: 50 | times: 100 }},
+      routes: {
+        cart: {{ routes.cart_url | json }},
+        checkout: '/checkout',
+        allProducts: {{ routes.all_products_collection_url | json }}
+      }
+    };
+  </script>
+</head>
+<body class="template-{{ template.name }}">
+  <a class="skip-link" href="#MainContent">Ir al contenido</a>
+  {%- section 'announcement-bar' -%}
+  {%- section 'header' -%}
+  <div id="cart-drawer" class="cart-drawer" aria-hidden="true">
+    <div class="cart-drawer__overlay" id="cart-overlay"></div>
+    <div class="cart-drawer__panel">
+      <div class="cart-drawer__head">
+        <span class="cart-drawer__title">Tu carrito</span>
+        <button class="cart-drawer__close" id="cart-close" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="cart-drawer__shipping" id="cart-shipping-bar" hidden>
+        <p class="cart-shipping__text" id="cart-shipping-text"></p>
+        <div class="cart-shipping__track"><div class="cart-shipping__fill" id="cart-shipping-fill"></div></div>
+      </div>
+      <div class="cart-drawer__content" id="cart-content">
+        <div class="cart-empty-state">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <p>Tu carrito está vacío</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline btn--sm">Ver productos</a>
+        </div>
+      </div>
+      <div class="cart-drawer__foot" id="cart-foot" style="display:none">
+        <div class="cart-subtotal-row"><span>Subtotal</span><span id="cart-subtotal-amount"></span></div>
+        <p class="cart-free-ship" id="cart-free-ship-msg">Envío gratis en pedidos +{{ settings.free_shipping_threshold | default: 50 }}€ 🚚</p>
+        <a href="/checkout" class="btn btn--primary btn--full btn--lg" id="cart-checkout-btn">Finalizar compra →</a>
+        <a href="{{ routes.cart_url }}" class="cart-view-full">Ver carrito completo</a>
+      </div>
+    </div>
+  </div>
+  <main id="MainContent" class="main-content" role="main" tabindex="-1">{{ content_for_layout }}</main>
+  {%- section 'footer' -%}
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<div class="search-page">
+  <div class="wrap">
+    <h1>Buscar</h1>
+    {%- form 'search' -%}
+      <div class="search-form">
+        <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Buscar productos..." class="search-input" autofocus>
+        <button type="submit" class="btn btn--primary">Buscar</button>
+      </div>
+    {%- endform -%}
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <p class="search-count">{{ search.results_count }} resultado{{ search.results_count | pluralize: '', 's' }} para "{{ search.terms }}"</p>
+        <div class="products-grid products-grid--3">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {%- render 'product-card', card_product: item -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="search-no-results">No encontramos resultados para "{{ search.terms }}"</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">Ver todos los productos</a>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>

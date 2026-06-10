@@ -1,0 +1,37 @@
+<header class="site-header" id="site-header">
+  <div class="wrap site-header__inner">
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menú" aria-expanded="false" aria-controls="mobile-nav">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <a href="{{ routes.root_url }}" class="site-header__logo">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 160 }}" alt="{{ shop.name }}" width="120" height="40">
+      {%- else -%}
+        {{ shop.name | upcase }}
+      {%- endif -%}
+    </a>
+    <nav class="site-header__nav" aria-label="Navegación principal">
+      {%- render 'nav-links', css_class: 'site-header__nav-link' -%}
+    </nav>
+    <div class="site-header__actions">
+      <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="Buscar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </a>
+      <button class="cart-toggle-btn" id="cart-toggle" aria-label="Carrito">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-count" id="cart-count" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Menú móvil">
+    {%- render 'nav-links', css_class: 'mobile-nav__link' -%}
+  </nav>
+</header>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {"type":"image_picker","id":"logo","label":"Logo (opcional)"}
+  ]
+}
+{% endschema %}

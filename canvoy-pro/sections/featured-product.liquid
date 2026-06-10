@@ -1,0 +1,99 @@
+{%- assign fp = section.settings.product -%}
+{%- if fp == blank -%}
+  {%- assign fp = collections.all.products.first -%}
+{%- endif -%}
+{%- if fp != blank -%}
+{%- assign fp_variant = fp.selected_or_first_available_variant -%}
+<section class="section featured-product">
+  <div class="wrap featured-product__grid">
+    <div class="featured-product__images">
+      {%- assign fp_img = fp.featured_image -%}
+      {%- if fp_img != blank -%}
+        <a href="{{ fp.url }}">
+          <img id="fp-main-img" src="{{ fp_img | image_url: width: 900 }}" alt="{{ fp.title | escape }}" class="featured-product__main-img" loading="lazy" width="900" height="900">
+        </a>
+      {%- else -%}
+        <div class="featured-product__main-img featured-product__img-placeholder"></div>
+      {%- endif -%}
+      {%- if section.settings.badge != blank -%}
+        <span class="featured-product__badge">{{ section.settings.badge }}</span>
+      {%- endif -%}
+      {%- if fp.images.size > 1 -%}
+        <div class="fp-thumbs">
+          {%- for img in fp.images limit: 4 -%}
+            <img src="{{ img | image_url: width: 200 }}" alt="{{ fp.title | escape }}" class="fp-thumb{% if forloop.first %} active{% endif %}" data-full="{{ img | image_url: width: 900 }}" loading="lazy" width="200" height="200">
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="featured-product__info">
+      <p class="featured-product__category">{{ section.settings.eyebrow | default: 'Más vendido' }}</p>
+      <h2 class="featured-product__title"><a href="{{ fp.url }}">{{ fp.title }}</a></h2>
+      {%- if settings.show_review_stars -%}
+        <div class="fp-stars">
+          <span class="stars" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </span>
+          <span class="review-count">{{ settings.review_count_text | default: 'Valorado por clientes verificados' }}</span>
+        </div>
+      {%- endif -%}
+      <div class="fp-price">
+        <span class="fp-price__current">{{ fp.price | money }}</span>
+        {%- if fp.compare_at_price > fp.price -%}
+          <span class="fp-price__compare">{{ fp.compare_at_price | money }}</span>
+          <span class="fp-price__save">Ahorra {{ fp.compare_at_price | minus: fp.price | money }}</span>
+        {%- endif -%}
+      </div>
+      {%- if fp.description != blank -%}
+        <p class="fp-desc">{{ fp.description | strip_html | truncate: 200 }}</p>
+      {%- elsif section.settings.description != blank -%}
+        <p class="fp-desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+      {%- unless fp.has_only_default_variant -%}
+        {%- for option in fp.options_with_values -%}
+          <div class="variant-group">
+            <p class="variant-label">{{ option.name }}: <strong id="opt-{{ forloop.index }}-val">{{ option.selected_value }}</strong></p>
+            <div class="variant-options">
+              {%- for value in option.values -%}
+                <button type="button" class="variant-btn{% if value == option.selected_value %} active{% endif %}" data-option="{{ forloop.parentloop.index }}" data-value="{{ value }}">{{ value }}</button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+      <div class="fp-atc-row">
+        <div class="product-qty">
+          <button type="button" class="qty-btn qty-dec" aria-label="Menos">−</button>
+          <input type="number" class="qty-input" value="1" min="1" max="99" aria-label="Cantidad">
+          <button type="button" class="qty-btn qty-inc" aria-label="Más">+</button>
+        </div>
+        <button type="button" class="btn btn--primary btn--lg fp-atc-btn" data-variant-id="{{ fp_variant.id }}" data-product-id="{{ fp.id }}">
+          Añadir al carrito
+        </button>
+      </div>
+      <a href="{{ fp.url }}" class="fp-view-link">Ver ficha completa →</a>
+      <div class="fp-mini-trust">
+        <span class="mini-trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Compra 100% segura</span>
+        <span class="mini-trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>Envío rápido</span>
+        <span class="mini-trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h10a8 8 0 018 8v2M3 10l6-6M3 10l6 6"/></svg>Devolución 30 días</span>
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Producto destacado",
+  "settings": [
+    {"type":"product","id":"product","label":"Producto (vacío = primer producto de la tienda)"},
+    {"type":"text","id":"eyebrow","label":"Categoría (texto pequeño)","default":"Más vendido"},
+    {"type":"text","id":"badge","label":"Badge sobre imagen","default":"Más vendido"},
+    {"type":"textarea","id":"description","label":"Descripción (si producto no tiene)"}
+  ],
+  "presets":[{"name":"Producto destacado"}]
+}
+{% endschema %}

@@ -1,0 +1,54 @@
+<section class="trust-bar" aria-label="Ventajas de compra">
+  <div class="trust-bar__breath" aria-hidden="true"></div>
+  <div class="trust-bar__viewport">
+    <div class="trust-bar__track">
+      {%- capture trust_slides -%}
+        <div class="trust-item">
+          <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <div class="trust-item__text">
+            <div class="trust-item__label">{{ section.settings.trust1_title }}</div>
+            <div class="trust-item__sub">{{ section.settings.trust1_sub }}</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <div class="trust-item__text">
+            <div class="trust-item__label">{{ section.settings.trust2_title }}</div>
+            <div class="trust-item__sub">{{ section.settings.trust2_sub }}</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <div class="trust-item__text">
+            <div class="trust-item__label">{{ section.settings.trust3_title }}</div>
+            <div class="trust-item__sub">{{ section.settings.trust3_sub }}</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          <div class="trust-item__text">
+            <div class="trust-item__label">{{ section.settings.trust4_title }}</div>
+            <div class="trust-item__sub">{{ section.settings.trust4_sub }}</div>
+          </div>
+        </div>
+      {%- endcapture -%}
+      {{ trust_slides }}{{ trust_slides }}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Barra de confianza",
+  "settings": [
+    {"type":"text","id":"trust1_title","label":"Punto 1","default":"Envío gratis"},
+    {"type":"text","id":"trust1_sub","label":"Punto 1 descripción","default":"Gratis"},
+    {"type":"text","id":"trust2_title","label":"Punto 2","default":"Devolución 30 días"},
+    {"type":"text","id":"trust2_sub","label":"Punto 2 descripción","default":"Sin preguntas, sin complicaciones"},
+    {"type":"text","id":"trust3_title","label":"Punto 3","default":"Pago seguro"},
+    {"type":"text","id":"trust3_sub","label":"Punto 3 descripción","default":"Visa, Mastercard, PayPal y más"},
+    {"type":"text","id":"trust4_title","label":"Punto 4","default":"Calidad garantizada"},
+    {"type":"text","id":"trust4_sub","label":"Punto 4 descripción","default":"Testado por dueños activos"}
+  ],
+  "presets":[{"name":"Barra de confianza"}]
+}
+{% endschema %}

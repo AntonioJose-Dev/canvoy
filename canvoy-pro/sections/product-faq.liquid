@@ -1,0 +1,49 @@
+<section class="section product-faq-section">
+  <div class="wrap product-faq-section__inner">
+    <div class="section-head section-head--centered">
+      <p class="section-tag">{{ section.settings.tag }}</p>
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div class="product-faq-list">
+      {%- for block in section.blocks -%}
+        <div class="product-faq-list__item" {{ block.shopify_attributes }}>
+          <button type="button" class="accordion-btn product-faq-list__btn" aria-expanded="false">
+            {{ block.settings.question }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="accordion-content product-faq-list__answer">{{ block.settings.answer }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "FAQ producto",
+  "settings": [
+    {"type":"text","id":"tag","label":"Etiqueta","default":"Dudas frecuentes"},
+    {"type":"text","id":"heading","label":"Titular","default":"Preguntas frecuentes"}
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Pregunta",
+      "settings": [
+        {"type":"text","id":"question","label":"Pregunta","default":"¿Cómo se utiliza durante los paseos?"},
+        {"type":"textarea","id":"answer","label":"Respuesta","default":"Despliega el tazón, añade agua o comida y listo. En pocos segundos tu perro puede beber."}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ producto",
+      "blocks": [
+        {"type":"faq","settings":{"question":"¿Cómo se utiliza durante los paseos?","answer":"Despliega el tazón, añade agua o comida y listo. En pocos segundos tu perro puede beber."}},
+        {"type":"faq","settings":{"question":"¿Es fácil de transportar?","answer":"Sí. Se pliega hasta caber en un bolsillo y puedes colgarlo con el gancho integrado."}},
+        {"type":"faq","settings":{"question":"¿Se puede limpiar en lavavajillas?","answer":"Sí, en programa suave. El acero inoxidable 304 aguanta el uso diario."}},
+        {"type":"faq","settings":{"question":"¿Puedo devolverlo si no me convence?","answer":"Tienes 30 días para devolverlo sin complicaciones."}}
+      ]
+    }
+  ]
+}
+{% endschema %}

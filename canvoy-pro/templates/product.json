@@ -1,0 +1,101 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "subtitle": "Hidratación y comida, listas en segundos.",
+        "rating_text": "Ver valoraciones de clientes ↓",
+        "shipping_text": "Envío a toda España en 2-4 días laborables. Envío gratis.",
+        "returns_text": "Tienes 30 días para probarlo. Si no es lo que esperabas, te devolvemos el dinero sin complicaciones."
+      },
+      "blocks": {
+        "bullet_1": { "type": "bullet", "settings": { "text": "Se pliega y cabe en cualquier bolsillo" } },
+        "bullet_2": { "type": "bullet", "settings": { "text": "Acero inoxidable 304 — sin olores ni BPA" } },
+        "bullet_3": { "type": "bullet", "settings": { "text": "Gancho integrado para mochila o correa" } }
+      },
+      "block_order": ["bullet_1", "bullet_2", "bullet_3"]
+    },
+    "benefits_bar": {
+      "type": "product-benefits-bar",
+      "settings": {
+        "icon1": "💧",
+        "title1": "Hidratación sin complicaciones",
+        "text1": "Listo en segundos",
+        "icon2": "🎒",
+        "title2": "Siempre contigo",
+        "text2": "Cabe en mochila o bolsillo",
+        "icon3": "🛡️",
+        "title3": "Acero 304 resistente",
+        "text3": "Sin olores, dura años"
+      }
+    },
+    "testimonials": {
+      "type": "product-testimonials",
+      "settings": {
+        "heading": "Lo que dicen nuestros paseadores",
+        "subheading": "Dueños activos que ya lo usan en sus rutas diarias."
+      },
+      "blocks": {
+        "t1": { "type": "testimonial", "settings": { "text": "Práctico para paseos diarios. Mi perro bebe sin problemas del tazón de silicona.", "name": "Laura M.", "verified": true } },
+        "t2": { "type": "testimonial", "settings": { "text": "Fácil de limpiar y muy ligero. Lo llevo en todos los senderos.", "name": "Javi R.", "verified": true } },
+        "t3": { "type": "testimonial", "settings": { "text": "Resistente de verdad. Se me cayó varias veces y sigue perfecto.", "name": "Elena P.", "verified": true } },
+        "t4": { "type": "testimonial", "settings": { "text": "No gotea en la mochila. Eso para mí lo cambia todo.", "name": "Sofia L.", "verified": true } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "trust_bar": {
+      "type": "trust-bar",
+      "settings": {}
+    },
+    "faq": {
+      "type": "product-faq",
+      "settings": {
+        "tag": "Dudas frecuentes",
+        "heading": "Preguntas frecuentes"
+      },
+      "blocks": {
+        "f1": { "type": "faq", "settings": { "question": "¿Cómo se utiliza durante los paseos?", "answer": "Despliega el tazón, añade agua o comida y listo. En pocos segundos tu perro puede beber." } },
+        "f2": { "type": "faq", "settings": { "question": "¿Es fácil de transportar?", "answer": "Sí. Se pliega hasta caber en un bolsillo y puedes colgarlo con el gancho integrado." } },
+        "f3": { "type": "faq", "settings": { "question": "¿Se puede limpiar en lavavajillas?", "answer": "Sí, en programa suave. El acero inoxidable 304 aguanta el uso diario." } },
+        "f4": { "type": "faq", "settings": { "question": "¿Puedo devolverlo si no me convence?", "answer": "Tienes 30 días para devolverlo sin complicaciones." } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4"]
+    },
+    "related": {
+      "type": "product-recommended",
+      "settings": {
+        "tag": "Completa tu equipo",
+        "heading": "También te puede gustar",
+        "subheading": "Accesorios que combinan con tu aventura.",
+        "limit": 4,
+        "show_view_all": true,
+        "view_all_text": "Ver toda la tienda"
+      }
+    },
+    "cta_banner": {
+      "type": "product-cta-banner",
+      "settings": {
+        "show": true,
+        "icon": "🐾",
+        "heading": "¿Listo para la próxima ruta?",
+        "text": "Vuelve arriba y añádelo al carrito en un clic.",
+        "btn_text": "Añadir al carrito ↑"
+      }
+    },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": { "heading": "Customer Reviews" },
+      "blocks": {}
+    }
+  },
+  "order": [
+    "main",
+    "benefits_bar",
+    "trust_bar",
+    "testimonials",
+    "faq",
+    "related",
+    "cta_banner",
+    "reviews"
+  ]
+}

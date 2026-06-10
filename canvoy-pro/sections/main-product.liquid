@@ -1,0 +1,219 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign related_collection = collection | default: product.collections.first | default: collections.all -%}
+{%- if current_variant.compare_at_price > current_variant.price -%}
+  {%- assign savings_amount = current_variant.compare_at_price | minus: current_variant.price -%}
+  {%- assign savings_pct = savings_amount | times: 100 | divided_by: current_variant.compare_at_price -%}
+{%- endif -%}
+{%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
+
+<div class="product-page product-page--canvoy" data-product-id="{{ product.id }}">
+  <div class="wrap">
+    <div class="product-page__grid">
+      <div class="product-gallery">
+        <div class="product-images__main-wrap">
+          {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+          {%- if featured_media -%}
+            {%- if featured_media.media_type == 'video' -%}
+              {{ featured_media | video_tag: class: 'product-images__main product-images__video', autoplay: true, loop: true, muted: true, controls: true, id: 'product-main-media' }}
+            {%- else -%}
+              <img id="product-main-img" src="{{ featured_media | image_url: width: 1200 }}" alt="{{ product.title | escape }}" class="product-images__main" loading="eager" fetchpriority="high" width="900" height="900">
+            {%- endif -%}
+          {%- else -%}
+            <div class="product-images__main product-images__placeholder"></div>
+          {%- endif -%}
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <span class="product-badge product-badge--offer">Oferta</span>
+          {%- endif -%}
+          {%- if product.media.size > 1 -%}
+            <span class="product-gallery__counter" id="gallery-counter">1 / {{ product.media.size }}</span>
+          {%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="product-images__thumbs">
+            {%- for media in product.media limit: 8 -%}
+              <button type="button" class="product-thumb-btn{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index }}" aria-label="Ver imagen {{ forloop.index }}">
+                {%- if media.media_type == 'video' -%}
+                  <span class="product-thumb__play">▶</span>
+                  <img src="{{ media.preview_image | image_url: width: 200 }}" alt="" class="product-thumb" loading="lazy" width="200" height="200">
+                {%- else -%}
+                  <img src="{{ media | image_url: width: 200 }}" alt="" class="product-thumb" data-full="{{ media | image_url: width: 1200 }}" loading="lazy" width="200" height="200">
+                {%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="product-buybox" id="product-buybox">
+        <p class="product-info__vendor">{{ product.vendor | default: shop.name }}</p>
+        <h1 class="product-info__title product-info__title--natural">{{ product.title }}</h1>
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="product-info__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        <div class="product-info__price" id="product-price">
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <p class="price-row price-row--compare">
+              <span class="price-label">Precio habitual</span>
+              <span class="price-compare">{{ current_variant.compare_at_price | money }}</span>
+            </p>
+          {%- endif -%}
+          <p class="price-row price-row--current">
+            <span class="price-label">Precio de oferta</span>
+            <span class="price-current">{{ current_variant.price | money }}</span>
+            {%- if savings_pct -%}
+              <span class="price-save">-{{ savings_pct }}%</span>
+            {%- endif -%}
+          </p>
+          <p class="price-tax">Impuestos incluidos.{%- if savings_pct -%} <span class="price-save-inline">Ahorras {{ savings_amount | money }}</span>{%- endif -%}</p>
+        </div>
+
+        {%- assign review_text = section.settings.review_count_text | default: section.settings.rating_text -%}
+        {%- if review_text != blank -%}
+          <a href="#product-reviews" class="product-rating-link product-rating-link--near-price">
+            <span class="stars" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </span>
+            <span>{{ review_text }}</span>
+          </a>
+        {%- endif -%}
+
+        {%- if bullet_blocks.size > 0 -%}
+          <ul class="product-quick-benefits">
+            {%- for block in bullet_blocks -%}
+              <li class="product-quick-benefit" {{ block.shopify_attributes }}>
+                <span class="product-quick-benefit__check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                {{ block.settings.text }}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div class="variant-group">
+              <p class="variant-label">{{ option.name }}: <strong id="opt-val-{{ forloop.index }}">{{ option.selected_value }}</strong></p>
+              <div class="variant-options">
+                {%- for value in option.values -%}
+                  <button type="button" class="variant-btn{% if value == option.selected_value %} active{% endif %}"
+                          data-option-index="{{ forloop.parentloop.index0 }}"
+                          data-value="{{ value }}">{{ value }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="product-form__qty-label">Cantidad</div>
+        <div class="product-atc-row" id="product-atc-anchor">
+          <div class="product-qty">
+            <button type="button" class="qty-btn qty-dec" aria-label="Reducir cantidad">−</button>
+            <input type="number" class="qty-input" value="1" min="1" max="{{ current_variant.inventory_quantity | default: 99 }}" aria-label="Cantidad">
+            <button type="button" class="qty-btn qty-inc" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <button type="button" class="btn btn--primary btn--lg btn--full atc-main-btn atc-pulse" id="atc-btn" data-variant-id="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
+            {%- if current_variant.available -%}Agregar al carrito{%- else -%}Agotado{%- endif -%}
+          </button>
+        </div>
+
+        <div class="product-payment-icons">
+          <span>VISA</span><span>MC</span><span>PayPal</span><span>Apple Pay</span><span>Bizum</span><span>Shop Pay</span>
+        </div>
+
+        <div class="product-buybox-accordions">
+          {%- if product.description != blank -%}
+            <div class="product-buybox-accordion">
+              <button type="button" class="accordion-btn" aria-expanded="false">
+                Detalles
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="accordion-content rte product-buybox-accordion__rte">{{ product.description | strip_html | truncate: 400 }}</div>
+            </div>
+          {%- endif -%}
+          <div class="product-buybox-accordion">
+            <button type="button" class="accordion-btn" aria-expanded="false">
+              Información de entrega
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">{{ section.settings.shipping_text }}</div>
+          </div>
+          <div class="product-buybox-accordion">
+            <button type="button" class="accordion-btn" aria-expanded="false">
+              Prueba de 30 días
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="accordion-content">{{ section.settings.returns_text }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {%- if product.description != blank -%}
+      <div class="product-story" id="product-story">
+        <div class="product-story__inner rte">{{ product.description }}</div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<div class="sticky-atc" id="sticky-atc" aria-hidden="true">
+  <div class="sticky-atc__inner wrap">
+    <div class="sticky-atc__info">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 80 }}" alt="" class="sticky-atc__img" width="48" height="48">
+      {%- endif -%}
+      <div>
+        <p class="sticky-atc__title">{{ product.title | truncate: 32 }}</p>
+        <p class="sticky-atc__price">{{ current_variant.price | money }}</p>
+      </div>
+    </div>
+    <button type="button" class="btn btn--primary sticky-atc__btn" id="sticky-atc-btn" data-variant-id="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
+      Agregar al carrito
+    </button>
+  </div>
+</div>
+
+<script>
+  var productVariants = {{ product.variants | json }};
+</script>
+
+{% schema %}
+{
+  "name": "Producto",
+  "tag": "section",
+  "class": "main-product-section",
+  "settings": [
+    {"type":"text","id":"subtitle","label":"Subtítulo","default":"El único que cabe en tu bolsillo."},
+    {"type":"text","id":"rating_text","label":"Texto valoración (enlaza a reviews)","default":"Ver valoraciones de clientes ↓","info":"Usa tu app de reviews abajo. No inventes números."},
+    {"type":"text","id":"review_count_text","label":"Texto reseñas junto al precio (ej: 4.9 · 127 reseñas)","default":"4.9 · 127 reseñas","info":"Se muestra junto al precio. Si vacío, usa 'Texto valoración'."},
+    {"type":"textarea","id":"shipping_text","label":"Texto envío (acordeón)","default":"Envío a toda España en 2-4 días laborables. Envío gratis."},
+    {"type":"textarea","id":"returns_text","label":"Texto devolución (acordeón)","default":"Tienes 30 días para probarlo. Si no es lo que esperabas, te devolvemos el dinero sin complicaciones."}
+  ],
+  "blocks": [
+    {
+      "type": "bullet",
+      "name": "Beneficio rápido",
+      "settings": [
+        {"type":"text","id":"text","label":"Texto","default":"Se pliega y cabe en cualquier bolsillo"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Producto",
+      "blocks": [
+        {"type":"bullet","settings":{"text":"Se pliega y cabe en cualquier bolsillo"}},
+        {"type":"bullet","settings":{"text":"Acero inoxidable 304 — sin olores ni BPA"}},
+        {"type":"bullet","settings":{"text":"Gancho integrado para mochila o correa"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

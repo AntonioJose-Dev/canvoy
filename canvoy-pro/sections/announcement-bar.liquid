@@ -1,0 +1,26 @@
+{% if section.settings.show %}
+<div class="announcement-bar" style="background:{{ section.settings.bg }};color:{{ section.settings.text_color }}">
+  <div class="announcement-bar__track">
+    {%- capture messages -%}
+      {%- if section.settings.message != blank -%}<span class="announcement-bar__item">{{ section.settings.message }}</span>{%- endif -%}
+      {%- if section.settings.message_2 != blank -%}<span class="announcement-bar__item">{{ section.settings.message_2 }}</span>{%- endif -%}
+      {%- if section.settings.message_3 != blank -%}<span class="announcement-bar__item">{{ section.settings.message_3 }}</span>{%- endif -%}
+    {%- endcapture -%}
+    {{ messages }}{{ messages }}
+  </div>
+</div>
+{% endif %}
+{% schema %}
+{
+  "name": "Barra de anuncio",
+  "settings": [
+    {"type":"checkbox","id":"show","label":"Mostrar","default":true},
+    {"type":"text","id":"message","label":"Mensaje 1","default":"🚚 Envío GRATIS en pedidos +50€ a España"},
+    {"type":"text","id":"message_2","label":"Mensaje 2","default":"↩️ Devolución 30 días sin preguntas"},
+    {"type":"text","id":"message_3","label":"Mensaje 3","default":"⭐ Calidad testada por dueños activos"},
+    {"type":"color","id":"bg","label":"Fondo","default":"#FF5A1F"},
+    {"type":"color","id":"text_color","label":"Texto","default":"#ffffff"}
+  ],
+  "presets":[{"name":"Barra de anuncio"}]
+}
+{% endschema %}

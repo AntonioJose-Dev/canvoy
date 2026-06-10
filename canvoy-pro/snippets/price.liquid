@@ -1,0 +1,10 @@
+{%- if target.compare_at_price > target.price -%}
+  <div class="price price--on-sale">
+    <span class="price__regular">{{ target.price | money }}</span>
+    <span class="price__compare">{{ target.compare_at_price | money }}</span>
+  </div>
+{%- else -%}
+  <div class="price">
+    <span class="price__regular">{{ target.price | money }}</span>
+  </div>
+{%- endif -%}

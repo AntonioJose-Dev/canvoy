@@ -1,0 +1,45 @@
+<section class="section testimonials">
+  <div class="wrap">
+    <div class="section-head section-head--centered">
+      <p class="section-tag">{{ section.settings.tag }}</p>
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+    <div class="testimonials-grid">
+      {%- for i in (1..3) -%}
+        {%- assign t_text = 'testimonial' | append: i | append: '_text' -%}
+        {%- assign t_name = 'testimonial' | append: i | append: '_name' -%}
+        {%- assign t_meta = 'testimonial' | append: i | append: '_meta' -%}
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"{{ section.settings[t_text] }}"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">{{ section.settings[t_name] | slice: 0 }}</div>
+            <div>
+              <p class="testimonial-name">{{ section.settings[t_name] }}</p>
+              <p class="testimonial-meta">{{ section.settings[t_meta] }}</p>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Testimonios",
+  "settings": [
+    {"type":"text","id":"tag","label":"Etiqueta","default":"Lo que dicen nuestros clientes"},
+    {"type":"text","id":"heading","label":"Titular","default":"Más de 500 familias ya confían en CANVOY"},
+    {"type":"textarea","id":"testimonial1_text","label":"Testimonio 1","default":"El arnés es increíble. Mi border collie lo lleva todo el día y parece súper cómodo. La calidad se nota desde el primer momento."},
+    {"type":"text","id":"testimonial1_name","label":"Nombre 1","default":"María G."},
+    {"type":"text","id":"testimonial1_meta","label":"Meta 1","default":"Dueña de Border Collie · Madrid"},
+    {"type":"textarea","id":"testimonial2_text","label":"Testimonio 2","default":"La bolsa de transporte es perfecta para las rutas de senderismo. Aguanta todo y el perro va cómodo. Totally recommended."},
+    {"type":"text","id":"testimonial2_name","label":"Nombre 2","default":"Carlos M."},
+    {"type":"text","id":"testimonial2_meta","label":"Meta 2","default":"Dueño de Labrador · Barcelona"},
+    {"type":"textarea","id":"testimonial3_text","label":"Testimonio 3","default":"Por fin algo que aguanta el ritmo de mi husky. Los materiales son de primera y el envío llegó en 2 días. Volvería a comprar."},
+    {"type":"text","id":"testimonial3_name","label":"Nombre 3","default":"Laura P."},
+    {"type":"text","id":"testimonial3_meta","label":"Meta 3","default":"Dueña de Husky · Valencia"}
+  ],
+  "presets":[{"name":"Testimonios"}]
+}
+{% endschema %}

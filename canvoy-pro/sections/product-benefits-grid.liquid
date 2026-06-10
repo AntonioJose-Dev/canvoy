@@ -1,0 +1,48 @@
+<section class="section product-icons-grid">
+  <div class="wrap">
+    <div class="section-head section-head--centered">
+      {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading }}</p>{%- endif -%}
+    </div>
+    <div class="product-icons-grid__items">
+      {%- for block in section.blocks -%}
+        <div class="product-icon-card" {{ block.shopify_attributes }}>
+          <span class="product-icon-card__emoji" aria-hidden="true">{{ block.settings.icon }}</span>
+          <h3 class="product-icon-card__title">{{ block.settings.title }}</h3>
+          <p class="product-icon-card__text">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Beneficios con iconos",
+  "settings": [
+    {"type":"text","id":"heading","label":"Titular","default":"Por qué funciona"},
+    {"type":"textarea","id":"subheading","label":"Subtítulo","default":"Diseñado para dueños que no se quedan en casa."}
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Beneficio",
+      "settings": [
+        {"type":"text","id":"icon","label":"Icono","default":"💧"},
+        {"type":"text","id":"title","label":"Título","default":"Hidratación sin complicaciones"},
+        {"type":"textarea","id":"text","label":"Texto","default":"Tu perro bebe cuando lo necesita, sin comederos voluminosos."}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Beneficios con iconos",
+      "blocks": [
+        {"type":"benefit","settings":{"icon":"🎒","title":"Se pliega y cabe en tu bolsillo","text":"No ocupa, no molesta, siempre está ahí."}},
+        {"type":"benefit","settings":{"icon":"🔗","title":"Gancho integrado","text":"Cuélgalo en la mochila, correa o cinturón."}},
+        {"type":"benefit","settings":{"icon":"🛡️","title":"Acero inoxidable 304","text":"Sin olores, fácil de limpiar, dura años."}},
+        {"type":"benefit","settings":{"icon":"⚡","title":"Ligero de verdad","text":"Lo metes y te olvidas hasta que lo necesitas."}}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,10 @@
+{
+  "current": {
+    "accent": "#FF5A1F",
+    "bg": "#0C0C14",
+    "free_shipping_threshold": 50,
+    "show_review_stars": false,
+    "review_count_text": "Valorado por clientes verificados",
+    "sections": {}
+  }
+}

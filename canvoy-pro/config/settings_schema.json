@@ -1,0 +1,64 @@
+[
+  {
+    "name": "Tema",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "color",
+        "id": "accent",
+        "label": "Color acento",
+        "default": "#FF5A1F"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Fondo principal",
+        "default": "#0C0C14"
+      }
+    ]
+  },
+  {
+    "name": "Conversión",
+    "settings": [
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Umbral envío gratis (€)",
+        "default": 50,
+        "info": "Importe en euros. Ej: 50 = envío gratis a partir de 50€"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_review_stars",
+        "label": "Mostrar valoraciones en producto",
+        "default": false,
+        "info": "Activa solo si tienes reviews reales o una app instalada"
+      },
+      {
+        "type": "text",
+        "id": "review_count_text",
+        "label": "Texto de valoraciones",
+        "default": "Valorado por clientes verificados"
+      }
+    ]
+  },
+  {
+    "name": "Redes sociales",
+    "settings": [
+      {
+        "type": "url",
+        "id": "instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "tiktok",
+        "label": "TikTok"
+      }
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+{%- if linklists.main-menu.links.size > 0 -%}
+  {%- for link in linklists.main-menu.links -%}
+    <a href="{{ link.url }}" class="{{ css_class }}{% if link.active %} active{% endif %}">{{ link.title }}</a>
+  {%- endfor -%}
+{%- else -%}
+  {%- for collection in collections -%}
+    {%- if collection.all_products_count > 0 and collection.handle != 'frontpage' -%}
+      <a href="{{ collection.url }}" class="{{ css_class }}">{{ collection.title }}</a>
+      {%- if forloop.index >= 4 -%}{%- break -%}{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  <a href="{{ routes.all_products_collection_url }}" class="{{ css_class }}">Ver todo</a>
+{%- endif -%}

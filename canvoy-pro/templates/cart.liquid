@@ -1,0 +1,63 @@
+{%- if cart.item_count == 0 -%}
+<div class="cart-page cart-page--empty">
+  <div class="wrap">
+    <h1>Tu carrito está vacío</h1>
+    <p>Parece que todavía no has añadido nada a tu carrito.</p>
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary btn--lg">Explorar productos</a>
+  </div>
+</div>
+{%- else -%}
+<div class="cart-page">
+  <div class="wrap">
+    <h1 class="cart-page__title">Tu carrito ({{ cart.item_count }})</h1>
+    <div class="cart-page__grid">
+      <div class="cart-page__items">
+        {%- form 'cart', cart -%}
+          {%- for item in cart.items -%}
+            <div class="cart-line-item" data-key="{{ item.key }}">
+              <a href="{{ item.url }}" class="cart-line-item__img-wrap">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="80" height="80" loading="lazy">
+                {%- endif -%}
+              </a>
+              <div class="cart-line-item__info">
+                <a href="{{ item.url }}" class="cart-line-item__title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="cart-line-item__variant">{{ item.variant.title }}</p>
+                {%- endunless -%}
+                <p class="cart-line-item__price">{{ item.price | money }}</p>
+                <div class="cart-line-item__controls">
+                  <div class="cart-item-qty">
+                    <button class="qty-btn qty-dec" type="button" data-key="{{ item.key }}">−</button>
+                    <span class="qty-val">{{ item.quantity }}</span>
+                    <button class="qty-btn qty-inc" type="button" data-key="{{ item.key }}" data-qty="{{ item.quantity }}">+</button>
+                  </div>
+                  <button class="cart-remove-btn" type="button" data-key="{{ item.key }}">Eliminar</button>
+                </div>
+              </div>
+              <div class="cart-line-item__total">{{ item.line_price | money }}</div>
+            </div>
+          {%- endfor -%}
+          <input type="submit" name="update" value="Actualizar" class="btn btn--outline btn--sm">
+        {%- endform -%}
+      </div>
+      <div class="cart-page__summary">
+        <div class="cart-summary">
+          <h2 class="cart-summary__title">Resumen del pedido</h2>
+          <div class="cart-summary__row"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+          {%- if cart.total_price >= 5000 -%}
+            <div class="cart-summary__row cart-summary__row--free"><span>Envío</span><span>Gratis 🎉</span></div>
+          {%- else -%}
+            <div class="cart-summary__row"><span>Envío</span><span>Calculado en checkout</span></div>
+            <p class="cart-summary__free-hint">Añade {{ 5000 | minus: cart.total_price | money }} más para envío gratis</p>
+          {%- endif -%}
+          <hr class="cart-summary__divider">
+          <div class="cart-summary__total"><span>Total</span><span>{{ cart.total_price | money }}</span></div>
+          <a href="/checkout" class="btn btn--primary btn--full btn--lg">Finalizar compra →</a>
+          <a href="{{ routes.all_products_collection_url }}" class="cart-summary__continue">← Seguir comprando</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}

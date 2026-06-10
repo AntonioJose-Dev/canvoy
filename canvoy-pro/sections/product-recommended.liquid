@@ -1,0 +1,66 @@
+{%- assign col = section.settings.collection -%}
+{%- if col == blank and product.collections.first -%}
+  {%- assign col = product.collections.first -%}
+{%- endif -%}
+{%- if col == blank -%}
+  {%- assign col = collections.all -%}
+{%- endif -%}
+
+{%- assign max_items = section.settings.limit -%}
+{%- assign other_count = 0 -%}
+{%- for item in col.products -%}
+  {%- unless item.id == product.id -%}
+    {%- assign other_count = other_count | plus: 1 -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+{%- if other_count > 0 -%}
+<section class="section product-recommended">
+  <div class="wrap">
+    <div class="section-head section-head--centered">
+      {%- if section.settings.tag != blank -%}
+        <p class="section-tag">{{ section.settings.tag }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p>{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+    <div class="products-grid products-grid--{{ section.settings.columns }}">
+      {%- assign shown = 0 -%}
+      {%- for item in col.products -%}
+        {%- if item.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- render 'product-card', card_product: item -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- if shown >= max_items -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.show_view_all -%}
+      <div class="featured-products__cta">
+        <a href="{{ col.url }}" class="btn btn--outline btn--lg">{{ section.settings.view_all_text }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Productos relacionados",
+  "settings": [
+    {"type":"paragraph","content":"Solo muestra OTROS productos. Nunca repite el producto de esta página. Si no hay más productos, la sección se oculta sola."},
+    {"type":"text","id":"tag","label":"Etiqueta","default":"Completa tu equipo"},
+    {"type":"text","id":"heading","label":"Titular","default":"También te puede gustar"},
+    {"type":"textarea","id":"subheading","label":"Subtítulo","default":"Accesorios que combinan con tu aventura."},
+    {"type":"collection","id":"collection","label":"Colección","info":"Vacío = colección del producto, o todos los productos"},
+    {"type":"range","id":"limit","min":2,"max":8,"step":1,"label":"Número de productos","default":4},
+    {"type":"select","id":"columns","label":"Columnas","default":"4","options":[
+      {"value":"3","label":"3"},
+      {"value":"4","label":"4"}
+    ]},
+    {"type":"checkbox","id":"show_view_all","label":"Mostrar botón ver todos","default":true},
+    {"type":"text","id":"view_all_text","label":"Texto botón","default":"Ver toda la tienda"}
+  ],
+  "presets": [{"name": "Productos relacionados"}]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+<div class="error-page">
+  <div class="wrap">
+    <p class="error-page__code">404</p>
+    <h1 class="error-page__title">Página no encontrada</h1>
+    <p class="error-page__sub">La página que buscas no existe o ha sido movida. Prueba una de estas opciones:</p>
+    <div class="error-page__actions">
+      <a href="{{ routes.root_url }}" class="btn btn--primary btn--lg">Volver al inicio</a>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline btn--lg">Ver productos</a>
+    </div>
+    {%- assign shown = 0 -%}
+    <div class="error-page__collections">
+      {%- for collection in collections -%}
+        {%- if collection.all_products_count > 0 and collection.handle != 'frontpage' -%}
+          <a href="{{ collection.url }}" class="error-page__collection-link">{{ collection.title }}</a>
+          {%- assign shown = shown | plus: 1 -%}
+          {%- if shown >= 4 -%}{%- break -%}{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
