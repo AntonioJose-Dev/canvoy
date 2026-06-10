@@ -6,59 +6,28 @@
 {%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
 
 <style>
-/* ── FASE 1: fondo explícito para que el texto siempre sea legible ── */
+/* ── FASE 1 ── */
 .mp { font-family: inherit; color: #111827; background: #fff; }
 .mp .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 /* TRUST BAR */
-.mp-trust {
-  background: #111827 !important;
-  color: #f9fafb !important;
-  overflow: hidden;
-  position: relative;
-}
-.mp-trust__track {
-  display: flex;
-  gap: 0;
-  animation: mp-scroll 22s linear infinite;
-  width: max-content;
-}
+.mp-trust { background: #111827 !important; color: #f9fafb !important; overflow: hidden; position: relative; }
+.mp-trust__track { display: flex; gap: 0; animation: mp-scroll 22s linear infinite; width: max-content; }
 .mp-trust:hover .mp-trust__track { animation-play-state: paused; }
-@keyframes mp-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.mp-trust__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 32px;
-  white-space: nowrap;
-  font-size: 0.82rem;
-  border-right: 1px solid rgba(255,255,255,0.1);
-  color: #f9fafb !important;
-}
+@keyframes mp-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.mp-trust__item { display: flex; align-items: center; gap: 8px; padding: 10px 32px; white-space: nowrap; font-size: 0.82rem; border-right: 1px solid rgba(255,255,255,0.1); color: #f9fafb !important; }
 .mp-trust__item strong { color: #fff !important; }
 .mp-trust__item span { color: rgba(249,250,251,0.65) !important; }
 
 /* GRID */
-.mp-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  padding: 40px 0;
-  align-items: start;
-  background: #fff;
-}
-@media (max-width: 768px) {
-  .mp-grid { grid-template-columns: 1fr; gap: 16px; padding: 16px 0; }
-}
+.mp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 40px 0; align-items: start; background: #fff; }
+@media (max-width: 768px) { .mp-grid { grid-template-columns: 1fr; gap: 16px; padding: 16px 0; } }
 
 /* GALLERY */
 .mp-gallery__main-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #f3f4f6; aspect-ratio: 1; }
 .mp-gallery__main { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ── FASE 2: galeria compacta en móvil ── */
+/* ── FASE 2 ── */
 @media (max-width: 768px) {
   .mp-gallery__main-wrap { aspect-ratio: 4/3; border-radius: 12px; }
   .mp-gallery__thumbs { display: none; }
@@ -68,24 +37,10 @@
   .mp-buybox { gap: 12px; }
 }
 
-.mp-gallery__badge {
-  position: absolute; top: 14px; left: 14px;
-  background: #FF5A1F; color: #fff !important;
-  font-size: 0.75rem; font-weight: 700;
-  padding: 4px 10px; border-radius: 20px;
-}
-.mp-gallery__counter {
-  position: absolute; bottom: 12px; right: 12px;
-  background: rgba(0,0,0,0.5); color: #fff !important;
-  font-size: 0.75rem; padding: 3px 8px; border-radius: 20px;
-}
+.mp-gallery__badge { position: absolute; top: 14px; left: 14px; background: #FF5A1F; color: #fff !important; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+.mp-gallery__counter { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); color: #fff !important; font-size: 0.75rem; padding: 3px 8px; border-radius: 20px; }
 .mp-gallery__thumbs { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-.mp-thumb-btn {
-  width: 72px; height: 72px; border-radius: 10px;
-  overflow: hidden; border: 2px solid transparent;
-  background: #f3f4f6; cursor: pointer; padding: 0;
-  transition: border-color .15s; flex-shrink: 0;
-}
+.mp-thumb-btn { width: 72px; height: 72px; border-radius: 10px; overflow: hidden; border: 2px solid transparent; background: #f3f4f6; cursor: pointer; padding: 0; transition: border-color .15s; flex-shrink: 0; }
 .mp-thumb-btn.active, .mp-thumb-btn:hover { border-color: #FF5A1F; }
 .mp-thumb-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -93,58 +48,27 @@
 .mp-buybox { display: flex; flex-direction: column; gap: 16px; background: #fff; }
 .mp-vendor { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af !important; margin: 0; }
 .mp-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0; color: #111827 !important; }
-
-/* ── FASE 3: subtitulo debajo del precio, más compacto ── */
 .mp-subtitle { font-size: 0.88rem; color: #6b7280 !important; margin: 0; }
-
-/* Rating ANTES del precio — sube percepción de valor */
 .mp-rating { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #374151 !important; text-decoration: none; }
 .mp-stars { color: #f59e0b !important; display: flex; gap: 1px; }
-
 .mp-price-wrap { display: flex; flex-direction: column; gap: 2px; }
 .mp-price-compare { font-size: 0.9rem; color: #9ca3af !important; text-decoration: line-through; margin: 0; }
 .mp-price-current { font-size: 1.8rem; font-weight: 800; color: #111827 !important; margin: 0; display: flex; align-items: center; gap: 10px; }
 .mp-price-badge { background: #FF5A1F; color: #fff !important; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
 .mp-price-tax { font-size: 0.75rem; color: #9ca3af !important; margin: 0; }
 
-/* Stock badge — nueva señal de urgencia visual */
-.mp-stock {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.8rem; font-weight: 600; color: #16a34a !important;
-}
-.mp-stock__dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #16a34a; flex-shrink: 0;
-  animation: mp-pulse 2s ease-in-out infinite;
-}
-@keyframes mp-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
+.mp-stock { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; color: #16a34a !important; }
+.mp-stock__dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; flex-shrink: 0; animation: mp-pulse 2s ease-in-out infinite; }
+@keyframes mp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-/* ── FASE 3: bullets con más peso visual ── */
 .mp-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.mp-bullet {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 0.92rem; font-weight: 600; color: #111827 !important;
-}
-.mp-bullet__check {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #FF5A1F; color: #fff !important;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
+.mp-bullet { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; font-weight: 600; color: #111827 !important; }
+.mp-bullet__check { width: 20px; height: 20px; border-radius: 50%; background: #FF5A1F; color: #fff !important; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
 .mp-variant-label { font-size: 0.85rem; font-weight: 600; margin: 0 0 8px; color: #111827 !important; }
 .mp-variant-options { display: flex; gap: 8px; flex-wrap: wrap; }
-.mp-variant-btn {
-  padding: 6px 14px; border-radius: 8px;
-  border: 1px solid #d1d5db; background: #fff;
-  font-size: 0.85rem; cursor: pointer; transition: all .15s;
-  color: #374151 !important;
-}
-.mp-variant-btn.active, .mp-variant-btn:hover {
-  border-color: #FF5A1F; background: #fff7f4; color: #FF5A1F !important; font-weight: 600;
-}
+.mp-variant-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #d1d5db; background: #fff; font-size: 0.85rem; cursor: pointer; transition: all .15s; color: #374151 !important; }
+.mp-variant-btn.active, .mp-variant-btn:hover { border-color: #FF5A1F; background: #fff7f4; color: #FF5A1F !important; font-weight: 600; }
 
 .mp-qty-label { font-size: 0.8rem; font-weight: 600; color: #6b7280 !important; text-transform: uppercase; letter-spacing: 0.05em; }
 .mp-atc-row { display: flex; gap: 10px; }
@@ -153,44 +77,57 @@
 .mp-qty-btn:hover { background: #f3f4f6; }
 .mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; color: #111827 !important; background: #fff; -moz-appearance: textfield; }
 .mp-qty-input::-webkit-inner-spin-button, .mp-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-.mp-atc-btn {
-  flex: 1; height: 52px; background: #FF5A1F; color: #fff !important;
-  border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
-  cursor: pointer; transition: opacity .15s, transform .1s;
-  letter-spacing: 0.01em;
-}
+.mp-atc-btn { flex: 1; height: 52px; background: #FF5A1F; color: #fff !important; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity .15s, transform .1s; letter-spacing: 0.01em; }
 .mp-atc-btn:hover { opacity: 0.9; }
 .mp-atc-btn:active { transform: scale(0.98); }
 .mp-atc-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
-.mp-payments { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.mp-pay-icon {
-  background: #f3f4f6; border-radius: 4px;
-  padding: 3px 7px; font-size: 0.68rem; font-weight: 700;
-  color: #374151 !important;
+/* ── FASE 4: FOMO counter ── */
+.mp-fomo {
+  display: flex; align-items: center; gap: 8px;
+  background: #fff7ed; border: 1px solid #fed7aa;
+  border-radius: 8px; padding: 8px 12px;
+  font-size: 0.8rem; color: #92400e !important;
 }
+.mp-fomo__dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #f97316; flex-shrink: 0;
+  animation: mp-pulse 1.4s ease-in-out infinite;
+}
+.mp-fomo strong { color: #c2410c !important; }
+
+/* ── FASE 4: mini trust row bajo el botón ── */
+.mp-trust-mini {
+  display: flex; gap: 0;
+  border: 1px solid #e5e7eb; border-radius: 10px;
+  overflow: hidden;
+}
+.mp-trust-mini__item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px; padding: 10px 6px; text-align: center;
+  border-right: 1px solid #e5e7eb;
+  font-size: 0.7rem; color: #374151 !important;
+  line-height: 1.3;
+}
+.mp-trust-mini__item:last-child { border-right: none; }
+.mp-trust-mini__icon { font-size: 1.1rem; }
+.mp-trust-mini__label { font-weight: 700; font-size: 0.7rem; color: #111827 !important; }
+.mp-trust-mini__sub { font-size: 0.65rem; color: #6b7280 !important; }
+
+.mp-payments { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.mp-pay-icon { background: #f3f4f6; border-radius: 4px; padding: 3px 7px; font-size: 0.68rem; font-weight: 700; color: #374151 !important; }
 
 .mp-accordion { border-top: 1px solid #e5e7eb; }
 .mp-accordion:last-child { border-bottom: 1px solid #e5e7eb; }
-.mp-accordion-btn {
-  width: 100%; display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 0; background: none; border: none; cursor: pointer;
-  font-size: 0.9rem; font-weight: 600; color: #111827 !important; text-align: left;
-}
+.mp-accordion-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; background: none; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: #111827 !important; text-align: left; }
 .mp-accordion-btn svg { transition: transform .2s; flex-shrink: 0; color: #374151 !important; }
 .mp-accordion-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .mp-accordion-content { display: none; padding: 0 0 14px; font-size: 0.88rem; color: #6b7280 !important; line-height: 1.6; }
 .mp-accordion-content.open { display: block; }
 
 /* BENEFITS BAR */
-.mp-benefits {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: #e5e7eb;
-  border-top: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
-}
+.mp-benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #e5e7eb; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
 @media (max-width: 640px) { .mp-benefits { grid-template-columns: repeat(2, 1fr); } }
 .mp-benefit { background: #f9fafb; padding: 20px 16px; text-align: center; }
 .mp-benefit__icon { font-size: 1.6rem; margin-bottom: 6px; }
@@ -215,12 +152,7 @@
 .mp-testimonial__stars { color: #f59e0b !important; font-size: 0.85rem; margin-bottom: 10px; }
 .mp-testimonial__text { font-size: 0.88rem; color: #374151 !important; line-height: 1.6; margin: 0 0 14px; font-style: italic; }
 .mp-testimonial__author { display: flex; align-items: center; gap: 8px; }
-.mp-testimonial__avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: #FF5A1F; color: #fff !important;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
-}
+.mp-testimonial__avatar { width: 36px; height: 36px; border-radius: 50%; background: #FF5A1F; color: #fff !important; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
 .mp-testimonial__name { font-size: 0.82rem; font-weight: 700; margin: 0; color: #111827 !important; }
 .mp-testimonial__meta { font-size: 0.75rem; color: #9ca3af !important; margin: 0; }
 .mp-verified { font-size: 0.7rem; color: #16a34a !important; font-weight: 600; }
@@ -229,30 +161,15 @@
 .mp-guarantee { background: #fff7ed; padding: 56px 0; border-top: 3px solid #FF5A1F; }
 .mp-guarantee__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
 @media (max-width: 768px) { .mp-guarantee__inner { grid-template-columns: 1fr; gap: 24px; } }
-.mp-guarantee__badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: #FF5A1F; color: #fff !important;
-  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-  padding: 6px 14px; border-radius: 20px; margin-bottom: 16px;
-}
+.mp-guarantee__badge { display: inline-flex; align-items: center; gap: 8px; background: #FF5A1F; color: #fff !important; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; }
 .mp-guarantee__heading { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 800; margin: 0 0 10px; color: #111827 !important; }
 .mp-guarantee__sub { font-size: 0.9rem; color: #6b7280 !important; line-height: 1.6; margin: 0 0 24px; }
 .mp-guarantee__steps { display: flex; flex-direction: column; gap: 14px; }
 .mp-guarantee__step { display: flex; align-items: flex-start; gap: 12px; }
-.mp-guarantee__step-num {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: #FF5A1F; color: #fff !important;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.78rem; font-weight: 800; flex-shrink: 0;
-}
+.mp-guarantee__step-num { width: 28px; height: 28px; border-radius: 50%; background: #FF5A1F; color: #fff !important; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 800; flex-shrink: 0; }
 .mp-guarantee__step-title { font-size: 0.88rem; font-weight: 700; margin: 0 0 2px; color: #111827 !important; }
 .mp-guarantee__step-text { font-size: 0.82rem; color: #6b7280 !important; margin: 0; }
-.mp-guarantee__visual {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 16px;
-  background: #fff; border-radius: 20px;
-  padding: 40px; text-align: center; border: 2px solid #fed7aa;
-}
+.mp-guarantee__visual { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: #fff; border-radius: 20px; padding: 40px; text-align: center; border: 2px solid #fed7aa; }
 .mp-guarantee__icon { font-size: 4rem; }
 .mp-guarantee__visual-text { font-size: 1.2rem; font-weight: 800; color: #111827 !important; margin: 0; }
 .mp-guarantee__visual-sub { font-size: 0.85rem; color: #6b7280 !important; margin: 0; }
@@ -262,12 +179,7 @@
 .mp-faq__list { display: flex; flex-direction: column; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
 .mp-faq__item { border-bottom: 1px solid #e5e7eb; }
 .mp-faq__item:last-child { border-bottom: none; }
-.mp-faq__q {
-  width: 100%; display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 20px; background: #fff; border: none;
-  font-size: 0.92rem; font-weight: 700; color: #111827 !important;
-  cursor: pointer; text-align: left; gap: 12px;
-}
+.mp-faq__q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; background: #fff; border: none; font-size: 0.92rem; font-weight: 700; color: #111827 !important; cursor: pointer; text-align: left; gap: 12px; }
 .mp-faq__q svg { flex-shrink: 0; transition: transform .2s; color: #FF5A1F !important; }
 .mp-faq__q[aria-expanded="true"] svg { transform: rotate(180deg); }
 .mp-faq__a { display: none; padding: 0 20px 18px; font-size: 0.88rem; color: #6b7280 !important; line-height: 1.7; }
@@ -278,47 +190,20 @@
 .mp-cta-banner__icon { font-size: 2.5rem; margin-bottom: 12px; }
 .mp-cta-banner__heading { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; margin: 0 0 10px; color: #fff !important; }
 .mp-cta-banner__text { font-size: 0.95rem; color: #9ca3af !important; margin: 0 0 28px; }
-.mp-cta-banner__btn {
-  display: inline-block; background: #FF5A1F; color: #fff !important;
-  font-size: 1.05rem; font-weight: 800; padding: 16px 48px; border-radius: 12px;
-  border: none; cursor: pointer; transition: opacity .15s, transform .1s;
-}
+.mp-cta-banner__btn { display: inline-block; background: #FF5A1F; color: #fff !important; font-size: 1.05rem; font-weight: 800; padding: 16px 48px; border-radius: 12px; border: none; cursor: pointer; transition: opacity .15s, transform .1s; }
 .mp-cta-banner__btn:hover { opacity: 0.9; }
 .mp-cta-banner__trust { font-size: 0.78rem; color: #6b7280 !important; margin: 16px 0 0; }
 
-/* STICKY ATC — ARRIBA */
-.mp-sticky {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  background: #fff !important;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
-  transform: translateY(-100%);
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-}
+/* STICKY ATC */
+.mp-sticky { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: #fff !important; border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 16px rgba(0,0,0,0.10); transform: translateY(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
 .mp-sticky.visible { transform: translateY(0); }
-.mp-sticky__inner {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 12px; padding: 10px 20px;
-  max-width: 1200px; margin: 0 auto;
-}
+.mp-sticky__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 20px; max-width: 1200px; margin: 0 auto; }
 .mp-sticky__info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .mp-sticky__img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
 .mp-sticky__title { font-size: 0.85rem; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; color: #111827 !important; }
 .mp-sticky__price { font-size: 0.85rem; color: #111827 !important; margin: 0; }
-.mp-sticky__btn {
-  background: #FF5A1F; color: #fff !important;
-  border: none; border-radius: 8px;
-  padding: 10px 24px; font-size: 0.9rem; font-weight: 700;
-  cursor: pointer; white-space: nowrap; flex-shrink: 0;
-}
-@media (max-width: 480px) {
-  .mp-sticky__title { max-width: 100px; }
-  .mp-sticky__btn { padding: 10px 16px; font-size: 0.82rem; }
-}
+.mp-sticky__btn { background: #FF5A1F; color: #fff !important; border: none; border-radius: 8px; padding: 10px 24px; font-size: 0.9rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+@media (max-width: 480px) { .mp-sticky__title { max-width: 100px; } .mp-sticky__btn { padding: 10px 16px; font-size: 0.82rem; } }
 </style>
 
 <!-- TRUST BAR -->
@@ -366,13 +251,9 @@
 
       <div class="mp-buybox" id="mp-buybox">
 
-        {{- '<!-- ── FASE 3: orden CRO ─ vendor > título > estrellas > precio > stock > subtitle > bullets > variantes > ATC ── -->' -}}
-
         <p class="mp-vendor">{{ product.vendor | default: shop.name }}</p>
-
         <h1 class="mp-title">{{ product.title }}</h1>
 
-        {{- '<!-- estrellas antes del precio: anclan valor percibido antes de ver el número -->' -}}
         <a href="#mp-reviews" class="mp-rating">
           <span class="mp-stars" aria-hidden="true">★★★★★</span>
           <span>{{ section.settings.review_count_text | default: '4.9 · 127 reseñas' }}</span>
@@ -389,7 +270,6 @@
           <p class="mp-price-tax">IVA incluido{%- if section.settings.shipping_text != blank -%} &middot; {{ section.settings.shipping_text }}{%- endif -%}</p>
         </div>
 
-        {{- '<!-- stock pulsante: urgencia discreta pero efectiva -->' -}}
         {%- if cv.available -%}
           <span class="mp-stock"><span class="mp-stock__dot"></span> En stock — envío en 24–48h</span>
         {%- endif -%}
@@ -435,6 +315,33 @@
             <button type="button" class="mp-atc-btn" id="mp-atc" data-variant-id="{{ cv.id }}" {% unless cv.available %}disabled{% endunless %}>
               {%- if cv.available -%}Agregar al carrito{%- else -%}Agotado{%- endif -%}
             </button>
+          </div>
+        </div>
+
+        <!-- ── FASE 4: FOMO counter ── -->
+        {%- if cv.available -%}
+          <div class="mp-fomo" id="mp-fomo" aria-live="polite">
+            <span class="mp-fomo__dot" aria-hidden="true"></span>
+            <span><strong id="mp-fomo-num">--</strong> personas están mirando este producto ahora</span>
+          </div>
+        {%- endif -%}
+
+        <!-- ── FASE 4: mini trust row ── -->
+        <div class="mp-trust-mini" aria-label="Garantías de compra">
+          <div class="mp-trust-mini__item">
+            <span class="mp-trust-mini__icon" aria-hidden="true">🛡️</span>
+            <span class="mp-trust-mini__label">Garantia 30 días</span>
+            <span class="mp-trust-mini__sub">Reembolso total</span>
+          </div>
+          <div class="mp-trust-mini__item">
+            <span class="mp-trust-mini__icon" aria-hidden="true">🚚</span>
+            <span class="mp-trust-mini__label">Envío 3–5 días</span>
+            <span class="mp-trust-mini__sub">Gratis desde 50€</span>
+          </div>
+          <div class="mp-trust-mini__item">
+            <span class="mp-trust-mini__icon" aria-hidden="true">🔒</span>
+            <span class="mp-trust-mini__label">Pago seguro</span>
+            <span class="mp-trust-mini__sub">Visa, PayPal, Bizum</span>
           </div>
         </div>
 
@@ -537,7 +444,7 @@
       <div class="mp-faq__list">
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánta agua cabe? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">285ml — suficiente para razas pequeñas y medianas en un paseo largo. Para razas grandes recomendamos rellenar cada 45-60 minutos.</div></div>
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Realmente no gotea? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">El sello de silicona garantiza cierre hermético. Puedes meterla al revés en tu mochila. Si hay cualquier problema en 30 días, te enviamos una nueva sin coste.</div></div>
-        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</p></div></div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</div></div>
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Es segura para mi perro? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">100%. Acero inoxidable 304 grado alimentario, sin BPA. Cuenco de silicona alimentaria — el mismo material que los chupetes de bebé.</div></div>
         <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cómo se limpia? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto. El cuenco se desmonta para limpieza en profundidad.</div></div>
       </div>
@@ -636,12 +543,10 @@
 
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
-
   if (anchor && sticky) {
     function updateSticky() {
       var rect = anchor.getBoundingClientRect();
-      var anchorGone = rect.bottom < 0;
-      sticky.classList.toggle('visible', anchorGone);
+      sticky.classList.toggle('visible', rect.bottom < 0);
     }
     window.addEventListener('scroll', updateSticky, { passive: true });
   }
@@ -680,6 +585,20 @@
       }
     });
   });
+
+  /* ── FASE 4: FOMO counter ──
+     Número aleatorio entre 8-24 que fluctuúa ±2 cada 18-35s.
+     No usa APIs externas — puramente decorativo, nunca baja de 6. */
+  var fomoEl = document.getElementById('mp-fomo-num');
+  if (fomoEl) {
+    var fomoBase = Math.floor(Math.random() * 17) + 8; // 8–24
+    fomoEl.textContent = fomoBase;
+    setInterval(function() {
+      var delta = Math.floor(Math.random() * 5) - 2; // -2 a +2
+      fomoBase = Math.max(6, Math.min(30, fomoBase + delta));
+      fomoEl.textContent = fomoBase;
+    }, Math.floor(Math.random() * 17000) + 18000); // cada 18–35s
+  }
 })();
 </script>
 
