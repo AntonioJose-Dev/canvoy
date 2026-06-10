@@ -6,18 +6,13 @@
 {%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
 
 <style>
-/* =====================
-   RESET & BASE
-   ===================== */
 .mp { font-family: inherit; color: #111827; }
 .mp .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-/* =====================
-   TRUST BAR
-   ===================== */
+/* TRUST BAR */
 .mp-trust {
-  background: #111827;
-  color: #f9fafb;
+  background: #111827 !important;
+  color: #f9fafb !important;
   overflow: hidden;
   position: relative;
 }
@@ -40,13 +35,12 @@
   white-space: nowrap;
   font-size: 0.82rem;
   border-right: 1px solid rgba(255,255,255,0.1);
+  color: #f9fafb !important;
 }
-.mp-trust__item strong { color: #fff; }
-.mp-trust__item span { opacity: 0.65; }
+.mp-trust__item strong { color: #fff !important; }
+.mp-trust__item span { color: rgba(249,250,251,0.65) !important; }
 
-/* =====================
-   PRODUCT GRID
-   ===================== */
+/* GRID */
 .mp-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -58,127 +52,101 @@
   .mp-grid { grid-template-columns: 1fr; gap: 24px; padding: 24px 0; }
 }
 
-/* =====================
-   GALLERY
-   ===================== */
+/* GALLERY */
 .mp-gallery__main-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #f3f4f6; aspect-ratio: 1; }
 .mp-gallery__main { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mp-gallery__badge {
   position: absolute; top: 14px; left: 14px;
-  background: #FF5A1F; color: #fff;
+  background: #FF5A1F; color: #fff !important;
   font-size: 0.75rem; font-weight: 700;
   padding: 4px 10px; border-radius: 20px;
 }
 .mp-gallery__counter {
   position: absolute; bottom: 12px; right: 12px;
-  background: rgba(0,0,0,0.5); color: #fff;
+  background: rgba(0,0,0,0.5); color: #fff !important;
   font-size: 0.75rem; padding: 3px 8px; border-radius: 20px;
 }
-.mp-gallery__thumbs {
-  display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
-}
+.mp-gallery__thumbs { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .mp-thumb-btn {
   width: 72px; height: 72px; border-radius: 10px;
   overflow: hidden; border: 2px solid transparent;
   background: #f3f4f6; cursor: pointer; padding: 0;
-  transition: border-color .15s;
-  flex-shrink: 0;
+  transition: border-color .15s; flex-shrink: 0;
 }
 .mp-thumb-btn.active, .mp-thumb-btn:hover { border-color: #FF5A1F; }
 .mp-thumb-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* =====================
-   BUYBOX
-   ===================== */
+/* BUYBOX */
 .mp-buybox { display: flex; flex-direction: column; gap: 16px; }
-.mp-vendor { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin: 0; }
-.mp-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0; }
-.mp-subtitle { font-size: 0.95rem; color: #6b7280; margin: 0; }
+.mp-vendor { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af !important; margin: 0; }
+.mp-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0; color: #111827 !important; }
+.mp-subtitle { font-size: 0.95rem; color: #6b7280 !important; margin: 0; }
 
 .mp-price-wrap { display: flex; flex-direction: column; gap: 2px; }
-.mp-price-compare { font-size: 0.9rem; color: #9ca3af; text-decoration: line-through; margin: 0; }
-.mp-price-current { font-size: 1.8rem; font-weight: 800; color: #111; margin: 0; display: flex; align-items: center; gap: 10px; }
-.mp-price-badge { background: #FF5A1F; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
-.mp-price-tax { font-size: 0.75rem; color: #9ca3af; margin: 0; }
+.mp-price-compare { font-size: 0.9rem; color: #9ca3af !important; text-decoration: line-through; margin: 0; }
+.mp-price-current { font-size: 1.8rem; font-weight: 800; color: #111827 !important; margin: 0; display: flex; align-items: center; gap: 10px; }
+.mp-price-badge { background: #FF5A1F; color: #fff !important; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+.mp-price-tax { font-size: 0.75rem; color: #9ca3af !important; margin: 0; }
 
-.mp-rating {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 0.85rem; color: #374151; text-decoration: none;
-}
-.mp-stars { color: #f59e0b; display: flex; gap: 1px; }
+.mp-rating { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #374151 !important; text-decoration: none; }
+.mp-stars { color: #f59e0b !important; display: flex; gap: 1px; }
 
 .mp-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
-.mp-bullet {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 0.88rem; color: #374151;
-}
+.mp-bullet { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: #374151 !important; }
 .mp-bullet__check {
   width: 18px; height: 18px; border-radius: 50%;
-  background: #FF5A1F; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  background: #FF5A1F; color: #fff !important;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 
-/* Variants */
-.mp-variant-label { font-size: 0.85rem; font-weight: 600; margin: 0 0 8px; }
+.mp-variant-label { font-size: 0.85rem; font-weight: 600; margin: 0 0 8px; color: #111827 !important; }
 .mp-variant-options { display: flex; gap: 8px; flex-wrap: wrap; }
 .mp-variant-btn {
   padding: 6px 14px; border-radius: 8px;
   border: 1px solid #d1d5db; background: #fff;
   font-size: 0.85rem; cursor: pointer; transition: all .15s;
+  color: #374151 !important;
 }
 .mp-variant-btn.active, .mp-variant-btn:hover {
-  border-color: #FF5A1F; background: #fff7f4; color: #FF5A1F; font-weight: 600;
+  border-color: #FF5A1F; background: #fff7f4; color: #FF5A1F !important; font-weight: 600;
 }
 
-/* ATC row */
-.mp-qty-label { font-size: 0.8rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+.mp-qty-label { font-size: 0.8rem; font-weight: 600; color: #6b7280 !important; text-transform: uppercase; letter-spacing: 0.05em; }
 .mp-atc-row { display: flex; gap: 10px; }
 .mp-qty { display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 10px; overflow: hidden; }
-.mp-qty-btn { width: 40px; height: 48px; background: #f9fafb; border: none; font-size: 1.2rem; cursor: pointer; transition: background .15s; }
+.mp-qty-btn { width: 40px; height: 48px; background: #f9fafb; border: none; font-size: 1.2rem; cursor: pointer; color: #111827 !important; }
 .mp-qty-btn:hover { background: #f3f4f6; }
-.mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; -moz-appearance: textfield; }
+.mp-qty-input { width: 44px; height: 48px; border: none; text-align: center; font-size: 1rem; font-weight: 600; color: #111827 !important; -moz-appearance: textfield; }
 .mp-qty-input::-webkit-inner-spin-button, .mp-qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
 .mp-atc-btn {
-  flex: 1; height: 48px; background: #FF5A1F; color: #fff;
+  flex: 1; height: 48px; background: #FF5A1F; color: #fff !important;
   border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
   cursor: pointer; transition: opacity .15s, transform .1s;
-  letter-spacing: 0.02em;
 }
 .mp-atc-btn:hover { opacity: 0.9; }
 .mp-atc-btn:active { transform: scale(0.98); }
 .mp-atc-btn:disabled { background: #9ca3af; cursor: not-allowed; }
 
-/* Payment icons */
-.mp-payments {
-  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
-  font-size: 0.7rem; color: #9ca3af;
-}
+.mp-payments { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .mp-pay-icon {
   background: #f3f4f6; border-radius: 4px;
   padding: 3px 7px; font-size: 0.68rem; font-weight: 700;
-  color: #374151; letter-spacing: 0.03em;
+  color: #374151 !important;
 }
 
-/* Accordions */
 .mp-accordion { border-top: 1px solid #e5e7eb; }
 .mp-accordion:last-child { border-bottom: 1px solid #e5e7eb; }
 .mp-accordion-btn {
   width: 100%; display: flex; justify-content: space-between; align-items: center;
   padding: 14px 0; background: none; border: none; cursor: pointer;
-  font-size: 0.9rem; font-weight: 600; color: #111; text-align: left;
+  font-size: 0.9rem; font-weight: 600; color: #111827 !important; text-align: left;
 }
-.mp-accordion-btn svg { transition: transform .2s; flex-shrink: 0; }
+.mp-accordion-btn svg { transition: transform .2s; flex-shrink: 0; color: #374151 !important; }
 .mp-accordion-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
-.mp-accordion-content {
-  display: none; padding: 0 0 14px;
-  font-size: 0.88rem; color: #6b7280; line-height: 1.6;
-}
+.mp-accordion-content { display: none; padding: 0 0 14px; font-size: 0.88rem; color: #6b7280 !important; line-height: 1.6; }
 .mp-accordion-content.open { display: block; }
 
-/* =====================
-   BENEFITS BAR
-   ===================== */
+/* BENEFITS BAR */
 .mp-benefits {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -188,163 +156,111 @@
   border-bottom: 1px solid #e5e7eb;
 }
 @media (max-width: 640px) { .mp-benefits { grid-template-columns: repeat(2, 1fr); } }
-.mp-benefit {
-  background: #f9fafb;
-  padding: 20px 16px;
-  text-align: center;
-}
+.mp-benefit { background: #f9fafb; padding: 20px 16px; text-align: center; }
 .mp-benefit__icon { font-size: 1.6rem; margin-bottom: 6px; }
-.mp-benefit__title { font-size: 0.85rem; font-weight: 700; margin: 0 0 2px; }
-.mp-benefit__sub { font-size: 0.75rem; color: #6b7280; margin: 0; }
+.mp-benefit__title { font-size: 0.85rem; font-weight: 700; margin: 0 0 2px; color: #111827 !important; }
+.mp-benefit__sub { font-size: 0.75rem; color: #6b7280 !important; margin: 0; }
 
-/* =====================
-   SOCIAL PROOF
-   ===================== */
-.mp-stats {
-  background: #fff;
-  padding: 48px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-.mp-stats__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  text-align: center;
-}
+/* STATS */
+.mp-stats { background: #fff; padding: 48px 0; border-bottom: 1px solid #e5e7eb; }
+.mp-stats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center; }
 @media (max-width: 640px) { .mp-stats__grid { grid-template-columns: 1fr; gap: 16px; } }
-.mp-stat__value { font-size: 2.2rem; font-weight: 900; color: #FF5A1F; margin: 0 0 4px; }
-.mp-stat__label { font-size: 0.85rem; color: #6b7280; margin: 0; }
+.mp-stat__value { font-size: 2.2rem; font-weight: 900; color: #FF5A1F !important; margin: 0 0 4px; }
+.mp-stat__label { font-size: 0.85rem; color: #6b7280 !important; margin: 0; }
 
-/* =====================
-   TESTIMONIALS
-   ===================== */
+/* TESTIMONIALS */
 .mp-testimonials { padding: 56px 0; background: #f9fafb; }
-.mp-section-tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #FF5A1F; margin: 0 0 8px; }
-.mp-section-heading { font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 800; margin: 0 0 8px; }
-.mp-section-sub { font-size: 0.9rem; color: #6b7280; margin: 0 0 32px; }
-.mp-testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
+.mp-section-tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #FF5A1F !important; margin: 0 0 8px; }
+.mp-section-heading { font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 800; margin: 0 0 8px; color: #111827 !important; }
+.mp-section-sub { font-size: 0.9rem; color: #6b7280 !important; margin: 0 0 32px; }
+.mp-testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 @media (max-width: 640px) { .mp-testimonials-grid { grid-template-columns: 1fr; } }
-.mp-testimonial {
-  background: #fff;
-  border-radius: 14px;
-  padding: 22px;
-  border: 1px solid #e5e7eb;
-}
-.mp-testimonial__stars { color: #f59e0b; font-size: 0.85rem; margin-bottom: 10px; }
-.mp-testimonial__text { font-size: 0.88rem; color: #374151; line-height: 1.6; margin: 0 0 14px; font-style: italic; }
+.mp-testimonial { background: #fff; border-radius: 14px; padding: 22px; border: 1px solid #e5e7eb; }
+.mp-testimonial__stars { color: #f59e0b !important; font-size: 0.85rem; margin-bottom: 10px; }
+.mp-testimonial__text { font-size: 0.88rem; color: #374151 !important; line-height: 1.6; margin: 0 0 14px; font-style: italic; }
 .mp-testimonial__author { display: flex; align-items: center; gap: 8px; }
 .mp-testimonial__avatar {
   width: 36px; height: 36px; border-radius: 50%;
-  background: #FF5A1F; color: #fff;
+  background: #FF5A1F; color: #fff !important;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
 }
-.mp-testimonial__name { font-size: 0.82rem; font-weight: 700; margin: 0; }
-.mp-testimonial__meta { font-size: 0.75rem; color: #9ca3af; margin: 0; }
-.mp-verified { font-size: 0.7rem; color: #16a34a; font-weight: 600; }
+.mp-testimonial__name { font-size: 0.82rem; font-weight: 700; margin: 0; color: #111827 !important; }
+.mp-testimonial__meta { font-size: 0.75rem; color: #9ca3af !important; margin: 0; }
+.mp-verified { font-size: 0.7rem; color: #16a34a !important; font-weight: 600; }
 
-/* =====================
-   GUARANTEE
-   ===================== */
-.mp-guarantee {
-  background: #fff7ed;
-  padding: 56px 0;
-  border-top: 3px solid #FF5A1F;
-}
-.mp-guarantee__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-}
+/* GUARANTEE */
+.mp-guarantee { background: #fff7ed; padding: 56px 0; border-top: 3px solid #FF5A1F; }
+.mp-guarantee__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
 @media (max-width: 768px) { .mp-guarantee__inner { grid-template-columns: 1fr; gap: 24px; } }
 .mp-guarantee__badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: #FF5A1F; color: #fff;
-  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  background: #FF5A1F; color: #fff !important;
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
   padding: 6px 14px; border-radius: 20px; margin-bottom: 16px;
 }
-.mp-guarantee__heading { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 800; margin: 0 0 10px; }
-.mp-guarantee__sub { font-size: 0.9rem; color: #6b7280; line-height: 1.6; margin: 0 0 24px; }
+.mp-guarantee__heading { font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 800; margin: 0 0 10px; color: #111827 !important; }
+.mp-guarantee__sub { font-size: 0.9rem; color: #6b7280 !important; line-height: 1.6; margin: 0 0 24px; }
 .mp-guarantee__steps { display: flex; flex-direction: column; gap: 14px; }
 .mp-guarantee__step { display: flex; align-items: flex-start; gap: 12px; }
 .mp-guarantee__step-num {
   width: 28px; height: 28px; border-radius: 50%;
-  background: #FF5A1F; color: #fff;
+  background: #FF5A1F; color: #fff !important;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.78rem; font-weight: 800; flex-shrink: 0;
 }
-.mp-guarantee__step-title { font-size: 0.88rem; font-weight: 700; margin: 0 0 2px; }
-.mp-guarantee__step-text { font-size: 0.82rem; color: #6b7280; margin: 0; }
+.mp-guarantee__step-title { font-size: 0.88rem; font-weight: 700; margin: 0 0 2px; color: #111827 !important; }
+.mp-guarantee__step-text { font-size: 0.82rem; color: #6b7280 !important; margin: 0; }
 .mp-guarantee__visual {
   display: flex; flex-direction: column; align-items: center;
   justify-content: center; gap: 16px;
   background: #fff; border-radius: 20px;
-  padding: 40px; text-align: center;
-  border: 2px solid #fed7aa;
+  padding: 40px; text-align: center; border: 2px solid #fed7aa;
 }
 .mp-guarantee__icon { font-size: 4rem; }
-.mp-guarantee__visual-text { font-size: 1.2rem; font-weight: 800; color: #111; margin: 0; }
-.mp-guarantee__visual-sub { font-size: 0.85rem; color: #6b7280; margin: 0; }
+.mp-guarantee__visual-text { font-size: 1.2rem; font-weight: 800; color: #111827 !important; margin: 0; }
+.mp-guarantee__visual-sub { font-size: 0.85rem; color: #6b7280 !important; margin: 0; }
 
-/* =====================
-   FAQ
-   ===================== */
+/* FAQ */
 .mp-faq { padding: 56px 0; background: #fff; }
 .mp-faq__list { display: flex; flex-direction: column; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
 .mp-faq__item { border-bottom: 1px solid #e5e7eb; }
 .mp-faq__item:last-child { border-bottom: none; }
 .mp-faq__q {
   width: 100%; display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 20px; background: none; border: none;
-  font-size: 0.92rem; font-weight: 700; color: #111;
+  padding: 18px 20px; background: #fff; border: none;
+  font-size: 0.92rem; font-weight: 700; color: #111827 !important;
   cursor: pointer; text-align: left; gap: 12px;
 }
-.mp-faq__q svg { flex-shrink: 0; transition: transform .2s; color: #FF5A1F; }
+.mp-faq__q svg { flex-shrink: 0; transition: transform .2s; color: #FF5A1F !important; }
 .mp-faq__q[aria-expanded="true"] svg { transform: rotate(180deg); }
-.mp-faq__a {
-  display: none; padding: 0 20px 18px;
-  font-size: 0.88rem; color: #6b7280; line-height: 1.7;
-}
+.mp-faq__a { display: none; padding: 0 20px 18px; font-size: 0.88rem; color: #6b7280 !important; line-height: 1.7; }
 .mp-faq__a.open { display: block; }
 
-/* =====================
-   CTA BANNER
-   ===================== */
-.mp-cta-banner {
-  background: #111827;
-  color: #fff;
-  padding: 56px 0;
-  text-align: center;
-}
+/* CTA BANNER */
+.mp-cta-banner { background: #111827 !important; color: #fff !important; padding: 56px 0; text-align: center; }
 .mp-cta-banner__icon { font-size: 2.5rem; margin-bottom: 12px; }
-.mp-cta-banner__heading { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; margin: 0 0 10px; }
-.mp-cta-banner__text { font-size: 0.95rem; color: #9ca3af; margin: 0 0 28px; }
+.mp-cta-banner__heading { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 900; margin: 0 0 10px; color: #fff !important; }
+.mp-cta-banner__text { font-size: 0.95rem; color: #9ca3af !important; margin: 0 0 28px; }
 .mp-cta-banner__btn {
-  display: inline-block;
-  background: #FF5A1F; color: #fff;
-  font-size: 1.05rem; font-weight: 800;
-  padding: 16px 48px; border-radius: 12px;
-  border: none; cursor: pointer;
-  transition: opacity .15s, transform .1s;
-  text-decoration: none;
+  display: inline-block; background: #FF5A1F; color: #fff !important;
+  font-size: 1.05rem; font-weight: 800; padding: 16px 48px; border-radius: 12px;
+  border: none; cursor: pointer; transition: opacity .15s, transform .1s;
 }
 .mp-cta-banner__btn:hover { opacity: 0.9; }
-.mp-cta-banner__btn:active { transform: scale(0.98); }
-.mp-cta-banner__trust { font-size: 0.78rem; color: #6b7280; margin: 16px 0 0; }
+.mp-cta-banner__trust { font-size: 0.78rem; color: #6b7280 !important; margin: 16px 0 0; }
 
-/* =====================
-   STICKY ATC
-   ===================== */
+/* STICKY ATC — ARRIBA */
 .mp-sticky {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
-  background: #fff; border-top: 1px solid #e5e7eb;
-  box-shadow: 0 -4px 16px rgba(0,0,0,0.10);
-  transform: translateY(100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #fff !important;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  transform: translateY(-100%);
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 .mp-sticky.visible { transform: translateY(0); }
@@ -355,10 +271,10 @@
 }
 .mp-sticky__info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .mp-sticky__img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-.mp-sticky__title { font-size: 0.85rem; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
-.mp-sticky__price { font-size: 0.85rem; color: #111; margin: 0; }
+.mp-sticky__title { font-size: 0.85rem; font-weight: 700; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; color: #111827 !important; }
+.mp-sticky__price { font-size: 0.85rem; color: #111827 !important; margin: 0; }
 .mp-sticky__btn {
-  background: #FF5A1F; color: #fff;
+  background: #FF5A1F; color: #fff !important;
   border: none; border-radius: 8px;
   padding: 10px 24px; font-size: 0.9rem; font-weight: 700;
   cursor: pointer; white-space: nowrap; flex-shrink: 0;
@@ -372,28 +288,20 @@
 <!-- TRUST BAR -->
 <div class="mp-trust" aria-label="Ventajas de compra">
   <div class="mp-trust__track" aria-hidden="true">
-    {%- assign trust_html = '' -%}
-    {%- capture trust_html -%}
-      <div class="mp-trust__item"><strong>Envío gratis</strong><span>En pedidos +50€</span></div>
-      <div class="mp-trust__item"><strong>Devolución 30 días</strong><span>Sin preguntas</span></div>
-      <div class="mp-trust__item"><strong>Pago seguro</strong><span>Visa, MC, PayPal, Bizum</span></div>
-      <div class="mp-trust__item"><strong>4.9 ★</strong><span>+127 reseñas verificadas</span></div>
-      <div class="mp-trust__item"><strong>Envío gratis</strong><span>En pedidos +50€</span></div>
-      <div class="mp-trust__item"><strong>Devolución 30 días</strong><span>Sin preguntas</span></div>
-      <div class="mp-trust__item"><strong>Pago seguro</strong><span>Visa, MC, PayPal, Bizum</span></div>
-      <div class="mp-trust__item"><strong>4.9 ★</strong><span>+127 reseñas verificadas</span></div>
-    {%- endcapture -%}
-    {{ trust_html }}
+    <div class="mp-trust__item"><strong>Envío gratis</strong><span>En pedidos +50€</span></div>
+    <div class="mp-trust__item"><strong>Devolución 30 días</strong><span>Sin preguntas</span></div>
+    <div class="mp-trust__item"><strong>Pago seguro</strong><span>Visa, MC, PayPal, Bizum</span></div>
+    <div class="mp-trust__item"><strong>4.9 ★</strong><span>+127 reseñas verificadas</span></div>
+    <div class="mp-trust__item"><strong>Envío gratis</strong><span>En pedidos +50€</span></div>
+    <div class="mp-trust__item"><strong>Devolución 30 días</strong><span>Sin preguntas</span></div>
+    <div class="mp-trust__item"><strong>Pago seguro</strong><span>Visa, MC, PayPal, Bizum</span></div>
+    <div class="mp-trust__item"><strong>4.9 ★</strong><span>+127 reseñas verificadas</span></div>
   </div>
 </div>
 
 <div class="mp">
-
-  <!-- PRODUCTO PRINCIPAL -->
   <div class="wrap">
     <div class="mp-grid">
-
-      <!-- GALERIA -->
       <div class="mp-gallery">
         <div class="mp-gallery__main-wrap">
           {%- assign featured_media = cv.featured_media | default: product.featured_media -%}
@@ -420,7 +328,6 @@
         {%- endif -%}
       </div>
 
-      <!-- BUYBOX -->
       <div class="mp-buybox" id="mp-buybox">
         <p class="mp-vendor">{{ product.vendor | default: shop.name }}</p>
         <h1 class="mp-title">{{ product.title }}</h1>
@@ -495,23 +402,20 @@
         <div>
           {%- if product.description != blank -%}
             <div class="mp-accordion">
-              <button type="button" class="mp-accordion-btn" aria-expanded="false">
-                Detalles
+              <button type="button" class="mp-accordion-btn" aria-expanded="false">Detalles
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
               </button>
               <div class="mp-accordion-content">{{ product.description | strip_html | truncate: 400 }}</div>
             </div>
           {%- endif -%}
           <div class="mp-accordion">
-            <button type="button" class="mp-accordion-btn" aria-expanded="false">
-              Información de entrega
+            <button type="button" class="mp-accordion-btn" aria-expanded="false">Información de entrega
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="mp-accordion-content">{{ section.settings.shipping_text }}</div>
           </div>
           <div class="mp-accordion">
-            <button type="button" class="mp-accordion-btn" aria-expanded="false">
-              Prueba de 30 días
+            <button type="button" class="mp-accordion-btn" aria-expanded="false">Prueba de 30 días
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             <div class="mp-accordion-content">{{ section.settings.returns_text }}</div>
@@ -547,38 +451,10 @@
       <h2 class="mp-section-heading">Lo que dicen nuestros paseadores</h2>
       <p class="mp-section-sub">Dueños activos que ya lo usan en sus rutas diarias.</p>
       <div class="mp-testimonials-grid">
-        <div class="mp-testimonial">
-          <div class="mp-testimonial__stars">★★★★★</div>
-          <p class="mp-testimonial__text">&ldquo;Salimos todos los fines de semana a la sierra. Desde que tengo la CANVOY no he vuelto a improvisar. Mi golden se la terminó en 2 minutos.&rdquo;</p>
-          <div class="mp-testimonial__author">
-            <div class="mp-testimonial__avatar">ML</div>
-            <div><p class="mp-testimonial__name">María L. &mdash; Golden Retriever</p><p class="mp-testimonial__meta">Madrid &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
-          </div>
-        </div>
-        <div class="mp-testimonial">
-          <div class="mp-testimonial__stars">★★★★★</div>
-          <p class="mp-testimonial__text">&ldquo;Pensé que sería otro gadget más. Llevo 3 meses usándola a diario y el cierre no gotea ni dentro de la mochila.&rdquo;</p>
-          <div class="mp-testimonial__author">
-            <div class="mp-testimonial__avatar">CR</div>
-            <div><p class="mp-testimonial__name">Carlos R. &mdash; Labrador</p><p class="mp-testimonial__meta">Barcelona &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
-          </div>
-        </div>
-        <div class="mp-testimonial">
-          <div class="mp-testimonial__stars">★★★★★</div>
-          <p class="mp-testimonial__text">&ldquo;La compré por el diseño y me quedé por lo práctica. Mi border collie la reconoce cuando la saco del bolsillo.&rdquo;</p>
-          <div class="mp-testimonial__author">
-            <div class="mp-testimonial__avatar">AM</div>
-            <div><p class="mp-testimonial__name">Ana M. &mdash; Border Collie</p><p class="mp-testimonial__meta">Valencia &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
-          </div>
-        </div>
-        <div class="mp-testimonial">
-          <div class="mp-testimonial__stars">★★★★★</div>
-          <p class="mp-testimonial__text">&ldquo;No gotea en la mochila. Eso para mí lo cambia todo. La llevo en el bolsillo lateral y ni la noto.&rdquo;</p>
-          <div class="mp-testimonial__author">
-            <div class="mp-testimonial__avatar">SL</div>
-            <div><p class="mp-testimonial__name">Sofía L. &mdash; Husky</p><p class="mp-testimonial__meta">Bilbao &middot; <span class="mp-verified">✓ Compra verificada</span></p></div>
-          </div>
-        </div>
+        <div class="mp-testimonial"><div class="mp-testimonial__stars">★★★★★</div><p class="mp-testimonial__text">&ldquo;Salimos todos los fines de semana a la sierra. Desde que tengo la CANVOY no he vuelto a improvisar. Mi golden se la terminó en 2 minutos.&rdquo;</p><div class="mp-testimonial__author"><div class="mp-testimonial__avatar">ML</div><div><p class="mp-testimonial__name">María L. &mdash; Golden Retriever</p><p class="mp-testimonial__meta">Madrid &middot; <span class="mp-verified">✓ Compra verificada</span></p></div></div></div>
+        <div class="mp-testimonial"><div class="mp-testimonial__stars">★★★★★</div><p class="mp-testimonial__text">&ldquo;Pensé que sería otro gadget más. Llevo 3 meses usándola a diario y el cierre no gotea ni dentro de la mochila.&rdquo;</p><div class="mp-testimonial__author"><div class="mp-testimonial__avatar">CR</div><div><p class="mp-testimonial__name">Carlos R. &mdash; Labrador</p><p class="mp-testimonial__meta">Barcelona &middot; <span class="mp-verified">✓ Compra verificada</span></p></div></div></div>
+        <div class="mp-testimonial"><div class="mp-testimonial__stars">★★★★★</div><p class="mp-testimonial__text">&ldquo;La compré por el diseño y me quedé por lo práctica. Mi border collie la reconoce cuando la saco del bolsillo.&rdquo;</p><div class="mp-testimonial__author"><div class="mp-testimonial__avatar">AM</div><div><p class="mp-testimonial__name">Ana M. &mdash; Border Collie</p><p class="mp-testimonial__meta">Valencia &middot; <span class="mp-verified">✓ Compra verificada</span></p></div></div></div>
+        <div class="mp-testimonial"><div class="mp-testimonial__stars">★★★★★</div><p class="mp-testimonial__text">&ldquo;No gotea en la mochila. Eso para mí lo cambia todo. La llevo en el bolsillo lateral y ni la noto.&rdquo;</p><div class="mp-testimonial__author"><div class="mp-testimonial__avatar">SL</div><div><p class="mp-testimonial__name">Sofía L. &mdash; Husky</p><p class="mp-testimonial__meta">Bilbao &middot; <span class="mp-verified">✓ Compra verificada</span></p></div></div></div>
       </div>
     </div>
   </div>
@@ -612,26 +488,11 @@
       <p class="mp-section-tag">Dudas frecuentes</p>
       <h2 class="mp-section-heading">Preguntas frecuentes</h2>
       <div class="mp-faq__list">
-        <div class="mp-faq__item">
-          <button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánta agua cabe? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
-          <div class="mp-faq__a">285ml — suficiente para razas pequeñas y medianas en un paseo largo. Para razas grandes recomendamos rellenar cada 45-60 minutos de actividad intensa.</div>
-        </div>
-        <div class="mp-faq__item">
-          <button type="button" class="mp-faq__q" aria-expanded="false">¿Realmente no gotea? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
-          <div class="mp-faq__a">El sello de silicona garantiza cierre hermético. Puedes meterla al revés en tu mochila y no gotea. Si tienes cualquier problema en los primeros 30 días, te enviamos una nueva sin coste.</div>
-        </div>
-        <div class="mp-faq__item">
-          <button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
-          <div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</div>
-        </div>
-        <div class="mp-faq__item">
-          <button type="button" class="mp-faq__q" aria-expanded="false">¿Es segura para mi perro? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
-          <div class="mp-faq__a">100%. Acero inoxidable 304 grado alimentario, sin BPA. El cuenco es silicona alimentaria — el mismo material que los chupetes de bebé.</div>
-        </div>
-        <div class="mp-faq__item">
-          <button type="button" class="mp-faq__q" aria-expanded="false">¿Cómo se limpia? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
-          <div class="mp-faq__a">10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto. El cuenco se desmonta para limpieza en profundidad.</div>
-        </div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánta agua cabe? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">285ml — suficiente para razas pequeñas y medianas en un paseo largo. Para razas grandes recomendamos rellenar cada 45-60 minutos.</div></div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Realmente no gotea? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">El sello de silicona garantiza cierre hermético. Puedes meterla al revés en tu mochila. Si hay cualquier problema en 30 días, te enviamos una nueva sin coste.</div></div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cuánto tarda en llegar? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">3 a 5 días hábiles con seguimiento en tiempo real. También enviamos a Portugal, Francia e Italia.</div></div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Es segura para mi perro? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">100%. Acero inoxidable 304 grado alimentario, sin BPA. Cuenco de silicona alimentaria — el mismo material que los chupetes de bebé.</div></div>
+        <div class="mp-faq__item"><button type="button" class="mp-faq__q" aria-expanded="false">¿Cómo se limpia? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-faq__a">10 segundos bajo el grifo con jabón. También apta para lavavajillas en ciclo corto. El cuenco se desmonta para limpieza en profundidad.</div></div>
       </div>
     </div>
   </div>
@@ -642,19 +503,17 @@
       <div class="mp-cta-banner__icon">🐾</div>
       <h2 class="mp-cta-banner__heading">¿Listo para la próxima ruta?</h2>
       <p class="mp-cta-banner__text">Únete a más de 500 dueños activos que ya salen con CANVOY.</p>
-      <button type="button" class="mp-cta-banner__btn" id="mp-cta-atc">
-        Añadir al carrito
-      </button>
+      <button type="button" class="mp-cta-banner__btn" id="mp-cta-atc">Añadir al carrito</button>
       <p class="mp-cta-banner__trust">✓ Garantía 30 días &nbsp;·&nbsp; ✓ Envío 3–5 días &nbsp;·&nbsp; ✓ Devolución gratis</p>
     </div>
   </div>
 
-  <!-- REVIEWS placeholder -->
+  <!-- REVIEWS -->
   <div class="mp-faq" id="mp-reviews" style="background:#f9fafb;">
     <div class="wrap">
       <p class="mp-section-tag">Reseñas</p>
       <h2 class="mp-section-heading">Lo que dicen nuestros clientes</h2>
-      <p style="color:#9ca3af;font-size:0.9rem;">Instala <a href="https://apps.shopify.com/judge-me-product-reviews" target="_blank" style="color:#FF5A1F;">Judge.me</a> y añade el bloque de app en el editor de temas para mostrar tus reseñas aquí.</p>
+      <p style="color:#9ca3af;font-size:0.9rem;">Instala <a href="https://apps.shopify.com/judge-me-product-reviews" target="_blank" style="color:#FF5A1F;">Judge.me</a> y añade el widget aquí.</p>
     </div>
   </div>
 
@@ -681,121 +540,92 @@
 <script>
 (function() {
   var variants = {{ product.variants | json }};
-
-  // --- Gallery ---
   var mainImg = document.getElementById('mp-main-img');
   var counter = document.getElementById('mp-counter');
+
   document.querySelectorAll('.mp-thumb-btn').forEach(function(btn, i) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.mp-thumb-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       if (mainImg && btn.dataset.src) mainImg.src = btn.dataset.src;
-      if (counter) counter.textContent = (i + 1) + ' / ' + document.querySelectorAll('.mp-thumb-btn').length;
+      if (counter) counter.textContent = (i+1) + ' / ' + document.querySelectorAll('.mp-thumb-btn').length;
     });
   });
 
-  // --- Qty ---
   var qtyInput = document.getElementById('mp-qty');
-  document.getElementById('mp-dec') && document.getElementById('mp-dec').addEventListener('click', function() {
-    var v = parseInt(qtyInput.value, 10) || 1;
-    if (v > 1) qtyInput.value = v - 1;
-  });
-  document.getElementById('mp-inc') && document.getElementById('mp-inc').addEventListener('click', function() {
-    var v = parseInt(qtyInput.value, 10) || 1;
-    qtyInput.value = v + 1;
-  });
+  var decBtn = document.getElementById('mp-dec');
+  var incBtn = document.getElementById('mp-inc');
+  if (decBtn) decBtn.addEventListener('click', function() { var v = parseInt(qtyInput.value,10)||1; if(v>1) qtyInput.value=v-1; });
+  if (incBtn) incBtn.addEventListener('click', function() { var v = parseInt(qtyInput.value,10)||1; qtyInput.value=v+1; });
 
-  // --- ATC ---
-  function addToCart(variantId, qty, btn, originalText) {
-    btn.textContent = 'Añadiendo...';
-    btn.disabled = true;
+  function addToCart(variantId, qty, btn, orig) {
+    btn.textContent = 'Añadiendo…'; btn.disabled = true;
     fetch('/cart/add.js', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: parseInt(variantId, 10), quantity: qty })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function() {
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({id: parseInt(variantId,10), quantity: qty})
+    }).then(function(r){return r.json();}).then(function(){
       btn.textContent = '✓ Añadido';
       document.dispatchEvent(new CustomEvent('cart:updated'));
-      setTimeout(function() { btn.textContent = originalText; btn.disabled = false; }, 2200);
-    })
-    .catch(function() { btn.textContent = originalText; btn.disabled = false; });
+      setTimeout(function(){ btn.textContent=orig; btn.disabled=false; }, 2200);
+    }).catch(function(){ btn.textContent=orig; btn.disabled=false; });
   }
 
   var atcBtn = document.getElementById('mp-atc');
-  if (atcBtn) {
-    atcBtn.addEventListener('click', function() {
-      addToCart(atcBtn.dataset.variantId, parseInt(qtyInput ? qtyInput.value : 1, 10) || 1, atcBtn, 'Agregar al carrito');
-    });
-  }
+  if (atcBtn) atcBtn.addEventListener('click', function() {
+    addToCart(atcBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, atcBtn, 'Agregar al carrito');
+  });
 
   var ctaBtn = document.getElementById('mp-cta-atc');
-  if (ctaBtn) {
-    ctaBtn.addEventListener('click', function() {
-      var vid = atcBtn ? atcBtn.dataset.variantId : '{{ cv.id }}';
-      addToCart(vid, 1, ctaBtn, 'Añadir al carrito');
-    });
-  }
+  if (ctaBtn) ctaBtn.addEventListener('click', function() {
+    var vid = atcBtn ? atcBtn.dataset.variantId : '{{ cv.id }}';
+    addToCart(vid, 1, ctaBtn, 'Añadir al carrito');
+  });
 
   var stickyBtn = document.getElementById('mp-sticky-atc');
-  if (stickyBtn) {
-    stickyBtn.addEventListener('click', function() {
-      addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput ? qtyInput.value : 1, 10) || 1, stickyBtn, 'Agregar al carrito');
-    });
-  }
+  if (stickyBtn) stickyBtn.addEventListener('click', function() {
+    addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, stickyBtn, 'Agregar al carrito');
+  });
 
-  // --- Sticky ATC visibility ---
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
   if (anchor && sticky && 'IntersectionObserver' in window) {
     new IntersectionObserver(function(entries) {
       sticky.classList.toggle('visible', !entries[0].isIntersecting);
-    }, { threshold: 0.1 }).observe(anchor);
+    }, {threshold: 0.1}).observe(anchor);
   }
 
-  // --- Accordions ---
   document.querySelectorAll('.mp-accordion-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      var content = btn.nextElementSibling;
-      var open = btn.getAttribute('aria-expanded') === 'true';
+      var open = btn.getAttribute('aria-expanded')==='true';
       btn.setAttribute('aria-expanded', !open);
-      content.classList.toggle('open', !open);
+      btn.nextElementSibling.classList.toggle('open', !open);
     });
   });
 
-  // --- FAQ ---
   document.querySelectorAll('.mp-faq__q').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      var content = btn.nextElementSibling;
-      var open = btn.getAttribute('aria-expanded') === 'true';
+      var open = btn.getAttribute('aria-expanded')==='true';
       btn.setAttribute('aria-expanded', !open);
-      content.classList.toggle('open', !open);
+      btn.nextElementSibling.classList.toggle('open', !open);
     });
   });
 
-  // --- Variants ---
   document.querySelectorAll('.mp-variant-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var optIdx = parseInt(btn.dataset.opt, 10);
-      var val = btn.dataset.val;
-      document.querySelectorAll('.mp-variant-btn[data-opt="' + optIdx + '"]').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.mp-variant-btn[data-opt="'+optIdx+'"]').forEach(function(b){b.classList.remove('active');});
       btn.classList.add('active');
-      var optLabel = document.getElementById('mp-opt-' + (optIdx + 1));
-      if (optLabel) optLabel.textContent = val;
-      // Find matching variant
+      var lbl = document.getElementById('mp-opt-'+(optIdx+1));
+      if (lbl) lbl.textContent = btn.dataset.val;
       var selected = {};
-      document.querySelectorAll('.mp-variant-btn.active').forEach(function(b) {
-        selected[parseInt(b.dataset.opt, 10)] = b.dataset.val;
-      });
-      var match = variants.find(function(v) {
-        return v.options.every(function(o, i) { return selected[i] === undefined || selected[i] === o; });
-      });
+      document.querySelectorAll('.mp-variant-btn.active').forEach(function(b){ selected[parseInt(b.dataset.opt,10)]=b.dataset.val; });
+      var match = variants.find(function(v){ return v.options.every(function(o,i){ return selected[i]===undefined||selected[i]===o; }); });
       if (match) {
-        if (atcBtn) { atcBtn.dataset.variantId = match.id; atcBtn.disabled = !match.available; atcBtn.textContent = match.available ? 'Agregar al carrito' : 'Agotado'; }
-        if (stickyBtn) { stickyBtn.dataset.variantId = match.id; stickyBtn.disabled = !match.available; }
+        if (atcBtn) { atcBtn.dataset.variantId=match.id; atcBtn.disabled=!match.available; atcBtn.textContent=match.available?'Agregar al carrito':'Agotado'; }
+        if (stickyBtn) { stickyBtn.dataset.variantId=match.id; stickyBtn.disabled=!match.available; }
         var priceEl = document.getElementById('mp-price');
-        if (priceEl) priceEl.firstChild.textContent = (match.price / 100).toFixed(2).replace('.', ',') + ' €';
+        if (priceEl) priceEl.childNodes[0].textContent = (match.price/100).toFixed(2).replace('.',',')+' €';
       }
     });
   });
@@ -817,9 +647,7 @@
     {
       "type": "bullet",
       "name": "Beneficio rápido",
-      "settings": [
-        {"type":"text","id":"text","label":"Texto","default":"Se pliega y cabe en cualquier bolsillo"}
-      ]
+      "settings": [{"type":"text","id":"text","label":"Texto","default":"Se pliega y cabe en cualquier bolsillo"}]
     }
   ],
   "presets": [{
