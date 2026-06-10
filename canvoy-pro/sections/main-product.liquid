@@ -6,6 +6,69 @@
 {%- endif -%}
 {%- assign bullet_blocks = section.blocks | where: 'type', 'bullet' -%}
 
+<style>
+  .sticky-atc {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.10);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
+  }
+  .sticky-atc.is-visible {
+    transform: translateY(0);
+  }
+  .sticky-atc__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sticky-atc__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .sticky-atc__img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .sticky-atc__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+  .sticky-atc__price {
+    font-size: 0.85rem;
+    color: #111;
+    margin: 0;
+  }
+  .sticky-atc__btn {
+    flex-shrink: 0;
+    min-width: 160px;
+  }
+  @media (max-width: 480px) {
+    .sticky-atc__title { max-width: 100px; }
+    .sticky-atc__btn { min-width: 120px; font-size: 0.85rem; }
+  }
+</style>
+
 <div class="product-page product-page--canvoy" data-product-id="{{ product.id }}">
   <div class="wrap">
     <div class="product-page__grid">
@@ -163,6 +226,7 @@
   </div>
 </div>
 
+<!-- Sticky ATC bar: aparece al salir del buybox -->
 <div class="sticky-atc" id="sticky-atc" aria-hidden="true">
   <div class="sticky-atc__inner wrap">
     <div class="sticky-atc__info">
@@ -171,7 +235,7 @@
       {%- endif -%}
       <div>
         <p class="sticky-atc__title">{{ product.title | truncate: 32 }}</p>
-        <p class="sticky-atc__price">{{ current_variant.price | money }}</p>
+        <p class="sticky-atc__price" id="sticky-atc-price">{{ current_variant.price | money }}</p>
       </div>
     </div>
     <button type="button" class="btn btn--primary sticky-atc__btn" id="sticky-atc-btn" data-variant-id="{{ current_variant.id }}" {% unless current_variant.available %}disabled{% endunless %}>
@@ -182,6 +246,70 @@
 
 <script>
   var productVariants = {{ product.variants | json }};
+
+  (function() {
+    var anchor = document.getElementById('product-atc-anchor');
+    var stickyBar = document.getElementById('sticky-atc');
+    var stickyBtn = document.getElementById('sticky-atc-btn');
+    var mainBtn = document.getElementById('atc-btn');
+    var qtyInput = document.querySelector('.qty-input');
+
+    if (!anchor || !stickyBar) return;
+
+    // Mostrar/ocultar sticky bar según visibilidad del buybox
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          stickyBar.classList.remove('is-visible');
+          stickyBar.setAttribute('aria-hidden', 'true');
+        } else {
+          stickyBar.classList.add('is-visible');
+          stickyBar.setAttribute('aria-hidden', 'false');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(anchor);
+
+    // El sticky ATC dispara el mismo add-to-cart que el botón principal
+    if (stickyBtn) {
+      stickyBtn.addEventListener('click', function() {
+        var qty = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+        var variantId = stickyBtn.dataset.variantId;
+        stickyBtn.textContent = 'Añadiendo...';
+        stickyBtn.disabled = true;
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: variantId, quantity: qty })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function() {
+          stickyBtn.textContent = '✓ Añadido';
+          setTimeout(function() {
+            stickyBtn.textContent = 'Agregar al carrito';
+            stickyBtn.disabled = false;
+          }, 2000);
+          // Actualiza contador del carrito si existe
+          document.dispatchEvent(new CustomEvent('cart:updated'));
+        })
+        .catch(function() {
+          stickyBtn.textContent = 'Agregar al carrito';
+          stickyBtn.disabled = false;
+        });
+      });
+    }
+
+    // Sincronizar variant ID entre botón principal y sticky
+    document.querySelectorAll('.variant-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var selectedVariantId = document.getElementById('atc-btn') && document.getElementById('atc-btn').dataset.variantId;
+        if (selectedVariantId && stickyBtn) {
+          stickyBtn.dataset.variantId = selectedVariantId;
+        }
+      });
+    });
+  })();
 </script>
 
 {% schema %}

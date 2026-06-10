@@ -1,0 +1,156 @@
+{%- if section.settings.show_bundle -%}
+<section class="section product-bundle" id="product-bundle">
+  <div class="wrap">
+    <div class="section-head section-head--centered">
+      {%- if section.settings.tag != blank -%}
+        <p class="section-eyebrow">{{ section.settings.tag }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.heading }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p>{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="product-bundle__items">
+      {%- assign bundle_products = '' -%}
+      {%- assign bundle_total = 0 -%}
+      {%- assign bundle_compare_total = 0 -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'bundle_product' -%}
+          {%- assign bp = all_products[block.settings.product] -%}
+          {%- if bp != empty -%}
+            {%- assign bv = bp.selected_or_first_available_variant -%}
+            {%- assign bundle_total = bundle_total | plus: bv.price -%}
+            {%- if bv.compare_at_price > bv.price -%}
+              {%- assign bundle_compare_total = bundle_compare_total | plus: bv.compare_at_price -%}
+            {%- else -%}
+              {%- assign bundle_compare_total = bundle_compare_total | plus: bv.price -%}
+            {%- endif -%}
+            <div class="product-bundle__item" {{ block.shopify_attributes }}>
+              {%- if bp.featured_image -%}
+                <a href="{{ bp.url }}" class="product-bundle__item-img-link">
+                  <img src="{{ bp.featured_image | image_url: width: 400 }}" alt="{{ bp.title | escape }}" class="product-bundle__item-img" loading="lazy" width="200" height="200">
+                </a>
+              {%- endif -%}
+              <div class="product-bundle__item-info">
+                <p class="product-bundle__item-title">{{ bp.title }}</p>
+                <p class="product-bundle__item-price">{{ bv.price | money }}</p>
+              </div>
+            </div>
+            {%- unless forloop.last -%}
+              <span class="product-bundle__plus" aria-hidden="true">+</span>
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if bundle_total > 0 -%}
+      <div class="product-bundle__summary">
+        <div class="product-bundle__pricing">
+          {%- if bundle_compare_total > bundle_total -%}
+            <span class="product-bundle__original">{{ bundle_compare_total | money }}</span>
+          {%- endif -%}
+          <span class="product-bundle__total">{{ bundle_total | money }}</span>
+          {%- if section.settings.badge_text != blank -%}
+            <span class="product-bundle__badge">{{ section.settings.badge_text }}</span>
+          {%- endif -%}
+        </div>
+        <form id="bundle-form" class="product-bundle__form">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'bundle_product' -%}
+              {%- assign bp = all_products[block.settings.product] -%}
+              {%- if bp != empty -%}
+                {%- assign bv = bp.selected_or_first_available_variant -%}
+                <input type="hidden" name="items[][id]" value="{{ bv.id }}">
+                <input type="hidden" name="items[][quantity]" value="1">
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <button type="submit" class="btn btn--primary btn--full product-bundle__atc" id="bundle-atc-btn">
+            {{ section.settings.cta_text | default: 'Añadir kit al carrito' }}
+          </button>
+        </form>
+        <p class="product-bundle__note">{{ section.settings.note_text }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+(function() {
+  var form = document.getElementById('bundle-form');
+  var btn = document.getElementById('bundle-atc-btn');
+  if (!form || !btn) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    btn.textContent = 'Añadiendo...';
+    btn.disabled = true;
+
+    var items = [];
+    var ids = form.querySelectorAll('input[name="items[][id]"]');
+    var qtys = form.querySelectorAll('input[name="items[][quantity]"]');
+    ids.forEach(function(input, i) {
+      items.push({ id: parseInt(input.value, 10), quantity: parseInt(qtys[i].value, 10) || 1 });
+    });
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: items })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function() {
+      btn.textContent = '✓ Kit añadido al carrito';
+      document.dispatchEvent(new CustomEvent('cart:updated'));
+      setTimeout(function() {
+        btn.textContent = 'Añadir kit al carrito';
+        btn.disabled = false;
+      }, 2500);
+    })
+    .catch(function() {
+      btn.textContent = 'Añadir kit al carrito';
+      btn.disabled = false;
+    });
+  });
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bundle / Kit",
+  "tag": "section",
+  "class": "product-bundle-section",
+  "settings": [
+    {"type":"checkbox","id":"show_bundle","label":"Mostrar bundle","default":true},
+    {"type":"text","id":"tag","label":"Etiqueta superior","default":"Completa tu equipo"},
+    {"type":"text","id":"heading","label":"Titular","default":"Kit de aventura CANVOY"},
+    {"type":"textarea","id":"subheading","label":"Subtítulo","default":"Todo lo que necesitas en un solo click. Sin olvidarte nada."},
+    {"type":"text","id":"badge_text","label":"Badge de ahorro","default":"Ahorra 15%","info":"Déjalo vacío para ocultarlo."},
+    {"type":"text","id":"cta_text","label":"Texto del botón","default":"Añadir kit al carrito"},
+    {"type":"text","id":"note_text","label":"Nota bajo el botón","default":"Envío gratis · Devolución 30 días"}
+  ],
+  "blocks": [
+    {
+      "type": "bundle_product",
+      "name": "Producto del bundle",
+      "settings": [
+        {"type":"product","id":"product","label":"Producto"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle / Kit",
+      "blocks": [
+        {"type":"bundle_product"},
+        {"type":"bundle_product"},
+        {"type":"bundle_product"}
+      ]
+    }
+  ]
+}
+{% endschema %}

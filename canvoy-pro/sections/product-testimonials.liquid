@@ -23,16 +23,38 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
+
+          {%- if block.settings.dog_image != blank -%}
+            <div class="product-testimonial-card__dog-img-wrap">
+              <img src="{{ block.settings.dog_image | image_url: width: 300 }}" alt="Perro de {{ block.settings.name }}" class="product-testimonial-card__dog-img" loading="lazy" width="80" height="80">
+            </div>
+          {%- endif -%}
+
           <p class="product-testimonial-card__text">"{{ block.settings.text }}"</p>
+
           <footer class="product-testimonial-card__author">
-            <span class="product-testimonial-card__name">{{ block.settings.name }}</span>
-            {%- if block.settings.verified -%}<span class="product-testimonial-card__verified"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Verificado</span>{%- endif -%}
+            <div class="product-testimonial-card__author-info">
+              <span class="product-testimonial-card__name">{{ block.settings.name }}</span>
+              {%- if block.settings.dog_breed != blank -%}
+                <span class="product-testimonial-card__breed">· {{ block.settings.dog_breed }}</span>
+              {%- endif -%}
+              {%- if block.settings.city != blank -%}
+                <span class="product-testimonial-card__city">— {{ block.settings.city }}</span>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.verified -%}
+              <span class="product-testimonial-card__verified">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Verificado
+              </span>
+            {%- endif -%}
           </footer>
         </blockquote>
       {%- endfor -%}
     </div>
   </div>
 </section>
+
 {% schema %}
 {
   "name": "Testimonios producto",
@@ -45,8 +67,11 @@
       "type": "testimonial",
       "name": "Testimonio",
       "settings": [
-        {"type":"textarea","id":"text","label":"Texto","default":"Práctico para paseos diarios. Mi perro bebe sin problemas del tazón de silicona."},
-        {"type":"text","id":"name","label":"Nombre","default":"Laura M."},
+        {"type":"textarea","id":"text","label":"Texto del testimonio","default":"Práctico para paseos diarios. Mi perro bebe sin problemas del tazón de silicona."},
+        {"type":"text","id":"name","label":"Nombre del dueño","default":"Laura M."},
+        {"type":"text","id":"dog_breed","label":"Raza del perro","default":"Border Collie","info":"Ej: Golden Retriever, Husky, Labrador…"},
+        {"type":"text","id":"city","label":"Ciudad","default":"Madrid"},
+        {"type":"image_picker","id":"dog_image","label":"Foto del perro (opcional)","info":"Sube una foto real del perro del cliente para máxima credibilidad."},
         {"type":"checkbox","id":"verified","label":"Compra verificada","default":true}
       ]
     }
@@ -55,10 +80,10 @@
     {
       "name": "Testimonios producto",
       "blocks": [
-        {"type":"testimonial","settings":{"text":"Práctico para paseos diarios. Mi perro bebe sin problemas del tazón de silicona.","name":"Laura M.","verified":true}},
-        {"type":"testimonial","settings":{"text":"Fácil de limpiar y muy ligero. Lo llevo en todos los senderos.","name":"Javi R.","verified":true}},
-        {"type":"testimonial","settings":{"text":"Resistente de verdad. Se me cayó varias veces y sigue perfecto.","name":"Elena P.","verified":true}},
-        {"type":"testimonial","settings":{"text":"No gotea en la mochila. Eso para mí lo cambia todo.","name":"Sofia L.","verified":true}}
+        {"type":"testimonial","settings":{"text":"Salimos todos los fines de semana a la sierra. Desde que tengo la CANVOY no he vuelto a improvisar.","name":"María L.","dog_breed":"Golden Retriever","city":"Madrid","verified":true}},
+        {"type":"testimonial","settings":{"text":"Pensé que sería otro gadget más. Llevo 3 meses usándola a diario y el cierre no gotea ni dentro de la mochila.","name":"Carlos R.","dog_breed":"Labrador","city":"Barcelona","verified":true}},
+        {"type":"testimonial","settings":{"text":"La compré por el diseño y me quedé por lo práctica. Mi border collie la reconoce cuando la saco del bolsillo.","name":"Ana M.","dog_breed":"Border Collie","city":"Valencia","verified":true}},
+        {"type":"testimonial","settings":{"text":"No gotea en la mochila. Eso para mí lo cambia todo.","name":"Sofia L.","dog_breed":"Husky","city":"Bilbao","verified":true}}
       ]
     }
   ]
