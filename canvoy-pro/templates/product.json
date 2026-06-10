@@ -5,15 +5,61 @@
       "settings": {
         "subtitle": "Hidratación y comida, listas en segundos.",
         "review_count_text": "4.9 · 127 reseñas",
+        "bundle_heading": "🐾 COMPRA UN PACK Y AHORRA",
         "shipping_text": "Envío a toda España en 3–5 días hábiles. Envío gratuito en pedidos +50€.",
         "returns_text": "Tienes 30 días para probarlo. Si no es lo que esperabas, reembolso en 48h sin preguntas."
       },
       "blocks": {
-        "bullet_1": { "type": "bullet", "settings": { "text": "Se pliega y cabe en cualquier bolsillo" } },
-        "bullet_2": { "type": "bullet", "settings": { "text": "Acero inoxidable 304 — sin olores ni BPA" } },
-        "bullet_3": { "type": "bullet", "settings": { "text": "Gancho integrado para mochila o correa" } }
+        "bullet_1": {
+          "type": "bullet",
+          "settings": { "text": "Se pliega y cabe en cualquier bolsillo" }
+        },
+        "bullet_2": {
+          "type": "bullet",
+          "settings": { "text": "Acero inoxidable 304 — sin olores ni BPA" }
+        },
+        "bullet_3": {
+          "type": "bullet",
+          "settings": { "text": "Gancho integrado para mochila o correa" }
+        },
+        "bundle_1": {
+          "type": "bundle",
+          "settings": {
+            "title": "CANVOY Pack 1",
+            "price": "22,95€",
+            "compare_price": "",
+            "saving_text": "",
+            "unit_label": "22,95€ / ud",
+            "badge_text": "",
+            "qty": 1
+          }
+        },
+        "bundle_2": {
+          "type": "bundle",
+          "settings": {
+            "title": "CANVOY Pack 2",
+            "price": "39,95€",
+            "compare_price": "45,90€",
+            "saving_text": "↓ Ahorras 5,95€",
+            "unit_label": "19,97€ / ud",
+            "badge_text": "⭐ Más popular",
+            "qty": 2
+          }
+        },
+        "bundle_3": {
+          "type": "bundle",
+          "settings": {
+            "title": "CANVOY Pack 3",
+            "price": "49,95€",
+            "compare_price": "68,85€",
+            "saving_text": "↓ Ahorras 18,90€",
+            "unit_label": "16,65€ / ud",
+            "badge_text": "💰 Mejor precio",
+            "qty": 3
+          }
+        }
       },
-      "block_order": ["bullet_1", "bullet_2", "bullet_3"]
+      "block_order": ["bullet_1", "bullet_2", "bullet_3", "bundle_1", "bundle_2", "bundle_3"]
     }
   },
   "order": ["main"]
