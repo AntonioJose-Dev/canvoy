@@ -51,12 +51,23 @@
   background: #fff;
 }
 @media (max-width: 768px) {
-  .mp-grid { grid-template-columns: 1fr; gap: 24px; padding: 24px 0; }
+  .mp-grid { grid-template-columns: 1fr; gap: 16px; padding: 16px 0; }
 }
 
 /* GALLERY */
 .mp-gallery__main-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #f3f4f6; aspect-ratio: 1; }
 .mp-gallery__main { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ── FASE 2: galeria compacta en móvil para que el buybox sea visible above the fold ── */
+@media (max-width: 768px) {
+  .mp-gallery__main-wrap { aspect-ratio: 4/3; border-radius: 12px; }
+  .mp-gallery__thumbs { display: none; } /* ocultar thumbs en móvil — el sticky y swipe cubren la navegación */
+  .mp-title { font-size: 1.25rem !important; }
+  .mp-subtitle { font-size: 0.88rem !important; }
+  .mp-price-current { font-size: 1.5rem !important; }
+  .mp-buybox { gap: 12px; }
+}
+
 .mp-gallery__badge {
   position: absolute; top: 14px; left: 14px;
   background: #FF5A1F; color: #fff !important;
