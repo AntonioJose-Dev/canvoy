@@ -587,27 +587,25 @@
     addToCart(stickyBtn.dataset.variantId, parseInt(qtyInput?qtyInput.value:1,10)||1, stickyBtn, 'Agregar al carrito');
   });
 
-  /* STICKY: solo activa tras el primer scroll del usuario */
+  /* STICKY ATC — lógica definitiva
+     - No aparece al cargar (window.scrollY === 0 al inicio)
+     - Aparece cuando el botón ATC sale por arriba del viewport
+     - Desaparece cuando el botón ATC vuelve a ser visible
+     - Funciona siempre, en cada scroll
+  */
   var anchor = document.getElementById('mp-atc-anchor');
   var sticky = document.getElementById('mp-sticky');
-  if (anchor && sticky && 'IntersectionObserver' in window) {
-    var hasScrolled = false;
-    var anchorHidden = false;
 
-    var observer = new IntersectionObserver(function(entries) {
-      anchorHidden = !entries[0].isIntersecting;
-      if (hasScrolled) {
-        sticky.classList.toggle('visible', anchorHidden);
-      }
-    }, { threshold: 0.1 });
+  if (anchor && sticky) {
+    function updateSticky() {
+      var rect = anchor.getBoundingClientRect();
+      /* El botón ATC está fuera del viewport por arriba cuando su borde inferior < 0 */
+      var anchorGone = rect.bottom < 0;
+      sticky.classList.toggle('visible', anchorGone);
+    }
 
-    observer.observe(anchor);
-
-    window.addEventListener('scroll', function onFirstScroll() {
-      hasScrolled = true;
-      sticky.classList.toggle('visible', anchorHidden);
-      window.removeEventListener('scroll', onFirstScroll);
-    }, { passive: true });
+    window.addEventListener('scroll', updateSticky, { passive: true });
+    /* No llamamos a updateSticky() en el init — así la sticky nunca aparece al cargar */
   }
 
   document.querySelectorAll('.mp-accordion-btn').forEach(function(btn) {
