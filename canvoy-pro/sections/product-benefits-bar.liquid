@@ -1,11 +1,54 @@
+<style>
+  @keyframes canvoy-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .product-benefits-bar {
+    overflow: hidden;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+    padding: 10px 0;
+  }
+  .product-benefits-bar__track {
+    display: flex;
+    width: max-content;
+    animation: canvoy-scroll 22s linear infinite;
+  }
+  .product-benefits-bar__track:hover {
+    animation-play-state: paused;
+  }
+  .product-benefits-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 32px;
+    white-space: nowrap;
+    font-size: 0.88rem;
+  }
+  .product-benefits-bar__item + .product-benefits-bar__item {
+    border-left: 1px solid #e5e7eb;
+  }
+  .product-benefits-bar__icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .product-benefits-bar__item strong {
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .product-benefits-bar__item span {
+    color: #6b7280;
+  }
+</style>
+
 <section class="product-benefits-bar" aria-label="Beneficios del producto">
   <div class="product-benefits-bar__track">
     {%- capture items -%}
-      {%- for i in (1..3) -%}
-        {%- assign icon_key = 'icon' | append: i -%}
+      {%- for i in (1..4) -%}
+        {%- assign icon_key  = 'icon'  | append: i -%}
         {%- assign title_key = 'title' | append: i -%}
-        {%- assign text_key = 'text' | append: i -%}
-        {%- if forloop.index > 3 %}{% break %}{% endif -%}
+        {%- assign text_key  = 'text'  | append: i -%}
         {%- if section.settings[title_key] != blank -%}
           <div class="product-benefits-bar__item">
             <span class="product-benefits-bar__icon" aria-hidden="true">{{ section.settings[icon_key] }}</span>
@@ -20,6 +63,7 @@
     {{ items }}{{ items }}
   </div>
 </section>
+
 {% schema %}
 {
   "name": "Barra beneficios",
@@ -31,11 +75,11 @@
     {"type":"text","id":"title2","label":"Título 2","default":"Siempre contigo"},
     {"type":"text","id":"text2","label":"Texto 2","default":"Cabe en mochila o bolsillo"},
     {"type":"text","id":"icon3","label":"Icono 3","default":"🛡️"},
-    {"type":"text","id":"title3","label":"Título 3","default":"Seguro y resistente"},
-    {"type":"text","id":"text3","label":"Texto 3","default":"Materiales de calidad"},
+    {"type":"text","id":"title3","label":"Título 3","default":"Acero 304 resistente"},
+    {"type":"text","id":"text3","label":"Texto 3","default":"Sin olores, dura años"},
     {"type":"text","id":"icon4","label":"Icono 4","default":"↩️"},
     {"type":"text","id":"title4","label":"Título 4","default":"Devolución 30 días"},
-    {"type":"text","id":"text4","label":"Texto 4","default":"Sin complicaciones"}
+    {"type":"text","id":"text4","label":"Texto 4","default":"Sin preguntas, sin complicaciones"}
   ],
   "presets": [{"name": "Barra beneficios"}]
 }

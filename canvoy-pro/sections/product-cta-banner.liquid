@@ -6,21 +6,75 @@
     {%- endif -%}
     <h2>{{ section.settings.heading }}</h2>
     {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
-    <button type="button" class="btn btn--primary btn--lg product-cta-banner__btn" id="scroll-to-atc">
+    <button
+      type="button"
+      class="btn btn--primary btn--lg product-cta-banner__btn"
+      id="cta-banner-atc-btn"
+      data-product-id="{{ product.id }}"
+    >
       {{ section.settings.btn_text }}
     </button>
+    {%- if section.settings.trust_line != blank -%}
+      <p class="product-cta-banner__trust">{{ section.settings.trust_line }}</p>
+    {%- endif -%}
   </div>
 </section>
+
+<script>
+(function() {
+  var btn = document.getElementById('cta-banner-atc-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', function() {
+    // Obtener variant activo del buybox principal
+    var atcMain = document.getElementById('atc-btn');
+    var variantId = atcMain ? atcMain.dataset.variantId : null;
+    var qtyInput  = document.querySelector('.qty-input');
+    var qty = qtyInput ? parseInt(qtyInput.value, 10) || 1 : 1;
+
+    if (!variantId) {
+      // Fallback: scroll al buybox
+      var anchor = document.getElementById('product-atc-anchor');
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    btn.textContent = 'Añadiendo...';
+    btn.disabled = true;
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ id: parseInt(variantId, 10), quantity: qty })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function() {
+      btn.textContent = '✓ Añadido al carrito';
+      document.dispatchEvent(new CustomEvent('cart:updated'));
+      setTimeout(function() {
+        btn.textContent = '{{ section.settings.btn_text }}';
+        btn.disabled = false;
+      }, 2500);
+    })
+    .catch(function() {
+      btn.textContent = '{{ section.settings.btn_text }}';
+      btn.disabled = false;
+    });
+  });
+})();
+</script>
 {%- endif -%}
+
 {% schema %}
 {
   "name": "CTA final producto",
   "settings": [
-    {"type":"checkbox","id":"show","label":"Mostrar sección","default":false,"info":"Desactivado por defecto: el producto ya aparece arriba. Activa solo si quieres un cierre de texto sin repetir foto."},
+    {"type":"checkbox","id":"show","label":"Mostrar sección","default":true},
     {"type":"text","id":"icon","label":"Icono","default":"🐾"},
     {"type":"text","id":"heading","label":"Titular","default":"¿Listo para la próxima ruta?"},
-    {"type":"textarea","id":"text","label":"Texto","default":"Vuelve arriba y añádelo al carrito en un clic."},
-    {"type":"text","id":"btn_text","label":"Texto botón","default":"Ir al botón de compra ↑"}
+    {"type":"textarea","id":"text","label":"Texto","default":"Únete a más de 500 dueños activos que ya salen con CANVOY."},
+    {"type":"text","id":"btn_text","label":"Texto botón","default":"Añadir al carrito"},
+    {"type":"text","id":"trust_line","label":"Línea de confianza bajo el botón","default":"✓ Garantía 30 días  ·  ✓ Envío 3–5 días  ·  ✓ Devolución gratis"}
   ],
   "presets": [{"name": "CTA final producto"}]
 }
