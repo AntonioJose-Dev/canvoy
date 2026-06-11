@@ -23,7 +23,7 @@
       >
     </div>
 
-    {%- comment -%} IMAGEN 2 — Collage lifestyle 4 escenas {%- endcomment -%}
+    {%- comment -%} IMAGEN 2 — Collage lifestyle {%- endcomment -%}
     <div class="editorial-block editorial-block--full">
       <img
         src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_product_lifestyle_collage_202606111326.jpg?v=1781177623"
@@ -80,13 +80,11 @@
     max-width: 100%;
   }
 
-  /* Cada bloque ocupa el ancho completo en mobile */
   .editorial-block {
     width: 100%;
     overflow: hidden;
   }
 
-  /* Imagen base — siempre responsive, nunca overflow */
   .editorial-img {
     display: block;
     width: 100%;
@@ -95,42 +93,35 @@
     transition: transform 0.4s ease;
   }
 
-  /* Portrait — imagen emocional vertical */
   .editorial-img--portrait {
     max-height: 90vh;
     object-position: top center;
   }
 
-  /* Landscape — collage horizontal */
   .editorial-img--landscape {
     aspect-ratio: 4 / 3;
   }
 
-  /* Square — imágenes duo */
   .editorial-img--square {
     aspect-ratio: 4 / 5;
   }
 
-  /* Hover sutil — solo en desktop con ratón */
   @media (hover: hover) {
     .editorial-img:hover {
       transform: scale(1.02);
     }
   }
 
-  /* Bloque duo: dos columnas en tablet+ */
   .editorial-block--duo {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0;
   }
 
-  /* Separador visual sutil entre bloques */
   .editorial-block + .editorial-block {
     border-top: 1px solid #f0f0f0;
   }
 
-  /* === TABLET (600px+) === */
   @media (min-width: 600px) {
     .editorial-img--portrait {
       max-height: 80vh;
@@ -146,7 +137,6 @@
     }
   }
 
-  /* === DESKTOP (1024px+) === */
   @media (min-width: 1024px) {
     .editorial-inner {
       max-width: 900px;
@@ -172,28 +162,7 @@
   "name": "Imágenes Editoriales",
   "tag": "section",
   "class": "section-product-editorial",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "image_1",
-      "label": "Imagen 1 — Emocional"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_2",
-      "label": "Imagen 2 — Lifestyle collage"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_3",
-      "label": "Imagen 3 — Estilo CANVOY A"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_4",
-      "label": "Imagen 4 — Estilo CANVOY B"
-    }
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "Imágenes Editoriales"
