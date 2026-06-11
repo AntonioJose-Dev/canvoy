@@ -66,7 +66,6 @@
 </section>
 
 <style>
-  /* ── BASE MOBILE-FIRST ── */
   .product-editorial {
     width: 100%;
     background: #ffffff;
@@ -77,14 +76,13 @@
   .editorial-inner {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 0;
     max-width: 100%;
   }
 
   .editorial-block {
     width: 100%;
     overflow: hidden;
-    line-height: 0; /* elimina gap inferior por inline img */
   }
 
   .editorial-img {
@@ -92,72 +90,61 @@
     width: 100%;
     height: auto;
     object-fit: cover;
+    transition: transform 0.4s ease;
   }
 
-  /* PORTRAIT — imagen tall en móvil: aspect-ratio fijo, nada de max-height */
   .editorial-img--portrait {
-    aspect-ratio: 3 / 4;
-    object-position: center top;
+    max-height: 90vh;
+    object-position: top center;
   }
 
-  /* LANDSCAPE — 4:3 en móvil */
   .editorial-img--landscape {
     aspect-ratio: 4 / 3;
   }
 
-  /* SQUARE — 4:5 en móvil */
   .editorial-img--square {
     aspect-ratio: 4 / 5;
   }
 
-  /* DUO — apiladas en móvil */
-  .editorial-block--duo {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3px;
-  }
-
-  .editorial-duo-item {
-    overflow: hidden;
-    line-height: 0;
-  }
-
-  /* hover solo en dispositivos con puntero */
-  @media (hover: hover) and (pointer: fine) {
-    .editorial-img {
-      transition: transform 0.4s ease;
-    }
+  @media (hover: hover) {
     .editorial-img:hover {
       transform: scale(1.02);
     }
   }
 
-  /* ── TABLET 600px+ ── */
-  @media (min-width: 600px) {
-    .editorial-inner {
-      gap: 4px;
-    }
+  .editorial-block--duo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 
+  .editorial-block + .editorial-block {
+    border-top: 1px solid #f0f0f0;
+  }
+
+  @media (min-width: 600px) {
     .editorial-img--portrait {
-      aspect-ratio: 2 / 3;
+      max-height: 80vh;
     }
 
     .editorial-block--duo {
       grid-template-columns: 1fr 1fr;
-      gap: 4px;
+      gap: 2px;
+    }
+
+    .editorial-duo-item {
+      overflow: hidden;
     }
   }
 
-  /* ── DESKTOP 1024px+ ── */
   @media (min-width: 1024px) {
     .editorial-inner {
       max-width: 900px;
       margin: 0 auto;
-      gap: 6px;
     }
 
     .editorial-img--portrait {
-      aspect-ratio: 3 / 4;
+      max-height: 100vh;
     }
 
     .editorial-img--landscape {
@@ -165,7 +152,7 @@
     }
 
     .editorial-block--duo {
-      gap: 6px;
+      gap: 4px;
     }
   }
 </style>
