@@ -154,11 +154,21 @@
 .mp-benefit__title { font-size: 0.85rem; font-weight: 700; margin: 0 0 2px; color: #111827 !important; }
 .mp-benefit__sub { font-size: 0.75rem; color: #6b7280 !important; margin: 0; }
 
+/* EDITORIAL IMAGES */
+.mp-editorial { background: #fff; }
+.mp-editorial__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+@media (max-width: 640px) { .mp-editorial__grid { grid-template-columns: 1fr; } }
+.mp-editorial__img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+
 .mp-stats { background: #fff; padding: 48px 0; border-bottom: 1px solid #e5e7eb; }
+.mp-stats__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+@media (max-width: 768px) { .mp-stats__inner { grid-template-columns: 1fr; gap: 24px; } }
 .mp-stats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: center; }
 @media (max-width: 640px) { .mp-stats__grid { grid-template-columns: 1fr; gap: 16px; } }
 .mp-stat__value { font-size: 2.2rem; font-weight: 900; color: #FF5A1F !important; margin: 0 0 4px; }
 .mp-stat__label { font-size: 0.85rem; color: #6b7280 !important; margin: 0; }
+.mp-stats__photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 16px; display: block; }
+@media (max-width: 768px) { .mp-stats__photo { display: none; } }
 
 .mp-testimonials { padding: 56px 0; background: #f9fafb; }
 .mp-section-tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #FF5A1F !important; margin: 0 0 8px; }
@@ -186,10 +196,9 @@
 .mp-guarantee__step-num { width: 28px; height: 28px; border-radius: 50%; background: #FF5A1F; color: #fff !important; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 800; flex-shrink: 0; }
 .mp-guarantee__step-title { font-size: 0.88rem; font-weight: 700; margin: 0 0 2px; color: #111827 !important; }
 .mp-guarantee__step-text { font-size: 0.82rem; color: #6b7280 !important; margin: 0; }
-.mp-guarantee__visual { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: #fff; border-radius: 20px; padding: 40px; text-align: center; border: 2px solid #fed7aa; }
-.mp-guarantee__icon { font-size: 4rem; }
-.mp-guarantee__visual-text { font-size: 1.2rem; font-weight: 800; color: #111827 !important; margin: 0; }
-.mp-guarantee__visual-sub { font-size: 0.85rem; color: #6b7280 !important; margin: 0; }
+.mp-guarantee__visual { overflow: hidden; border-radius: 20px; border: 2px solid #fed7aa; }
+.mp-guarantee__visual img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+@media (max-width: 768px) { .mp-guarantee__visual { display: none; } }
 
 .mp-faq { padding: 56px 0; background: #fff; }
 .mp-faq__list { display: flex; flex-direction: column; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
@@ -462,11 +471,47 @@
     <div class="mp-benefit"><div class="mp-benefit__icon">↩️</div><p class="mp-benefit__title">30 días de prueba</p><p class="mp-benefit__sub">Devolución gratis</p></div>
   </div>
 
-  <div class="mp-stats"><div class="wrap"><div class="mp-stats__grid">
-    <div><p class="mp-stat__value">4.9★</p><p class="mp-stat__label">Valoración media</p></div>
-    <div><p class="mp-stat__value">+500</p><p class="mp-stat__label">Familias CANVOY</p></div>
-    <div><p class="mp-stat__value">+1.200</p><p class="mp-stat__label">Rutas completadas</p></div>
-  </div></div></div>
+  <!-- EDITORIAL IMAGES: lifestyle collage + CANVOY style 1 -->
+  <div class="mp-editorial">
+    <div class="mp-editorial__grid">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_product_lifestyle_collage_202606111326.jpg?v=1781177623"
+        alt="Collage de estilo de vida CANVOY — perro hidratándose en ruta"
+        class="mp-editorial__img"
+        loading="lazy"
+        width="800"
+        height="600"
+      >
+      <img
+        src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_image_to_CANVOY_202606111331.jpg?v=1781177621"
+        alt="Estilo CANVOY — perro activo en exterior"
+        class="mp-editorial__img"
+        loading="lazy"
+        width="800"
+        height="600"
+      >
+    </div>
+  </div>
+
+  <div class="mp-stats">
+    <div class="wrap">
+      <div class="mp-stats__inner">
+        <div class="mp-stats__grid">
+          <div><p class="mp-stat__value">4.9★</p><p class="mp-stat__label">Valoración media</p></div>
+          <div><p class="mp-stat__value">+500</p><p class="mp-stat__label">Familias CANVOY</p></div>
+          <div><p class="mp-stat__value">+1.200</p><p class="mp-stat__label">Rutas completadas</p></div>
+        </div>
+        <img
+          src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_image_to_CANVOY_202606111333.jpg?v=1781177620"
+          alt="Perro CANVOY en ruta — estilo de vida activo"
+          class="mp-stats__photo"
+          loading="lazy"
+          width="800"
+          height="600"
+        >
+      </div>
+    </div>
+  </div>
 
   <div class="mp-testimonials"><div class="wrap">
     <p class="mp-section-tag">Clientes reales</p>
@@ -492,9 +537,13 @@
       </div>
     </div>
     <div class="mp-guarantee__visual">
-      <div class="mp-guarantee__icon">🛡️</div>
-      <p class="mp-guarantee__visual-text">Garantía 30 días</p>
-      <p class="mp-guarantee__visual-sub">Reembolso completo sin preguntas</p>
+      <img
+        src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/generated-image_4.png?v=1781177624"
+        alt="Garantía CANVOY 30 días — imagen de confianza"
+        loading="lazy"
+        width="800"
+        height="600"
+      >
     </div>
   </div></div></div>
 
