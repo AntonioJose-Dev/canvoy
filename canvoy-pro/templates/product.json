@@ -60,14 +60,7 @@
         }
       },
       "block_order": ["bullet_1", "bullet_2", "bullet_3", "bundle_1", "bundle_2", "bundle_3"]
-    },
-    "editorial-images": {
-      "type": "product-editorial-images",
-      "settings": {}
     }
   },
-  "order": [
-    "main",
-    "editorial-images"
-  ]
+  "order": ["main"]
 }
