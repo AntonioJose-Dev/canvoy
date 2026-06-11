@@ -127,9 +127,13 @@
 .mp-trust-mini__icon { font-size: 1.1rem; }
 .mp-trust-mini__label { font-weight: 700; font-size: 0.7rem; color: #111827 !important; }
 .mp-trust-mini__sub { font-size: 0.65rem; color: #6b7280 !important; }
-.mp-payments { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.mp-pay-icon { background: #f3f4f6; border-radius: 4px; padding: 3px 7px; font-size: 0.68rem; font-weight: 700; color: #374151 !important; }
 
+/* PAYMENT LOGOS */
+.mp-payments { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.mp-pay-logo { height: 24px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; background: #f3f4f6; padding: 3px 7px; }
+.mp-pay-logo svg { height: 16px; width: auto; display: block; }
+
+/* ACCORDION */
 .mp-accordion { border-top: 1px solid #e5e7eb; }
 .mp-accordion:last-child { border-bottom: 1px solid #e5e7eb; }
 .mp-accordion-btn { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; background: none; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: #111827 !important; text-align: left; }
@@ -137,6 +141,11 @@
 .mp-accordion-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .mp-accordion-content { display: none; padding: 0 0 14px; font-size: 0.88rem; color: #6b7280 !important; line-height: 1.6; }
 .mp-accordion-content.open { display: block; }
+
+/* DETALLES mejorado */
+.mp-details-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 7px; }
+.mp-details-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.85rem; color: #374151 !important; line-height: 1.5; }
+.mp-details-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #FF5A1F; flex-shrink: 0; margin-top: 6px; }
 
 .mp-benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #e5e7eb; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
 @media (max-width: 640px) { .mp-benefits { grid-template-columns: repeat(2, 1fr); } }
@@ -410,12 +419,74 @@
           <div class="mp-trust-mini__item"><span class="mp-trust-mini__icon">🚚</span><span class="mp-trust-mini__label">Envío 3–5 días</span><span class="mp-trust-mini__sub">Gratis desde 50€</span></div>
           <div class="mp-trust-mini__item"><span class="mp-trust-mini__icon">🔒</span><span class="mp-trust-mini__label">Pago seguro</span><span class="mp-trust-mini__sub">Visa, PayPal, Bizum</span></div>
         </div>
-        <div class="mp-payments">
-          <span class="mp-pay-icon">VISA</span><span class="mp-pay-icon">MC</span><span class="mp-pay-icon">PayPal</span><span class="mp-pay-icon">Bizum</span><span class="mp-pay-icon">Shop Pay</span>
+
+        <!-- LOGOS DE PAGO SVG -->
+        <div class="mp-payments" aria-label="Métodos de pago aceptados">
+
+          <!-- Visa -->
+          <span class="mp-pay-logo" title="Visa">
+            <svg viewBox="0 0 50 16" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visa">
+              <rect width="50" height="16" rx="2" fill="#fff"/>
+              <text x="5" y="12" font-family="Arial,sans-serif" font-size="11" font-weight="900" fill="#1A1F71" letter-spacing="-0.5">VISA</text>
+            </svg>
+          </span>
+
+          <!-- Mastercard -->
+          <span class="mp-pay-logo" title="Mastercard">
+            <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mastercard">
+              <rect width="38" height="24" rx="3" fill="#fff"/>
+              <circle cx="14" cy="12" r="7" fill="#EB001B"/>
+              <circle cx="24" cy="12" r="7" fill="#F79E1B"/>
+              <path d="M19 6.8a7 7 0 0 1 0 10.4A7 7 0 0 1 19 6.8z" fill="#FF5F00"/>
+            </svg>
+          </span>
+
+          <!-- PayPal -->
+          <span class="mp-pay-logo" title="PayPal">
+            <svg viewBox="0 0 60 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PayPal">
+              <rect width="60" height="20" rx="3" fill="#fff"/>
+              <text x="6" y="14" font-family="Arial,sans-serif" font-size="10" font-weight="800" fill="#003087">Pay</text>
+              <text x="26" y="14" font-family="Arial,sans-serif" font-size="10" font-weight="800" fill="#009cde">Pal</text>
+            </svg>
+          </span>
+
+          <!-- Bizum -->
+          <span class="mp-pay-logo" title="Bizum">
+            <svg viewBox="0 0 56 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bizum">
+              <rect width="56" height="20" rx="3" fill="#fff"/>
+              <text x="5" y="14" font-family="Arial,sans-serif" font-size="10" font-weight="800" fill="#00B259">Bizum</text>
+            </svg>
+          </span>
+
+          <!-- Shop Pay -->
+          <span class="mp-pay-logo" title="Shop Pay">
+            <svg viewBox="0 0 66 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shop Pay">
+              <rect width="66" height="20" rx="3" fill="#5A31F4"/>
+              <text x="6" y="14" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#fff">Shop Pay</text>
+            </svg>
+          </span>
+
         </div>
+
         <div>
           {%- if product.description != blank -%}
-            <div class="mp-accordion"><button type="button" class="mp-accordion-btn" aria-expanded="false">Detalles <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-accordion-content">{{ product.description | strip_html | truncate: 400 }}</div></div>
+            <div class="mp-accordion">
+              <button type="button" class="mp-accordion-btn" aria-expanded="false">
+                Detalles del producto
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="mp-accordion-content">
+                <ul class="mp-details-list">
+                  <li>Capacidad: <strong>285 ml</strong> — suficiente para un paseo largo</li>
+                  <li>Material: <strong>Acero inoxidable 304</strong> grado alimentario, sin BPA ni olores</li>
+                  <li>Cuenco de <strong>silicona alimentaria</strong> plegable, fácil de limpiar</li>
+                  <li>Cierre hermético de silicona — <strong>no gotea</strong> al revés en la mochila</li>
+                  <li>Gancho de acero integrado para correa o mosquetón</li>
+                  <li>Peso: <strong>~180 g</strong> sin agua. Cabe en bolsillos estándar de mochila</li>
+                  <li>Lavavajillas: ✓ Ciclo corto. Cuenco desmontable para limpieza en profundidad</li>
+                </ul>
+              </div>
+            </div>
           {%- endif -%}
           <div class="mp-accordion"><button type="button" class="mp-accordion-btn" aria-expanded="false">Información de entrega <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-accordion-content">{{ section.settings.shipping_text }}</div></div>
           <div class="mp-accordion"><button type="button" class="mp-accordion-btn" aria-expanded="false">Prueba de 30 días <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button><div class="mp-accordion-content">{{ section.settings.returns_text }}</div></div>
