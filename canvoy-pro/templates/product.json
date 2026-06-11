@@ -3,11 +3,11 @@
     "main": {
       "type": "main-product",
       "settings": {
-        "subtitle": "Hidratación y comida, listas en segundos.",
-        "review_count_text": "4.9 · 127 reseñas",
-        "bundle_heading": "🐾 COMPRA UN PACK Y AHORRA",
-        "shipping_text": "Envío a toda España en 3–5 días hábiles. Envío gratuito en pedidos +50€.",
-        "returns_text": "Tienes 30 días para probarlo. Si no es lo que esperabas, reembolso en 48h sin preguntas."
+        "subtitle": "Hidrataci\u00f3n y comida, listas en segundos.",
+        "review_count_text": "4.9 \u00b7 127 rese\u00f1as",
+        "bundle_heading": "\ud83d\udc3e COMPRA UN PACK Y AHORRA",
+        "shipping_text": "Env\u00edo a toda Espa\u00f1a en 3\u20135 d\u00edas h\u00e1biles. Env\u00edo gratuito en pedidos +50\u20ac.",
+        "returns_text": "Tienes 30 d\u00edas para probarlo. Si no es lo que esperabas, reembolso en 48h sin preguntas."
       },
       "blocks": {
         "bullet_1": {
@@ -16,7 +16,7 @@
         },
         "bullet_2": {
           "type": "bullet",
-          "settings": { "text": "Acero inoxidable 304 — sin olores ni BPA" }
+          "settings": { "text": "Acero inoxidable 304 \u2014 sin olores ni BPA" }
         },
         "bullet_3": {
           "type": "bullet",
@@ -26,10 +26,10 @@
           "type": "bundle",
           "settings": {
             "title": "CANVOY Pack 1",
-            "price": "22,95€",
+            "price": "22,95\u20ac",
             "compare_price": "",
             "saving_text": "",
-            "unit_label": "22,95€ / ud",
+            "unit_label": "22,95\u20ac / ud",
             "badge_text": "",
             "qty": 1
           }
@@ -38,11 +38,11 @@
           "type": "bundle",
           "settings": {
             "title": "CANVOY Pack 2",
-            "price": "39,95€",
-            "compare_price": "45,90€",
-            "saving_text": "↓ Ahorras 5,95€",
-            "unit_label": "19,97€ / ud",
-            "badge_text": "⭐ Más popular",
+            "price": "39,95\u20ac",
+            "compare_price": "45,90\u20ac",
+            "saving_text": "\u2193 Ahorras 5,95\u20ac",
+            "unit_label": "19,97\u20ac / ud",
+            "badge_text": "\u2b50 M\u00e1s popular",
             "qty": 2
           }
         },
@@ -50,17 +50,69 @@
           "type": "bundle",
           "settings": {
             "title": "CANVOY Pack 3",
-            "price": "49,95€",
-            "compare_price": "68,85€",
-            "saving_text": "↓ Ahorras 18,90€",
-            "unit_label": "16,65€ / ud",
-            "badge_text": "💰 Mejor precio",
+            "price": "49,95\u20ac",
+            "compare_price": "68,85\u20ac",
+            "saving_text": "\u2193 Ahorras 18,90\u20ac",
+            "unit_label": "16,65\u20ac / ud",
+            "badge_text": "\ud83d\udcb0 Mejor precio",
             "qty": 3
           }
         }
       },
       "block_order": ["bullet_1", "bullet_2", "bullet_3", "bundle_1", "bundle_2", "bundle_3"]
+    },
+    "product-description": {
+      "type": "product-description",
+      "settings": {}
+    },
+    "product-benefits-bar": {
+      "type": "product-benefits-bar",
+      "settings": {}
+    },
+    "product-benefits-grid": {
+      "type": "product-benefits-grid",
+      "settings": {}
+    },
+    "editorial-images": {
+      "type": "product-editorial-images",
+      "settings": {}
+    },
+    "product-bundle": {
+      "type": "product-bundle",
+      "settings": {}
+    },
+    "product-social-proof": {
+      "type": "product-social-proof",
+      "settings": {}
+    },
+    "product-testimonials": {
+      "type": "product-testimonials",
+      "settings": {}
+    },
+    "product-guarantee": {
+      "type": "product-guarantee",
+      "settings": {}
+    },
+    "product-faq": {
+      "type": "product-faq",
+      "settings": {}
+    },
+    "product-reviews": {
+      "type": "product-reviews",
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "product-benefits-bar",
+    "product-description",
+    "product-benefits-grid",
+    "editorial-images",
+    "product-bundle",
+    "product-social-proof",
+    "product-testimonials",
+    "product-guarantee",
+    "product-faq",
+    "product-reviews"
+  ]
 }
