@@ -61,58 +61,13 @@
       },
       "block_order": ["bullet_1", "bullet_2", "bullet_3", "bundle_1", "bundle_2", "bundle_3"]
     },
-    "product-description": {
-      "type": "product-description",
-      "settings": {}
-    },
-    "product-benefits-bar": {
-      "type": "product-benefits-bar",
-      "settings": {}
-    },
-    "product-benefits-grid": {
-      "type": "product-benefits-grid",
-      "settings": {}
-    },
     "editorial-images": {
       "type": "product-editorial-images",
-      "settings": {}
-    },
-    "product-bundle": {
-      "type": "product-bundle",
-      "settings": {}
-    },
-    "product-social-proof": {
-      "type": "product-social-proof",
-      "settings": {}
-    },
-    "product-testimonials": {
-      "type": "product-testimonials",
-      "settings": {}
-    },
-    "product-guarantee": {
-      "type": "product-guarantee",
-      "settings": {}
-    },
-    "product-faq": {
-      "type": "product-faq",
-      "settings": {}
-    },
-    "product-reviews": {
-      "type": "product-reviews",
       "settings": {}
     }
   },
   "order": [
     "main",
-    "product-benefits-bar",
-    "product-description",
-    "product-benefits-grid",
-    "editorial-images",
-    "product-bundle",
-    "product-social-proof",
-    "product-testimonials",
-    "product-guarantee",
-    "product-faq",
-    "product-reviews"
+    "editorial-images"
   ]
 }
