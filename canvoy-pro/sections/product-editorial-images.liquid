@@ -1,0 +1,203 @@
+{% comment %}
+  product-editorial-images.liquid
+  Sección de imágenes editoriales estilo DTC — mobile-first
+  Orden probado de conversión:
+  1. Imagen emocional (dolor/problema)
+  2. Lifestyle collage
+  3-4. Imágenes de estilo/producto CANVOY
+{% endcomment %}
+
+<section class="product-editorial" id="product-editorial">
+  <div class="editorial-inner">
+
+    {%- comment -%} IMAGEN 1 — Emocional full-width {%- endcomment -%}
+    <div class="editorial-block editorial-block--full">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/generated-image_4.png?v=1781177624"
+        alt="Tu perro sufre sed silenciosa en cada paseo — CANVOY bebedero portátil"
+        width="800"
+        height="1400"
+        loading="lazy"
+        decoding="async"
+        class="editorial-img editorial-img--portrait"
+      >
+    </div>
+
+    {%- comment -%} IMAGEN 2 — Collage lifestyle 4 escenas {%- endcomment -%}
+    <div class="editorial-block editorial-block--full">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_product_lifestyle_collage_202606111326.jpg?v=1781177623"
+        alt="CANVOY botella portátil para perros — ligero, portátil, práctico, con estilo"
+        width="1200"
+        height="900"
+        loading="lazy"
+        decoding="async"
+        class="editorial-img editorial-img--landscape"
+      >
+    </div>
+
+    {%- comment -%} IMAGEN 3 + 4 — Dos columnas en desktop, apiladas en mobile {%- endcomment -%}
+    <div class="editorial-block editorial-block--duo">
+      <div class="editorial-duo-item">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_image_to_CANVOY_202606111331.jpg?v=1781177621"
+          alt="CANVOY bebedero portátil acero inoxidable — diseño premium para perros"
+          width="600"
+          height="750"
+          loading="lazy"
+          decoding="async"
+          class="editorial-img editorial-img--square"
+        >
+      </div>
+      <div class="editorial-duo-item">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0996/8730/1494/files/Transform_this_image_to_CANVOY_202606111333.jpg?v=1781177620"
+          alt="CANVOY botella con cuenco plegable para perros — hidratación en cada paseo"
+          width="600"
+          height="750"
+          loading="lazy"
+          decoding="async"
+          class="editorial-img editorial-img--square"
+        >
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .product-editorial {
+    width: 100%;
+    background: #ffffff;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .editorial-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 100%;
+  }
+
+  /* Cada bloque ocupa el ancho completo en mobile */
+  .editorial-block {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Imagen base — siempre responsive, nunca overflow */
+  .editorial-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  /* Portrait — imagen emocional vertical */
+  .editorial-img--portrait {
+    max-height: 90vh;
+    object-position: top center;
+  }
+
+  /* Landscape — collage horizontal */
+  .editorial-img--landscape {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Square — imágenes duo */
+  .editorial-img--square {
+    aspect-ratio: 4 / 5;
+  }
+
+  /* Hover sutil — solo en desktop con ratón */
+  @media (hover: hover) {
+    .editorial-img:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  /* Bloque duo: dos columnas en tablet+ */
+  .editorial-block--duo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Separador visual sutil entre bloques */
+  .editorial-block + .editorial-block {
+    border-top: 1px solid #f0f0f0;
+  }
+
+  /* === TABLET (600px+) === */
+  @media (min-width: 600px) {
+    .editorial-img--portrait {
+      max-height: 80vh;
+    }
+
+    .editorial-block--duo {
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .editorial-duo-item {
+      overflow: hidden;
+    }
+  }
+
+  /* === DESKTOP (1024px+) === */
+  @media (min-width: 1024px) {
+    .editorial-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .editorial-img--portrait {
+      max-height: 100vh;
+    }
+
+    .editorial-img--landscape {
+      aspect-ratio: 16 / 9;
+    }
+
+    .editorial-block--duo {
+      gap: 4px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Imágenes Editoriales",
+  "tag": "section",
+  "class": "section-product-editorial",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Imagen 1 — Emocional"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Imagen 2 — Lifestyle collage"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Imagen 3 — Estilo CANVOY A"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Imagen 4 — Estilo CANVOY B"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Imágenes Editoriales"
+    }
+  ]
+}
+{% endschema %}
