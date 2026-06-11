@@ -1,0 +1,137 @@
+{% comment %}
+  product-description.liquid
+  Muestra la descripción del producto tal como se escribe en el admin de Shopify.
+  Mobile-first, tipografía limpia, colores CANVOY.
+{% endcomment %}
+
+{%- if product.description != blank -%}
+<section class="product-desc-section" id="product-description">
+  <div class="product-desc-inner">
+    <div class="product-desc-content rte">
+      {{ product.description }}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+<style>
+  .product-desc-section {
+    background: #ffffff;
+    padding: 32px 20px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .product-desc-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* RTE — rich text editor styles de Shopify */
+  .product-desc-content.rte {
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #1a1a1a;
+  }
+
+  .product-desc-content.rte h1,
+  .product-desc-content.rte h2,
+  .product-desc-content.rte h3 {
+    font-family: inherit;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+  }
+
+  .product-desc-content.rte h2 { font-size: 1.25rem; }
+  .product-desc-content.rte h3 { font-size: 1.1rem; }
+
+  .product-desc-content.rte p {
+    margin-bottom: 1em;
+    max-width: 100%;
+  }
+
+  .product-desc-content.rte ul,
+  .product-desc-content.rte ol {
+    padding-left: 1.4em;
+    margin-bottom: 1em;
+  }
+
+  .product-desc-content.rte li {
+    margin-bottom: 0.4em;
+    line-height: 1.6;
+  }
+
+  /* Bullet personalizado con color CANVOY naranja */
+  .product-desc-content.rte ul li::marker {
+    color: #FF5A1F;
+  }
+
+  .product-desc-content.rte strong {
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .product-desc-content.rte a {
+    color: #FF5A1F;
+    text-decoration: underline;
+  }
+
+  /* Imágenes dentro de la descripción */
+  .product-desc-content.rte img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1em 0;
+  }
+
+  /* Tabla dentro de la descripción */
+  .product-desc-content.rte table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 0.9rem;
+  }
+
+  .product-desc-content.rte th,
+  .product-desc-content.rte td {
+    border: 1px solid #e8e8e8;
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  .product-desc-content.rte th {
+    background: #f7f7f7;
+    font-weight: 600;
+  }
+
+  /* Desktop */
+  @media (min-width: 768px) {
+    .product-desc-section {
+      padding: 48px 32px;
+    }
+
+    .product-desc-content.rte {
+      font-size: 1.05rem;
+    }
+
+    .product-desc-content.rte h2 { font-size: 1.4rem; }
+    .product-desc-content.rte h3 { font-size: 1.15rem; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Descripci\u00f3n del Producto",
+  "tag": "section",
+  "class": "section-product-description",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Descripci\u00f3n del Producto"
+    }
+  ]
+}
+{% endschema %}
